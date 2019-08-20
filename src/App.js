@@ -29,5 +29,3 @@ const mapStateToProps = state => {
 export const store = createStore(userInfo);
 
 export default connect(mapStateToProps)(App);
-
-
