@@ -1,0 +1,104 @@
+.create-post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80%;
+  padding: 20px 310px;
+}
+
+.create-post .form-wrapper {
+  height: 500px;
+  width: 600px;
+  border: 0.5px solid rgb(197, 197, 197);
+  border-radius: 2px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 70px 0 100px 0;
+}
+
+.create-post h2 {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.create-post form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-post input[type='text'] {
+  box-sizing: border-box;
+  padding-left: 10px;
+  margin-bottom: 15px;
+  width: 480px;
+  height: 40px;
+  border: 0.5px solid rgb(197, 197, 197);
+  border-radius: 2px;
+  background-color: rgb(247, 247, 247);
+  transition: 0.5s;
+  letter-spacing: 1px;
+}
+
+.create-post input[type='text']:focus {
+  outline: none;
+}
+
+.create-post input[type='submit'] {
+  height: 35px;
+  width: 180px;
+  margin: 5px 0 10px 0;
+  box-sizing: border-box;
+  border: 0.5px solid rgb(197, 197, 197);
+  border-radius: 7px;
+  transition: 0.5s;
+  background: transparent;
+  letter-spacing: 1px;
+}
+
+.create-post input[type='submit']:hover {
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.5);
+}
+
+.create-post input[type='submit']:focus {
+  outline: none;
+}
+
+.create-post .image-wrapper {
+  width: 620px;
+  height: auto;
+}
+
+.create-post img {
+  height: auto;
+  width: 620px;
+}
+
+.create-post .image-wrapper img:before {
+  content: attr(text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+  width: 620px;
+  letter-spacing: 1px;
+}
+
+.create-post .error-message {
+  color: rgb(228, 87, 87);
+  transition: 0.5s;
+}
+
+.create-post .hide {
+  opacity: 0;
+}
+
+.create-post input.error {
+  border: 1px solid rgb(228, 87, 87);
+}

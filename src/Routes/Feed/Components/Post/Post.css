@@ -1,0 +1,157 @@
+.post {
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  width: 620px;
+  border: 1px solid rgb(197, 197, 197);
+  border-radius: 3px;
+}
+
+.post img {
+  -webkit-user-select: none;
+  height: auto;
+  width: 620px;
+}
+
+.post img:before {
+  content: 'That is a broken one';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 450px;
+  background-color: rgb(230, 230, 230);
+}
+
+.post a {
+  font-weight: 600;
+  text-decoration: none;
+  color: rgb(35, 31, 32);
+}
+
+.post .bar {
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+
+.post .top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+}
+
+.post .top-bar img {
+  height: 45px;
+  width: 45px;
+  border-radius: 40px;
+  margin-right: 10px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.post .top-bar img::before {
+  font-size: 12px;
+  content: 'Photo';
+  height: 45px;
+  width: 45px;
+  border-radius: 50px;
+}
+
+.post .top-bar .profile-picture-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.post .bottom-bar {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.like-button {
+  display: flex;
+  padding: 0;
+  width: 55px;
+  border: none;
+  background: transparent;
+  transition: 0.3s;
+}
+
+.like-button:focus {
+  outline: none;
+}
+
+.liked {
+  color: #f00;
+}
+
+.post .options-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  height: 100%;
+}
+
+.post .options-button:focus {
+  outline: none;
+}
+
+.post .image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post .like-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 60px;
+  padding-left: 20px;
+}
+
+.post .caption {
+  word-wrap: break-word;
+  padding: 0 20px;
+}
+
+.post .caption a {
+  margin-right: 6px;
+}
+
+.deleted-post {
+  margin-bottom: 50px;
+  width: 620px;
+  height: 60px;
+  color: rgba(0, 0, 0, 0.445);
+  border: 1px solid rgb(51, 51, 54);
+  /* border-radius: 3px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+
+  transition: 0.25s;
+  box-shadow: 0.5em 0.5em 0 0 rgb(51, 51, 54),
+    inset 0.5em 0.5em 0 0 rgb(51, 51, 54);
+}
+
+.deleted-post:hover {
+  color: rgb(147, 147, 147);
+  box-shadow: 0 0 0 0 rgb(51, 51, 54), inset 6em 4em 0 0 rgb(51, 51, 54);
+}
+
+.deleted-post:hover button {
+  color: #fff;
+}
+
+.deleted-post button {
+  background: transparent;
+  border: none;
+  /* text-decoration: underline; */
+  cursor: pointer;
+  font-size: 15px;
+  /* font-weight: 500; */
+}

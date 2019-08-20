@@ -1,0 +1,122 @@
+.registration-page {
+  height: 100%;
+  background: url('https://pp.userapi.com/c855220/v855220058/acb97/ciubfsl84Nc.jpg');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-wrapper {
+  width: 350px;
+  height: 375px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 37px 0 5px 0;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.registration-wrapper h2 {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.registration-wrapper label {
+  color: rgb(72, 118, 133);
+}
+
+.registration-wrapper input {
+  border-bottom: 1px solid rgb(72, 118, 133);
+}
+
+.registration-wrapper input:focus ~ label,
+.registration-wrapper input:valid ~ label {
+  color: rgb(72, 118, 133);
+}
+
+.registration-page .form-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.registration-wrapper input[type='submit'] {
+  height: 35px;
+  width: 300px;
+  margin-top: 7px;
+  margin-bottom: 5px;
+  background: transparent;
+  border: none;
+  border: 1px solid rgb(72, 118, 133);
+  border-radius: 5px;
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font: 400 13.3333px Arial;
+  color: #fff;
+  background-color: rgb(72, 118, 133, 0.24);
+  cursor: pointer;
+}
+
+.registration-wrapper input[type='submit']:focus {
+  outline: none;
+}
+
+.login {
+  width: 350px;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.login span {
+  margin-right: 5px;
+}
+
+.login a {
+  text-decoration: none;
+  color: rgb(72, 118, 133);
+}
+
+.login a:focus {
+  text-decoration: underline;
+}
+
+.registration-page .error-message {
+  color: rgb(228, 87, 87);
+  font-size: 14px;
+  transition: 0.5s;
+}
+
+.registration-page .hide {
+  opacity: 0;
+}
+
+.registration-page .signup-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 17px;
+}

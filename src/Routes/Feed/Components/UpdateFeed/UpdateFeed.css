@@ -1,0 +1,25 @@
+.update-feed {
+  position: fixed;
+  top: 85px;
+}
+
+.update-feed button {
+  height: 40px;
+  width: 170px;
+  background-color: #fff;
+  border: 0.5px solid rgb(197, 197, 197);
+  border-radius: 30px;
+  font-size: 15px;
+  letter-spacing: 1px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.update-feed button:hover {
+  box-shadow: 0 0.5em 0.5em -0.4em rgb(226, 38, 38);
+  transform: translateY(-0.25em);
+}
+
+.update-feed button:focus {
+  outline: none;
+}

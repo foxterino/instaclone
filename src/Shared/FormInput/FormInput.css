@@ -1,0 +1,47 @@
+.input-box {
+  position: relative;
+}
+
+.input-box input {
+  width: 300px;
+  height: 20px;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 20px;
+  border: none;
+  border-bottom: 1px solid rgb(47, 124, 49);
+  outline: none;
+  background: transparent;
+}
+
+.input-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+  top: -24px;
+  left: 0;
+  color: rgb(47, 124, 49);
+  font-size: 13px;
+}
+
+.input-box label.error {
+  color: rgb(228, 87, 87);
+}
+
+.input-box input.error {
+  border-bottom: 1px solid rgb(228, 87, 87);
+}
+
+.input-box input:focus ~ label.error {
+  color: rgb(228, 87, 87);
+}

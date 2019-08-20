@@ -1,0 +1,62 @@
+feed: {
+                '0': {
+          imageSrc: "http://brasilcalibracao.com.br/images/produtos/pug-norm-22-600x600.jpg",
+          isLiked: true,
+          likeCount: 1,
+          user: "Vadim"
+        },
+        '1': {
+          imageSrc: "https://samogon.org/image/cache/catalog/sales/100-600x600.jpg",
+          isLiked: false,
+          likeCount: 999,
+          user: "Nastya"
+        },
+        '2': {
+          imageSrc: "https://www.desicomments.com/funny/wp-content/uploads/2017/06/Think-Of-Something-Funny-600x600.jpg",
+          isLiked: false,
+          likeCount: 227,
+          user: "Krytoi Dimasik"
+        },
+        '3': {
+          imageSrc: "https://mindflex.com.ua/wp-content/uploads/2018/09/vector_foto1-1000x1000-600x600.jpg",
+          isLiked: true,
+          likeCount: 6,
+          user: "Denchik"
+        },
+        '4': {
+          imageSrc: "https://pp.userapi.com/c851428/v851428630/13848c/zzhBpjMgca4.jpg",
+          isLiked: false,
+          likeCount: 12,
+          user: "Nona"
+        },
+        '5': {
+          imageSrc: "https://pp.userapi.com/c7005/v7005854/5c05e/CTzQAdENpBU.jpg",
+          isLiked: false,
+          likeCount: 450,
+          user: "Alexey"
+        },
+        '6': {
+          imageSrc: "https://pp.userapi.com/c854524/v854524895/64337/SAR7cNHlDgo.jpg",
+          isLiked: true,
+          likeCount: 1,
+          user: "Wolf in Circus"
+        },
+        '7': {
+          imageSrc: "https://pp.userapi.com/c543101/v543101767/73116/VlJppnEhd68.jpg",
+          isLiked: true,
+          likeCount: 0,
+          user: "Papich"
+        },
+        '8': {
+          imageSrc: "https://pp.userapi.com/c627121/v627121894/17c79/nfXF5enS8fk.jpg",
+          isLiked: true,
+          likeCount: 32,
+          user: "CoolCat"
+        },
+        '9': {
+          imageSrc: "https://pp.userapi.com/c848628/v848628636/1c4b3a/7ctcw50OsaM.jpg",
+          isLiked: true,
+          likeCount: 111,
+          user: "Medvedica"
+        }
+              }

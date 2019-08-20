@@ -1,0 +1,19 @@
+main {
+  display: flex;
+  justify-content: center;
+  padding-top: 70px;
+}
+
+main div.post-wrapper {
+  margin-right: 50px;
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+main .empty-feed {
+  width: 620px;
+  display: flex;
+  justify-content: center;
+}

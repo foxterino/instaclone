@@ -1,0 +1,120 @@
+.login-page {
+  height: 100%;
+  background: url('https://pp.userapi.com/c852132/v852132690/17df0d/8ay-d6xGXG8.jpg');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-wrapper {
+  width: 350px;
+  height: 335px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 0 13px 0;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.login-wrapper h2 {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  box-sizing: border-box;
+  text-transform: uppercase;
+}
+
+.login-wrapper {
+  position: relative;
+}
+
+.login-wrapper input[type='submit'] {
+  margin-top: 5px;
+  background: transparent;
+  border: none;
+  border: 1px solid rgb(47, 124, 49);
+  background-color: rgba(47, 124, 50, 0.507);
+  outline: none;
+  color: #fff;
+  border-radius: 5px;
+  width: 300px;
+  height: 35px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+
+.login-wrapper a {
+  text-decoration: none;
+  color: rgb(47, 124, 49);
+}
+
+.login-wrapper a:focus {
+  text-decoration: underline;
+}
+
+.login-page form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page .signup-wrapper {
+  width: 350px;
+  height: 60px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 48px;
+  color: #fff;
+}
+
+.login-page .signup-wrapper span {
+  margin-right: 5px;
+}
+
+.login-page .signup-wrapper a {
+  text-decoration: none;
+  color: rgb(47, 124, 49);
+}
+
+.login-page .signup-wrapper a:focus {
+  text-decoration: underline;
+}
+
+.login-page input[type='submit'].non-active {
+  cursor: default;
+  background-color: rgba(43, 94, 45, 0.308);
+  color: rgba(255, 255, 255, 0.37);
+}
+
+.login-page .error-message {
+  color: rgb(228, 87, 87);
+  font-size: 14px;
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 14px;
+  margin: 8px 0 10px 0;
+}
+
+.login-page .hide {
+  opacity: 0;
+}
