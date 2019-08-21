@@ -38,15 +38,17 @@
 }
 
 .profile .top-info p {
-  font-size: 20px;
+  font-size: 28px;
   margin: 0;
+  font-weight: 300;
 }
 
 .profile .top-info-buttons {
-  padding-left: 30px;
+  padding-left: 20px;
   display: flex;
   width: 300px;
   justify-content: space-between;
+  align-items: center;
 }
 
 .profile .top-info button {
