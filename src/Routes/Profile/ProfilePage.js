@@ -184,8 +184,11 @@ class ProfilePage extends React.Component {
   }
 
   handleModalClose(e) {
-    if (e.target.className === 'modal-window-wrapper' ||
-      e.target.className === 'hidden')
+    if (
+      e.target.className === 'modal-window-wrapper' ||
+      e.target.className === 'hidden' ||
+      e.key === 'Escape'
+    )
       this.setState({ isModal: false });
   }
 
