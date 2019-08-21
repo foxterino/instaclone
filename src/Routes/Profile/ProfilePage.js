@@ -60,7 +60,8 @@ class ProfilePage extends React.Component {
         currentProfile: this.props.match.params.profile,
         renderPostsId: [],
         isFollowed: null,
-        isModal: false
+        isModal: false,
+        isExist: null
       });
 
       this.updateProfile();
@@ -236,6 +237,7 @@ class ProfilePage extends React.Component {
     if (Array.isArray(posts)) posts.reverse();
 
     let userInfoButtons;
+    // if (!this.state.profilePhoto) return <div>Load</div>;
     if (this.props.match.params.profile !== this.state.activeUser) {
       userInfoButtons = (
         <>
