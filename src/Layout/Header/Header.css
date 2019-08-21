@@ -48,19 +48,14 @@ nav ul li {
 
 nav ul li a {
   line-height: 50px;
-  color: rgb(35, 31, 32);
+  color: rgba(35, 31, 32, 0.637);
   padding: 5px 20px;
   text-decoration: none;
   text-transform: uppercase;
-  transition: 0.5s;
+  transition: 0.25s;
 }
 
 nav ul li a.active {
   box-sizing: border-box;
-  border: 0.1px outset black;
-}
-
-nav ul li a:hover {
-  color: #fff;
-  background-color: black;
+  color: rgb(35, 31, 32);
 }

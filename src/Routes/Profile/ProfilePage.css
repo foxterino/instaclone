@@ -32,7 +32,7 @@
   width: 100%;
   height: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
 }
@@ -40,6 +40,13 @@
 .profile .top-info p {
   font-size: 20px;
   margin: 0;
+}
+
+.profile .top-info-buttons {
+  padding-left: 30px;
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
 }
 
 .profile .top-info button {
@@ -59,12 +66,13 @@
 
 .profile .top-info .logout-button {
   height: 35px;
-  width: 130px;
+  width: 70px;
   transition: 0.3s;
+  border: none;
+  background: transparent;
 }
 
 .profile .top-info .logout-button:hover {
-  background-color: rgba(197, 197, 197, 0.233);
   color: rgb(0, 0, 0);
 }
 
@@ -74,8 +82,8 @@
 
 .profile .top-info .follow-button {
   background-color: grey;
-  height: 35px;
-  width: 220px;
+  height: 30px;
+  width: 185px;
   border-radius: 5px;
   border-color: rgb(56, 151, 240);
   background-color: rgb(56, 151, 240);
@@ -86,15 +94,28 @@
   outline: none;
 }
 
+.profile .top-info .suggested-button {
+  background-color: grey;
+  height: 30px;
+  width: 35px;
+  border-radius: 5px;
+  border-color: rgb(56, 151, 240);
+  background-color: rgb(56, 151, 240);
+  color: #fff;
+  font-size: 12px;
+}
+
 .profile .top-info .followed {
   color: rgba(0, 0, 0);
   background-color: #fff;
   border-color: rgb(197, 197, 197);
 }
 
-.profile .options-button {
+.profile button.options-button {
   height: 35px;
-  width: 100px;
+  width: 70px;
+  border: none;
+  background: transparent;
 }
 
 .profile .create-button {
@@ -102,8 +123,8 @@
   border: 1px solid rgb(197, 197, 197);
   border-radius: 5px;
   color: rgb(0, 0, 0);
-  width: 170px;
-  height: 35px;
+  width: 220px;
+  height: 30px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;

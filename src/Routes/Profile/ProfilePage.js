@@ -240,7 +240,6 @@ class ProfilePage extends React.Component {
     if (Array.isArray(posts)) posts.reverse();
 
     let userInfoButtons;
-    // if (!this.state.profilePhoto) return <div>Load</div>;
     if (this.props.match.params.profile !== this.state.activeUser) {
       userInfoButtons = (
         <>
@@ -253,6 +252,15 @@ class ProfilePage extends React.Component {
             onClick={() => this.handleFollow()}
           >
             {this.state.isFollowed ? 'Following' : 'Follow'}
+          </button>
+          <button
+            className={
+              this.state.isFollowed
+                ? 'suggested-button followed'
+                : 'suggested-button'
+            }
+          >
+            ▼
           </button>
           <button className='options-button'>
             Options
@@ -300,7 +308,9 @@ class ProfilePage extends React.Component {
               <div className='main-info'>
                 <div className='top-info'>
                   <p>{this.props.match.params.profile}</p>
-                  {userInfoButtons}
+                  <div className='top-info-buttons'>
+                    {userInfoButtons}
+                  </div>
                 </div>
                 <div className='bottom-info'>
                   <span>{this.state.renderPostsId.length + ' posts'} </span>
