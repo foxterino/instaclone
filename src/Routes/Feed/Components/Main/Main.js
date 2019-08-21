@@ -4,6 +4,7 @@ import Post from '../Post/Post'
 import Stories from '../Stories/Stories'
 import { database } from '../../../../firebase'
 import UpdateFeed from '../UpdateFeed/UpdateFeed';
+import EventHandler from '../../../../Shared/EventHandler/EventHandler'
 
 class Main extends React.Component {
   state = {
@@ -78,8 +79,6 @@ class Main extends React.Component {
   }
 
   render() {
-    window.addEventListener('scroll', () => this.handleScroll());
-    
     let posts;
     if (this.state.renderPostsId.length !== 0) {
       posts = this.state.renderPostsId.map((item) => {
@@ -104,16 +103,18 @@ class Main extends React.Component {
     if (Array.isArray(posts)) posts.reverse();
 
     return (
-      <main>
-        {
-          this.state.isNewPosts &&
-          <UpdateFeed handleNewPosts={() => this.handleNewPosts()} />
-        }
-        <div className='post-wrapper'>
-          {posts}
-        </div>
-        <Stories />
-      </main >
+      <EventHandler eventName='scroll' callback={() => this.handleScroll()} >
+        <main>
+          {
+            this.state.isNewPosts &&
+            <UpdateFeed handleNewPosts={() => this.handleNewPosts()} />
+          }
+          <div className='post-wrapper'>
+            {posts}
+          </div>
+          <Stories />
+        </main>
+      </EventHandler>
     );
   }
 }

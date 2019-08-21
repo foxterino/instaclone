@@ -3,6 +3,7 @@ import './FeedPage.css'
 import Main from './Components/Main/Container'
 import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow'
 import { database } from '../../firebase';
+import EventHandler from '../../Shared/EventHandler/EventHandler';
 
 class FeedPage extends React.Component {
   state = {
@@ -14,7 +15,6 @@ class FeedPage extends React.Component {
   };
 
   componentWillUnmount() {
-    window.onbeforeunload = null;
     this.updateBD();
   }
 
@@ -34,7 +34,6 @@ class FeedPage extends React.Component {
   }
 
   handleDeletePost() {
-    // database.ref(`posts/${this.state.postId}`).remove();
     this.setState({
       deletedPosts: [...this.state.deletedPosts, this.state.postId],
       isModal: false
@@ -90,10 +89,8 @@ class FeedPage extends React.Component {
   }
 
   render() {
-    window.onbeforeunload = () => this.updateBD();
-
     return (
-      <>
+      <EventHandler eventName='beforeunload' callback={() => this.updateBD()}>
         <OptionsModalWindow
           isModal={this.state.isModal}
           handleModalClose={(e) => this.handleModalClose(e)}
@@ -109,7 +106,7 @@ class FeedPage extends React.Component {
           deletedPosts={this.state.deletedPosts}
           handleUndoDeletePost={(postId) => this.handleUndoDeletePost(postId)}
         />
-      </>
+      </EventHandler>
     );
   }
 }

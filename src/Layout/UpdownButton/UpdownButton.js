@@ -1,5 +1,6 @@
 import React from 'react'
 import './Updownbutton.css'
+import EventHandler from '../../Shared/EventHandler/EventHandler'
 
 class UpdownButton extends React.Component {
   state = {
@@ -61,19 +62,19 @@ class UpdownButton extends React.Component {
   }
 
   render() {
-    window.addEventListener('scroll', () => this.handleScroll());
-
-    if (this.state.value) {
-      return (
-        <div
-          className='updown-button'
-          onClick={() => this.handleClick()}
-        >
-          {this.state.value}
-        </div >
-      );
-    }
-    return null;
+    return (
+      <EventHandler eventName='scroll' callback={() => this.handleScroll()} >
+        {
+          this.state.value &&
+          <div
+            className='updown-button'
+            onClick={() => this.handleClick()}
+          >
+            {this.state.value}
+          </div>
+        }
+      </EventHandler>
+    );
   }
 }
 
