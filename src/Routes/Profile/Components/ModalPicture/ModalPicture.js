@@ -21,7 +21,6 @@ class ModalPicture extends React.Component {
   }
 
   componentDidMount() {
-    // window.onkeyup = (e) => this.handleSwitch(e);
     window.addEventListener('keyup', (e) => this.handleSwitch(e));
     window.addEventListener('keyup', (e) => this.props.handleModalClose(e));
     this.handleUpdate();
