@@ -312,11 +312,11 @@ class ProfilePage extends React.Component {
                     {userInfoButtons}
                   </div>
                 </div>
-                <div className='bottom-info'>
-                  <span>{this.state.renderPostsId.length + ' posts'} </span>
-                  <span>{this.state.followersCount + ' followers'} </span>
-                  <span>{this.state.followingCount + ' following'} </span>
-                </div>
+                <ul className='bottom-info'>
+                  <li><span>{this.state.renderPostsId.length}</span> posts</li>
+                  <li><span>{this.state.followersCount}</span> followers</li>
+                  <li><span>{this.state.followingCount}</span> following</li>
+                </ul>
               </div>
             </div>
           </div>
