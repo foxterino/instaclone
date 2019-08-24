@@ -112,6 +112,10 @@
   padding-left: 20px;
 }
 
+.post .like-wrapper span {
+  font-weight: 600;
+}
+
 .post .caption {
   word-wrap: break-word;
   padding: 0 20px;
