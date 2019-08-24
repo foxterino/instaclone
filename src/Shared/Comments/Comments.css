@@ -32,14 +32,9 @@
   margin: 0;
   margin-bottom: 5px;
   transition: 0.3s;
-  font-size: 17px;
   box-sizing: border-box;
   padding: 0px 20px;
   width: 100%;
-}
-
-.comments li:hover {
-  background-color: rgba(0, 0, 0, 0.041);
 }
 
 .comments li a {
@@ -47,14 +42,14 @@
 }
 
 .comments li button {
-  color: rgba(0, 0, 0, 0);
+  color: rgba(153, 153, 153);
   background: transparent;
   border: none;
   padding: 0;
-  cursor: pointer;
-  text-decoration: underline;
   transition: 0.05s;
   position: relative;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .comments li button:focus {
@@ -87,8 +82,4 @@
 
 .comments .show-all-button:focus {
   outline: none;
-}
-
-.comments ul li:hover button {
-  color: rgb(0, 0, 0);
 }

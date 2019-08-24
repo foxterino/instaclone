@@ -4,6 +4,8 @@ import { database } from '../../firebase'
 import { Link } from 'react-router-dom';
 
 function Comment(props) {
+  const [isMoreButton, setIsMoreButton] = useState(props.text.length > 100);
+
   const [isEdit, setIsEdit] = useState(false);
   const [newComment, setNewComment] = useState(props.text);
   const [error, setError] = useState(false);
@@ -53,29 +55,17 @@ function Comment(props) {
 
   if (props.activeUser === props.user) {
     options = (
-      <button>
-        Options
-         <ul className='submenu'>
-          <li onClick={() => handleEdit()}>
-            <span>Edit</span>
-          </li>
-          <li onClick={() => handleDelete()}>
-            <span>Delete</span>
-          </li>
-        </ul>
-      </button>
+      <>
+        <button className='edit-button' onClick={() => handleEdit()}>✎</button>
+        <button onClick={() => handleDelete()}>✘</button>
+      </>
     );
   }
   else if (props.postAuthor === props.activeUser) {
     options = (
-      <button>
-        Options
-        <ul className='submenu'>
-          <li onClick={() => handleDelete()}>
-            <span>Delete</span>
-          </li>
-        </ul>
-      </button>
+      <>
+        <button onClick={() => handleDelete()}>✘</button>
+      </>
     );
   }
   else {
@@ -106,11 +96,24 @@ function Comment(props) {
     );
   }
 
+  const text = isMoreButton ? props.text.slice(0, 100) + '... ' : props.text;
+
   return (
     <li className='comment'>
       <div>
         <Link to={`/${props.user}`}>{props.user}</Link>
-        <span>{props.text}</span>
+        <span>
+          {text}
+          {
+            isMoreButton &&
+            <button
+              className='more-button'
+              onClick={() => setIsMoreButton(false)}>
+              more
+            </button>
+          }
+        </span>
+
       </div>
       <div className='options-wrapper'>
         {options}

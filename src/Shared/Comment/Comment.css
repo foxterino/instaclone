@@ -1,42 +1,17 @@
 .comment div {
   word-wrap: break-word;
-  width: 90%;
-}
-
-.comment ul {
-  position: absolute;
-}
-
-.comment .submenu {
-  visibility: hidden;
-  opacity: 0;
-  background-color: rgb(226, 226, 226);
-  left: -33%;
-  transition: 0.05s;
-  border-radius: 5px;
-  z-index: 1;
-  margin: 0;
-  margin-top: 1px;
-}
-
-.comment .submenu li {
-  height: 20px;
-}
-
-.comment .submenu li button {
-  text-decoration: none;
-}
-
-button:hover .submenu {
-  visibility: visible;
-  opacity: 1;
+  width: 93%;
 }
 
 .comment .options-wrapper {
-  width: 50px;
+  width: auto;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.comment .options-wrapper .edit-button {
+  margin-right: 5px;
 }
 
 #edit {
@@ -82,4 +57,8 @@ button:hover .submenu {
 
 #edit input.error {
   border-color: rgb(228, 87, 87);
+}
+
+.comment .more-button {
+  color: rgb(153, 153, 153);
 }
