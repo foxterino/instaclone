@@ -26,11 +26,67 @@ nav p {
 nav input {
   box-sizing: border-box;
   padding-left: 10px;
-  width: 440px;
+  width: 250px;
   height: 25px;
   border: 0.5px solid rgb(197, 197, 197);
   border-radius: 2px;
   background-color: rgb(247, 247, 247);
+}
+
+nav .search-bar-wrapper {
+  position: relative;
+  z-index: 100;
+}
+
+nav .search-bar-wrapper div {
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  margin-left: -150px;
+  top: 130%;
+  width: 300px;
+  background-color: #fff;
+  border: 1px solid rgb(197, 197, 197);
+  border-radius: 2px;
+  box-sizing: border-box;
+  position: absolute;
+  max-height: 362px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+nav .search-bar-wrapper .no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  padding: 8px 14px;
+}
+
+nav .search-bar-wrapper div a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #efefef;
+  height: 50px;
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+nav .search-bar-wrapper div a img {
+  height: 36px;
+  width: 36px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+nav .search-bar-wrapper div a span {
+  margin-left: 10px;
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  color: #262626;
 }
 
 nav ul {

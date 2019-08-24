@@ -4,7 +4,7 @@ function EventHandler({ eventName, callback, children }) {
   useEffect(() => {
     window.addEventListener(eventName, callback);
 
-    return () => window[eventName] = null;
+    return () => window.removeEventListener(eventName, callback);
   }, [callback, eventName]);
 
   return (
