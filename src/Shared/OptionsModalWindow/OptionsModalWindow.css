@@ -24,6 +24,7 @@
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  box-shadow: 0 15px 35px hsla(0, 0%, 0%, 0.2);
 }
 
 .options-modal-window a {

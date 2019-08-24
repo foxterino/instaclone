@@ -40,6 +40,7 @@
   background-color: rgb(247, 247, 247);
   transition: 0.5s;
   letter-spacing: 1px;
+  box-shadow: 0 1px 0 hsl(220, 7%, 83%);
 }
 
 #edit input {
@@ -53,6 +54,7 @@
   background-color: rgb(247, 247, 247);
   transition: 0.5s;
   letter-spacing: 0;
+  box-shadow: 0 1px 0 hsl(220, 7%, 83%);
 }
 
 #edit input.error {

@@ -11,12 +11,12 @@ class Header extends React.Component {
   };
 
   handleChange(e) {
-    this.setState({
-      value: e.target.value,
-      searchResults: []
-    });
+    this.setState({ value: e.target.value });
 
-    if (!e.target.value) return;
+    if (!e.target.value) {
+      this.setState({ searchResults: [] });
+      return;
+    }
 
     database.ref('usernames').once('value', data => {
       let searchResults = [];
@@ -26,7 +26,8 @@ class Header extends React.Component {
             <a href={key} className='search-bar'>
               <img src={data.toJSON()[key].profilePhoto} alt='' />
               <span>{key}</span>
-            </a>);
+            </a>
+          );
         }
       }
 

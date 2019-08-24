@@ -13,6 +13,7 @@
   letter-spacing: 1px;
   transition: 0.25s;
   cursor: pointer;
+  box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.3);
 }
 
 .update-feed button:hover {

@@ -5,6 +5,7 @@
   width: 620px;
   border: 1px solid rgb(197, 197, 197);
   border-radius: 3px;
+  box-shadow: 0 2px 0 hsl(220, 7%, 83%);
 }
 
 .post img {
