@@ -41,6 +41,9 @@
   font-size: 28px;
   margin: 0;
   font-weight: 300;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .profile .top-info-buttons {
@@ -155,8 +158,8 @@
 .profile .profile-photo {
   height: 150px;
   width: 150px;
-  border: 0.1px solid rgb(197, 197, 197);
-  border-radius: 100px;
+  box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, 0.1);
+  border-radius: 50%;
   object-fit: cover;
 }
 

@@ -38,7 +38,6 @@ class LoginPage extends React.Component {
 
           localStorage.setItem('userId', u.user.uid);
           localStorage.setItem('isLoggined', true);
-
         }, 200);
       })
       .catch((error) => {

@@ -97,13 +97,14 @@ class Header extends React.Component {
             <li>
               <NavLink to={`/${this.props.activeUser}`}
                 activeClassName='active'
+                onClick={(e) => !this.props.activeUser && e.preventDefault()}
               >
                 Profile
               </NavLink >
             </li>
           </ul>
         </nav>
-      </header>
+      </header >
     );
   }
 }

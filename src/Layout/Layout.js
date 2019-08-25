@@ -9,7 +9,7 @@ class Layout extends React.Component {
 
   componentDidMount() {
     database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({ activeUser: data.toJSON().username.toLowerCase() });
+      this.setState({ activeUser: data.toJSON().username });
     });
   }
 

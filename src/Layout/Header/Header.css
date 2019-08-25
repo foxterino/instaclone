@@ -94,13 +94,14 @@ nav ul {
   margin: 0;
   padding: 0;
   display: flex;
+  justify-content: space-between;
   -webkit-user-select: none;
+  width: 440px;
 }
 
 nav ul li {
   box-sizing: border-box;
   list-style: none;
-  margin-left: 10px;
 }
 
 nav ul li a {
@@ -110,9 +111,12 @@ nav ul li a {
   text-decoration: none;
   text-transform: uppercase;
   transition: 0.25s;
+  position: relative;
 }
 
 nav ul li a.active {
   box-sizing: border-box;
   color: rgb(35, 31, 32);
+  border-bottom: 1px solid rgb(35, 31, 32);
+  padding-bottom: 24px;
 }
