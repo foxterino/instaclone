@@ -18,19 +18,18 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.041);
+  background-color: rgba(0, 0, 0, 0.02);
+  box-shadow: inset 4px 0 0 rgb(244, 202, 100);
 }
 
 #edit .buttons-wrapper {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 180px;
 }
 
-#edit button {
+#edit .save-button {
   color: rgb(0, 0, 0);
-  text-decoration: none;
   box-sizing: border-box;
   width: 100px;
   height: 35px;
@@ -38,9 +37,19 @@
   border: 1px solid rgb(197, 197, 197);
   border-radius: 2px;
   background-color: rgb(247, 247, 247);
-  transition: 0.5s;
   letter-spacing: 1px;
   box-shadow: 0 1px 0 hsl(220, 7%, 83%);
+  transition: 0.1s;
+}
+
+#edit .cancel-button {
+  color: rgb(153, 153, 153);
+  box-sizing: border-box;
+  width: 100px;
+  height: 35px;
+  margin: 0 0 10px 10px;
+  letter-spacing: 1px;
+  transition: 0.1s;
 }
 
 #edit input {

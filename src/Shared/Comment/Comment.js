@@ -85,10 +85,10 @@ function Comment(props) {
           />
         </div>
         <div className='buttons-wrapper'>
-          <button onClick={handleSave}>
+          <button className='save-button' onClick={handleSave}>
             Save
           </button>
-          <button onClick={handleCancel}>
+          <button className='cancel-button' onClick={handleCancel}>
             Cancel
         </button>
         </div>
