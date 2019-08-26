@@ -77,21 +77,21 @@ class Header extends React.Component {
               <NavLink to='/feed'
                 activeClassName='active'
               >
-                Home
+                <span>Home</span>
               </NavLink >
             </li>
             <li>
               <NavLink to='/explore'
                 activeClassName='active'
               >
-                Explore
+                <span>Explore</span>
               </NavLink >
             </li>
             <li>
               <NavLink to='/feedback'
                 activeClassName='active'
               >
-                Feedback
+                <span>Feedback</span>
               </NavLink >
             </li>
             <li>
@@ -99,7 +99,7 @@ class Header extends React.Component {
                 activeClassName='active'
                 onClick={(e) => !this.props.activeUser && e.preventDefault()}
               >
-                Profile
+                <span>Profile</span>
               </NavLink >
             </li>
           </ul>

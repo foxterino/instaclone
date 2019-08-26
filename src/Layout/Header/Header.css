@@ -118,4 +118,9 @@ nav ul li a.active {
   color: rgb(35, 31, 32);
   border-bottom: 1px solid rgb(35, 31, 32);
   padding-bottom: 24px;
+  cursor: default;
+}
+
+nav ul li a.active span {
+  cursor: pointer;
 }

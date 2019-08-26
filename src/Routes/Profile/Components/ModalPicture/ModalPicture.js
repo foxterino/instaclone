@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
 import Comments from '../../../../Shared/Comments/Comments';
 import OptionsModalWindow from '../../../../Shared/OptionsModalWindow/OptionsModalWindow';
+import EventHandler from '../../../../Shared/EventHandler/EventHandler';
 
 class ModalPicture extends React.Component {
   state = {
@@ -21,14 +22,14 @@ class ModalPicture extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('keyup', (e) => this.handleSwitch(e));
-    window.addEventListener('keyup', (e) => this.props.handleModalClose(e));
-    
+    // window.addEventListener('keyup', (e) => this.handleSwitch(e));
+    // window.addEventListener('keyup', (e) => this.props.handleModalClose(e));
+
     this.handleUpdate();
   }
 
   componentWillUnmount() {
-    window.onkeyup = null;
+    // window.onkeyup = null;
   }
 
   handleUpdate() {
@@ -158,85 +159,93 @@ class ModalPicture extends React.Component {
     if (!this.state.user) return null;
 
     return (
-      <div
-        className={'modal-window-wrapper'}
-        onClick={this.props.handleModalClose}
+      <EventHandler
+        eventName='keyup'
+        callback={(e) => {
+          this.handleSwitch(e);
+          this.props.handleModalClose(e);
+        }}
       >
-        <OptionsModalWindow
-          isModal={this.state.isOptionsModal}
-          handleModalClose={(e) => this.handleOptionsModalClose(e)}
-          postId={this.props.postId}
-          handleDeletePost={
-            this.state.activeUser === this.state.user ?
-              () => this.handleDeletePost() : null
-          }
-        />
-        <button
-          className={
-            this.props.isPrevSwitch ? 'previous-button' : 'hidden'}
-          onClick={this.props.isPrevSwitch ? (e) => this.handleSwitch(e) : null}
+        <div
+          className={'modal-window-wrapper'}
+          onClick={this.props.handleModalClose}
         >
-          Prev
-        </button>
-        <div className='modal-window'>
-          <div
-            className='image-wrapper'
-            onDoubleClick={(e) => this.handleLike(e)}
+          <OptionsModalWindow
+            isModal={this.state.isOptionsModal}
+            handleModalClose={(e) => this.handleOptionsModalClose(e)}
+            postId={this.props.postId}
+            handleDeletePost={
+              this.state.activeUser === this.state.user ?
+                () => this.handleDeletePost() : null
+            }
+          />
+          <button
+            className={
+              this.props.isPrevSwitch ? 'previous-button' : 'hidden'}
+            onClick={this.props.isPrevSwitch ? (e) => this.handleSwitch(e) : null}
           >
-            <LikeAnimation isLikeAnim={this.state.isLikeAnim} />
-            <img src={this.state.imageSrc} alt='' />
-          </div>
-          <div className='comments-wrapper'>
-            <div className='bar top-bar'>
-              <div className='options-wrapper'>
-                <div className='profile-picture-wrapper'>
-                  <img
-                    src={this.state.profilePhoto} alt=''
-                  />
-                  <Link to={`/${this.state.user}`}>
-                    {this.state.user}
-                  </Link>
-                </div>
-                <button
-                  className='options-button'
-                  onClick={() => this.handleOptionsModalOpen()}
-                >
-                  Options
-              </button>
-              </div>
-              <div>
-                <div className='like-wrapper'>
-                  <button
-                    className={this.state.isLiked ? 'like-button liked' : 'like-button'}
-                    onClick={(e) => this.handleLike(e)}
-                  >
-                    {this.state.isLiked ? 'Liked ' : 'Like '} ❤
-               </button>
-                  <span className={this.state.isLiked ? 'liked' : ''}>
-                    {this.state.likeCount} {this.state.likeCount === 1 ? ' like' : ' likes'}
-                  </span>
-                </div>
-                <div className='caption'>
-                  <Link to={`/${this.state.user}`}>{this.state.user}</Link>
-                  <span>{this.state.caption}</span>
-                </div>
-              </div>
-            </div>
-            <Comments
-              comments={this.state.comments}
-              activeUser={this.state.activeUser}
-              postId={this.props.postId}
-              postAuthor={this.state.user}
-            />
-          </div>
-        </div>
-        <button
-          className={this.props.isNextSwitch ? 'next-button' : 'hidden'}
-          onClick={this.props.isNextSwitch ? (e) => this.handleSwitch(e) : null}
-        >
-          Next
+            Prev
         </button>
-      </div >
+          <div className='modal-window'>
+            <div
+              className='image-wrapper'
+              onDoubleClick={(e) => this.handleLike(e)}
+            >
+              <LikeAnimation isLikeAnim={this.state.isLikeAnim} />
+              <img src={this.state.imageSrc} alt='' />
+            </div>
+            <div className='comments-wrapper'>
+              <div className='bar top-bar'>
+                <div className='options-wrapper'>
+                  <div className='profile-picture-wrapper'>
+                    <img
+                      src={this.state.profilePhoto} alt=''
+                    />
+                    <Link to={`/${this.state.user}`}>
+                      {this.state.user}
+                    </Link>
+                  </div>
+                  <button
+                    className='options-button'
+                    onClick={() => this.handleOptionsModalOpen()}
+                  >
+                    Options
+              </button>
+                </div>
+                <div>
+                  <div className='like-wrapper'>
+                    <button
+                      className={this.state.isLiked ? 'like-button liked' : 'like-button'}
+                      onClick={(e) => this.handleLike(e)}
+                    >
+                      {this.state.isLiked ? 'Liked ' : 'Like '} ❤
+               </button>
+                    <span className={this.state.isLiked ? 'liked' : ''}>
+                      {this.state.likeCount} {this.state.likeCount === 1 ? ' like' : ' likes'}
+                    </span>
+                  </div>
+                  <div className='caption'>
+                    <Link to={`/${this.state.user}`}>{this.state.user}</Link>
+                    <span>{this.state.caption}</span>
+                  </div>
+                </div>
+              </div>
+              <Comments
+                comments={this.state.comments}
+                activeUser={this.state.activeUser}
+                postId={this.props.postId}
+                postAuthor={this.state.user}
+              />
+            </div>
+          </div>
+          <button
+            className={this.props.isNextSwitch ? 'next-button' : 'hidden'}
+            onClick={this.props.isNextSwitch ? (e) => this.handleSwitch(e) : null}
+          >
+            Next
+        </button>
+        </div>
+      </EventHandler>
     );
   }
 }
