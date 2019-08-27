@@ -36,7 +36,8 @@ class Header extends React.Component {
   }
 
   handleModal(e) {
-    if (e.target.className === 'search-bar') {
+    if (e.target.className === 'search-bar' ||
+      e.target.className === 'search-bar-wrapper') {
       this.setState({ isModal: true });
       window.onclick = (e) => this.handleModal(e);
     }
@@ -49,10 +50,20 @@ class Header extends React.Component {
   render() {
     let searchResults;
     if (this.state.searchResults.length !== 0) {
-      searchResults = <div>{this.state.searchResults}</div>;
+      searchResults = (
+        <>
+          <div className='search-bar triangle-bottom' />
+          <div>{this.state.searchResults}</div>
+        </>
+      );
     }
     else if (this.state.searchResults.length === 0 && this.state.value) {
-      searchResults = <div className='search-bar no-results'>No results found.</div>;
+      searchResults = (
+        <>
+          <div className='search-bar triangle-bottom' />
+          <div className='search-bar no-results'>No results found.</div>
+        </>
+      );
     }
     else {
       searchResults = null;

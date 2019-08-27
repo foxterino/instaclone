@@ -43,7 +43,7 @@ nav .search-bar-wrapper div {
   flex-direction: column;
   left: 50%;
   margin-left: -150px;
-  top: 130%;
+  top: 170%;
   width: 300px;
   background-color: #fff;
   border: 1px solid rgb(197, 197, 197);
@@ -53,6 +53,32 @@ nav .search-bar-wrapper div {
   max-height: 362px;
   overflow-x: hidden;
   overflow-y: auto;
+  box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.1);
+}
+
+nav .search-bar-wrapper:before {
+  content: '';
+  border: 12px solid transparent;
+  border-bottom: 12px solid #fff;
+  position: absolute;
+  left: 50%;
+  margin-left: -12px;
+  top: 82%;
+  width: 0;
+  z-index: 3;
+}
+
+nav .search-bar-wrapper .triangle-bottom {
+  height: 18px;
+  width: 18px;
+  position: absolute;
+  margin: 0;
+  top: 140%;
+  left: 50%;
+  margin-left: -9px;
+  transform: rotate(45deg);
+  border: 1px solid rgb(197, 197, 197);
+  border-radius: 0px;
   box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.1);
 }
 
