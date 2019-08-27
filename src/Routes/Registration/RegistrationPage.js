@@ -68,7 +68,9 @@ class RegistrationPage extends React.Component {
         const username = this.state.username.toLocaleLowerCase();
 
         database.ref(`usernames/${username}`).set({
-          profilePhoto: ""
+          profilePhoto: "",
+          followedUsers: `${username}`,
+          followers: ""
         });
 
         auth.signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -83,7 +85,6 @@ class RegistrationPage extends React.Component {
 
               database.ref('users/' + u.user.uid).set({
                 username: username,
-                followedUsers: `${username}`,
                 likedPosts: ''
               });
             }, 200);

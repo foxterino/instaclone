@@ -8,50 +8,54 @@ import EventHandler from '../../../../Shared/EventHandler/EventHandler'
 
 class Main extends React.Component {
   state = {
+    activeUser: null,
     followedUsers: '',
     renderPostsId: [],
     isNewPosts: false
   };
 
   componentDidMount() {
-    database.ref(`users/${this.props.userId}/followedUsers`).on('value', data => {
-      this.setState({ followedUsers: data.toJSON() });
-    });
+    database.ref(`users/${this.props.userId}`).once('value', data => {
+      this.setState({ activeUser: data.toJSON().username });
+    }).then(() => {
+      database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
+        this.setState({ followedUsers: data.toJSON().followedUsers });
+      });
 
-    database.ref('posts').on('child_added', data => {
-      if (this.state.renderPostsId.length !== 0)
-        this.setState({ isNewPosts: true });
-    });
-
-    // database.ref('posts').on('child_removed', data => {
-    //   this.setState({ renderPostsId: [] });
-    //   setTimeout(() => {
-    //     this.updateFeed();
-    //   }, 400);
-    // });
-
-    database.ref(`users/${this.props.userId}/followedUsers`).on('value', data => {
-      this.setState({ renderPostsId: [] });
       this.updateFeed();
-    });
 
-    this.updateFeed();
+      database.ref('posts').on('child_added', data => {
+        const followedUsers = this.state.followedUsers.split(',');
+
+        if (this.state.renderPostsId.length !== 0 &&
+          followedUsers.indexOf(data.toJSON().user) !== -1) {
+          this.setState({ isNewPosts: true });
+        }
+      });
+
+      database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
+        this.setState({ renderPostsId: [] });
+        this.updateFeed();
+      });
+    });
   }
 
   updateFeed() {
     database.ref('posts').once('value', data => {
       setTimeout(() => {
         const posts = [];
+        let renderPostsId = [];
+        const followedUsers = this.state.followedUsers.split(',');
+
         for (let key in data.toJSON()) {
           posts.push(data.toJSON()[key]);
         }
 
-        let renderPostsId = [];
         posts.forEach((item) => {
-          if (this.state.followedUsers.indexOf(item.user.toLowerCase()) !== -1) {
+          if (followedUsers.indexOf(item.user) !== -1) {
             renderPostsId = [...renderPostsId, item.id];
           }
-        })
+        });
 
         this.setState({ renderPostsId: renderPostsId });
       }, 200);

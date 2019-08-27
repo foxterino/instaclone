@@ -27,16 +27,17 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    database.ref(`users/${this.props.userId}`).on('value', data => {
+    database.ref(`users/${this.props.userId}`).once('value', data => {
       this.setState({
         activeUser: data.toJSON().username
       });
-    });
+    })
+      .then(() => {
+        this.setState({ currentProfile: this.props.match.params.profile });
 
-    this.setState({ currentProfile: this.props.match.params.profile });
-
-    this.updateProfile();
-    this.updateProfilePictures();
+        this.updateProfile();
+        this.updateProfilePictures();
+      });
 
     database.ref('posts').on('child_added', data => {
       this.setState({ renderPostsId: [] });
@@ -70,12 +71,12 @@ class ProfilePage extends React.Component {
   }
 
   updateProfile() {
-    database.ref(`users/${this.props.userId}/followedUsers`).on('value', data => {
-      const followedUsers = data.toJSON();
+    database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
+      const followedUsers = data.toJSON().followedUsers.split(',');
 
-      followedUsers.indexOf(this.props.match.params.profile) === -1
-        ? this.setState({ isFollowed: false })
-        : this.setState({ isFollowed: true });
+      followedUsers.some((item) => this.props.match.params.profile === item)
+        ? this.setState({ isFollowed: true })
+        : this.setState({ isFollowed: false });
     });
 
     database.ref('usernames').once('value', data => {
@@ -93,10 +94,13 @@ class ProfilePage extends React.Component {
 
     database.ref(`usernames/${this.props.match.params.profile}`).on('value', data => {
       if (data.toJSON()) {
+        const followedUsers = data.toJSON().followedUsers.split(',');
+        const followers = data.toJSON().followers.split(',');
+
         this.setState({
           profilePhoto: data.toJSON().profilePhoto || '#',
-          followersCount: data.toJSON().followers,
-          followingCount: data.toJSON().following
+          followersCount: followers[0] === '' ? 0 : followers.length,
+          followingCount: followedUsers.length - 1
         });
       }
     });
@@ -123,44 +127,47 @@ class ProfilePage extends React.Component {
   }
 
   handleFollow() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
+    database.ref(`usernames/${this.state.activeUser}`).once('value', data => {
       let followedUsers = data.toJSON().followedUsers.split(',');
 
       if (this.state.isFollowed) {
-        if (followedUsers.length === 1) {
-          followedUsers = '';
-        } else {
-          const index = followedUsers.indexOf(this.state.currentProfile);
+        const index = followedUsers.indexOf(this.state.currentProfile);
 
-          followedUsers.splice(index, 1);
-          followedUsers = followedUsers.join(',');
-        }
+        followedUsers.splice(index, 1);
+        followedUsers = followedUsers.join(',');
+
+        database.ref(`usernames/${this.state.activeUser}`).update({ followedUsers: followedUsers });
 
         database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
-          database.ref(`usernames/${this.state.currentProfile}`).update({ followers: data.toJSON().followers - 1 });
+          let followers = data.toJSON().followers.split(',');
+          const index = followers.indexOf(this.state.activeUser);
+
+          followers.splice(index, 1);
+          followers = followers.join(',');
+
+          database.ref(`usernames/${this.state.currentProfile}`).update({ followers: followers });
         });
+
         this.setState({ isFollowed: false });
       }
       else {
-        if (followedUsers[0] === '') {
-          followedUsers = this.state.currentProfile;
-        } else {
-          followedUsers.push(this.state.currentProfile);
-          followedUsers = followedUsers.join(',');
-        }
+        followedUsers.push(this.state.currentProfile);
+        followedUsers = followedUsers.join(',');
+
+        database.ref(`usernames/${this.state.activeUser}`).update({ followedUsers: followedUsers });
 
         database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
-          database.ref(`usernames/${this.state.currentProfile}`).update({ followers: data.toJSON().followers + 1 });
+          let followers = data.toJSON().followers.split(',');
+
+          followers = followers.length === 1
+            ? this.state.activeUser
+            : followers.push(this.state.activeUser).join(',');
+
+          database.ref(`usernames/${this.state.currentProfile}`).update({ followers: followers });
         });
+
         this.setState({ isFollowed: true });
       }
-
-      database.ref(`users/${this.props.userId}`).update({
-        followedUsers: followedUsers
-      });
-
-      const following = followedUsers.split(',').length - 1;
-      database.ref(`usernames/${this.state.activeUser}`).update({ following: following });
     });
   }
 
