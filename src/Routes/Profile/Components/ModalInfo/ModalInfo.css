@@ -18,7 +18,7 @@
   width: 420px;
   background-color: white;
   border: 1px solid rgb(197, 197, 197);
-  border-radius: 10px;
+  border-radius: 10px 10px 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,9 +30,39 @@
 .modal-info h1 {
   margin: 0;
   width: 100%;
+  height: 45px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  padding-left: 45px;
+}
+
+.modal-info .header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   border-bottom: 1px solid rgba(197, 197, 197, 0.466);
+}
+
+.modal-info .header-wrapper button {
+  height: 45px;
+  width: 45px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: 300;
+  color: rgb(153, 153, 153);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.modal-info .header-wrapper button:focus {
+  outline: none;
 }
 
 .modal-info ul {
@@ -41,17 +71,32 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 400px;
+  overflow-y: scroll;
+  width: 418px;
 }
 
 .modal-info li {
-  width: 420px;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-info li a {
+  font-size: 16px;
+  text-decoration: none;
+  color: #262626;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .modal-info img {
-  height: 30px;
-  width: 30px;
+  height: 35px;
+  width: 35px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, 0.1);
+  margin-right: 10px;
 }
 
 .modal-info img:before {
@@ -64,4 +109,33 @@
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px hsla(0, 0%, 0%, 0.1);
   background-color: rgb(224, 221, 221);
+}
+
+.modal-info .follow-button {
+  background-color: grey;
+  height: 30px;
+  min-width: 60px;
+  max-width: 85px;
+  border-radius: 4px;
+  border: 1px solid rgb(56, 151, 240);
+  background-color: rgb(56, 151, 240);
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.modal-info .follow-button:focus {
+  outline: none;
+}
+
+.modal-info .followed {
+  color: rgba(0, 0, 0);
+  background-color: #fff;
+  border-color: rgb(197, 197, 197);
+}
+
+.modal-info .followed:focus {
+  outline: none;
 }

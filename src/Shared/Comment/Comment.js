@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import './Comment.css';
 import { database } from '../../firebase'
@@ -12,6 +13,11 @@ function Comment(props) {
 
   useEffect(() => {
     setNewComment(props.text);
+
+    return () => {
+      props.handleIsEditing(false);
+      setIsEdit(false);
+    }
   }, [props.text]);
 
   function handleChange(e) {
@@ -27,7 +33,7 @@ function Comment(props) {
     if (props.isEditing) return;
 
     setIsEdit(true);
-    props.handleIsEditing();
+    props.handleIsEditing(true);
   }
 
   function handleSave() {
@@ -41,14 +47,14 @@ function Comment(props) {
     });
 
     setIsEdit(false);
-    props.handleIsEditing();
+    props.handleIsEditing(false);
   }
 
   function handleCancel() {
     setNewComment(props.text);
     setError(false);
     setIsEdit(false);
-    props.handleIsEditing();
+    props.handleIsEditing(false);
   }
 
   let options;

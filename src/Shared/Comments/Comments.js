@@ -10,8 +10,8 @@ class Comments extends React.Component {
     isEditing: false
   }
 
-  handleIsEditing() {
-    this.setState({ isEditing: !this.state.isEditing });
+  handleIsEditing(state) {
+    this.setState({ isEditing: state });
   }
 
   handleShowAll() {
@@ -50,7 +50,7 @@ class Comments extends React.Component {
         postId={this.props.postId}
         postAuthor={this.props.postAuthor}
         isEditing={this.state.isEditing}
-        handleIsEditing={() => this.handleIsEditing()}
+        handleIsEditing={(state) => this.handleIsEditing(state)}
       />
     })
 

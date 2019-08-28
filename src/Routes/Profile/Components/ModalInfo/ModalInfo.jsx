@@ -3,9 +3,15 @@ import './ModalInfo.css';
 
 function ModalInfo(props) {
   return (
-    <div className='modal-info-wrapper'>
+    <div
+      className='modal-info-wrapper'
+      onClick={(e) => props.handleModalInfoClose(e)}
+    >
       <div className='modal-info'>
-        <h1>{props.type}</h1>
+        <div className='header-wrapper'>
+          <h1>{props.type}</h1>
+          <button className='close-button'>X</button>
+        </div>
         <ul>
           {props.children}
         </ul>

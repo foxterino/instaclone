@@ -25,9 +25,14 @@ export class ModalInfoItem extends Component {
         {
           this.props.activeUser !== this.props.profile &&
           <button
+            className={
+              this.state.isFollowed
+                ? 'follow-button followed'
+                : 'follow-button'
+            }
             onClick={() => this.handleFollow(this.props.activeUser, this.props.profile)}
           >
-            {this.state.isFollowed ? 'unfollow' : 'follow'}
+            {this.state.isFollowed ? 'Following' : 'Follow'}
           </button>
         }
       </li>

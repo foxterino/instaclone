@@ -225,7 +225,20 @@ class ProfilePage extends React.Component {
 
   handleModalInfoOpen(modalInfoType) {
     this.setState({ modalInfoType: modalInfoType });
+    this.updateModalInfo();
+  }
 
+  handleModalInfoClose(e) {
+    if (
+      e.target.className === 'modal-info-wrapper' ||
+      e.target.className === 'close-button'
+    ) {
+      this.setState({ modalInfoType: null });
+      this.updateModalInfo();
+    }
+  }
+
+  updateModalInfo() {
     database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
       database.ref(`usernames`).once('value', usernames => {
         const followers = [];
@@ -371,7 +384,10 @@ class ProfilePage extends React.Component {
           }
           {
             this.state.modalInfoType &&
-            <ModalInfo type={this.state.modalInfoType}>
+            <ModalInfo
+              type={this.state.modalInfoType.slice(0, 1).toUpperCase() + this.state.modalInfoType.slice(1)}
+              handleModalInfoClose={(e) => this.handleModalInfoClose(e)}
+            >
               {this.state[this.state.modalInfoType]}
             </ModalInfo>
           }
@@ -388,12 +404,24 @@ class ProfilePage extends React.Component {
                 <ul className='bottom-info'>
                   <li><span>{this.state.renderPostsId.length}</span> posts</li>
                   <li>
-                    <div onClick={() => this.handleModalInfoOpen('followers')}>
+                    <div
+                      className={this.state.followersCount && 'bottom-info-active'}
+                      onClick={
+                        this.state.followersCount ?
+                          () => this.handleModalInfoOpen('followers')
+                          : null
+                      }>
                       <span>{this.state.followersCount}</span> followers
                     </div>
                   </li>
                   <li>
-                    <div onClick={() => this.handleModalInfoOpen('following')}>
+                    <div
+                      className={this.state.followingCount && 'bottom-info-active'}
+                      onClick={
+                        this.state.followingCount
+                          ? () => this.handleModalInfoOpen('following')
+                          : null
+                      }>
                       <span>{this.state.followingCount}</span> following
                       </div>
                   </li>
@@ -405,7 +433,7 @@ class ProfilePage extends React.Component {
             {posts}
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
