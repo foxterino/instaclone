@@ -6,6 +6,8 @@ import { database } from '../../firebase';
 import ProfilePicture from './Components/ProfilePicture/ProfilePicture';
 import NotFound from './Components/NotFound/NotFound';
 import ModalPicture from './Components/ModalPicture/Container';
+import ModalInfo from './Components/ModalInfo/ModalInfo';
+import ModalInfoItem from './Components/ModalInfo/ModalInfoItem';
 
 class ProfilePage extends React.Component {
   state = {
@@ -18,8 +20,9 @@ class ProfilePage extends React.Component {
     profilePhoto: "",
     isModal: false,
     modalPostId: null,
-    followersCount: null,
-    followingCount: null
+    modalInfoType: null,
+    followers: [],
+    following: []
   };
 
   componentWillUnmount() {
@@ -62,7 +65,10 @@ class ProfilePage extends React.Component {
         renderPostsId: [],
         isFollowed: null,
         isModal: false,
-        isExist: null
+        isExist: null,
+        modalInfoType: null,
+        followers: [],
+        following: []
       });
 
       this.updateProfile();
@@ -74,7 +80,7 @@ class ProfilePage extends React.Component {
     database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
       const followedUsers = data.toJSON().followedUsers.split(',');
 
-      followedUsers.some((item) => this.props.match.params.profile === item)
+      followedUsers.indexOf(this.props.match.params.profile) !== -1
         ? this.setState({ isFollowed: true })
         : this.setState({ isFollowed: false });
     });
@@ -159,9 +165,12 @@ class ProfilePage extends React.Component {
         database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
           let followers = data.toJSON().followers.split(',');
 
-          followers = followers.length === 1
-            ? this.state.activeUser
-            : followers.push(this.state.activeUser).join(',');
+          if (followers[0] === '') {
+            followers = this.state.activeUser;
+          } else {
+            followers.push(this.state.activeUser);
+            followers = followers.join(',');
+          }
 
           database.ref(`usernames/${this.state.currentProfile}`).update({ followers: followers });
         });
@@ -212,6 +221,55 @@ class ProfilePage extends React.Component {
         modalPostId: this.state.renderPostsId[modalIndex + 1],
       });
     }
+  }
+
+  handleModalInfoOpen(modalInfoType) {
+    this.setState({ modalInfoType: modalInfoType });
+
+    database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
+      database.ref(`usernames`).once('value', usernames => {
+        const followers = [];
+        const following = [];
+
+        for (let key in usernames.toJSON()) {
+          if (data.toJSON().followedUsers.indexOf(key) !== -1 && key !== this.state.currentProfile) {
+            following.push(
+              <ModalInfoItem
+                activeUser={this.state.activeUser}
+                profile={key}
+              >
+                <Link to={key}>
+                  <img src={usernames.toJSON()[key].profilePhoto} alt='' />
+                  <span>{key}</span>
+                </Link>
+              </ModalInfoItem>
+            );
+          }
+
+          if (data.toJSON().followers.indexOf(key) !== -1) {
+            followers.push(
+              <ModalInfoItem
+                activeUser={this.state.activeUser}
+                profile={key}
+              >
+                <Link to={key}>
+                  <img src={usernames.toJSON()[key].profilePhoto} alt='' />
+                  <span>{key}</span>
+                </Link>
+              </ModalInfoItem>
+            );
+          }
+        }
+
+        following.reverse();
+        followers.reverse();
+
+        this.setState({
+          followers: followers,
+          following: following
+        });
+      });
+    });
   }
 
   render() {
@@ -309,6 +367,12 @@ class ProfilePage extends React.Component {
               isNextSwitch={isNextSwitch}
             />
           }
+          {
+            this.state.modalInfoType &&
+            <ModalInfo type={this.state.modalInfoType}>
+              {this.state[this.state.modalInfoType]}
+            </ModalInfo>
+          }
           <div className='user-info-wrapper'>
             <div className='user-info'>
               <img src={this.state.profilePhoto} alt='' className='profile-photo' />
@@ -321,8 +385,16 @@ class ProfilePage extends React.Component {
                 </div>
                 <ul className='bottom-info'>
                   <li><span>{this.state.renderPostsId.length}</span> posts</li>
-                  <li><span>{this.state.followersCount}</span> followers</li>
-                  <li><span>{this.state.followingCount}</span> following</li>
+                  <li>
+                    <div onClick={() => this.handleModalInfoOpen('followers')}>
+                      <span>{this.state.followersCount}</span> followers
+                    </div>
+                  </li>
+                  <li>
+                    <div onClick={() => this.handleModalInfoOpen('following')}>
+                      <span>{this.state.followingCount}</span> following
+                      </div>
+                  </li>
                 </ul>
               </div>
             </div>
