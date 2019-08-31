@@ -32,7 +32,7 @@
 }
 
 .post .bar {
-  padding: 5px 10px;
+  padding: 5px 16px;
   box-sizing: border-box;
 }
 
@@ -93,14 +93,15 @@
   color: #f00;
 }
 
-.post .options-button {
+.post .post-options-button {
   border: none;
   background: transparent;
   cursor: pointer;
   height: 100%;
+  padding: 0;
 }
 
-.post .options-button:focus {
+.post .post-options-button:focus {
   outline: none;
 }
 
@@ -115,7 +116,7 @@
   flex-direction: column;
   justify-content: center;
   height: 60px;
-  padding-left: 20px;
+  padding-left: 16px;
 }
 
 .post .like-wrapper span {
@@ -124,7 +125,7 @@
 
 .post .caption {
   word-wrap: break-word;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
 .post .caption a {

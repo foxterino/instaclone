@@ -7,7 +7,7 @@ import ProfilePicture from './Components/ProfilePicture/ProfilePicture';
 import NotFound from './Components/NotFound/NotFound';
 import ModalPicture from './Components/ModalPicture/Container';
 import ModalInfo from './Components/ModalInfo/ModalInfo';
-import ModalInfoItem from './Components/ModalInfo/ModalInfoItem';
+import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 
 class ProfilePage extends React.Component {
   state = {

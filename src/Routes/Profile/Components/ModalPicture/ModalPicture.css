@@ -82,9 +82,14 @@
   justify-content: space-between;
 }
 
-.modal-window .comments-wrapper .comments input[type='submit'] {
-  padding: 0;
-  padding-right: 20px;
+.modal-window .comments-wrapper .comments .form-wrapper {
+  border-top: 1px solid rgb(197, 197, 197);
+  background-color: #fff;
+  display: flex;
+}
+
+.modal-window input {
+  width: 269.5px;
 }
 
 .modal-window .comments-wrapper .comments {
@@ -95,7 +100,7 @@
 }
 
 .modal-window .bar {
-  padding: 10px 10px;
+  padding: 10px 16px;
   box-sizing: border-box;
 }
 
@@ -105,7 +110,7 @@
   height: 30%;
 }
 
-.modal-window .top-bar .options-wrapper {
+.modal-window .top-bar .modal-picture-options-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -144,12 +149,13 @@
   color: rgb(35, 31, 32);
 }
 
-.modal-window .options-button {
+.modal-window .modal-picture-options-button {
   border: none;
   background: transparent;
   cursor: pointer;
   height: 100%;
   width: auto;
+  padding: 0;
 }
 
 .modal-window .options-button:focus {

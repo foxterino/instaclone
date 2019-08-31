@@ -1,12 +1,20 @@
 .comments input {
-  height: 60px;
-  width: 85%;
+  height: 55px;
+  width: 551px;
   box-sizing: border-box;
-  padding-left: 20px;
   border: none;
-  border-top: 1px solid rgb(197, 197, 197);
   word-wrap: break-word;
   font-size: 16px;
+}
+
+.comments .form-wrapper {
+  border-top: 1px solid rgb(197, 197, 197);
+  background-color: #fff;
+  display: flex;
+}
+
+.comments form {
+  padding: 0 16px;
 }
 
 .comments input:focus {
@@ -17,13 +25,17 @@
   width: 15%;
   background-color: #fff;
   color: rgb(56, 151, 240);
-  padding-right: 0;
+  padding: 0;
+  margin-left: 5px;
   transition: 0.5s;
   cursor: pointer;
+  height: auto;
+  width: auto;
 }
 
 .comments input[type='submit'].non-active {
   color: rgb(196, 224, 251);
+  cursor: default;
 }
 
 .comments li {
@@ -33,7 +45,7 @@
   margin-bottom: 5px;
   transition: 0.3s;
   box-sizing: border-box;
-  padding: 0px 20px;
+  padding: 0px 16px;
   width: 100%;
 }
 
@@ -67,7 +79,7 @@
   background: transparent;
   border: none;
   padding: 0;
-  padding-left: 20px;
+  padding-left: 16px;
   cursor: pointer;
   transition: 0.5s;
   margin-bottom: 10px;

@@ -143,7 +143,7 @@ class Post extends React.Component {
             </Link>
           </div>
           <button
-            className='options-button'
+            className='post-options-button'
             onClick={() =>
               this.props.handleModalOpen(this.state.activeUser, this.state.user, this.props.postId)}
           >

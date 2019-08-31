@@ -68,21 +68,22 @@ class Comments extends React.Component {
             {this.state.isShowAll ? comments : comments.slice(-5)}
           </ul>
         }
-        <form>
-          <input
-            type='text'
-            value={this.state.comment}
-            onChange={(e) => this.handleChange(e)}
-            placeholder='Add a comment...'
-            required
-          />
-          <input
-            type='submit'
-            value='Post'
-            onClick={(e) => { this.handleSubmit(e) }}
-            className={this.state.comment ? null : 'non-active'}
-          />
-        </form>
+        <div className='form-wrapper'>
+          <form>
+            <input
+              type='text'
+              value={this.state.comment}
+              onChange={(e) => this.handleChange(e)}
+              placeholder='Add a comment...'
+            />
+            <input
+              type='submit'
+              value='Post'
+              onClick={(e) => { this.handleSubmit(e) }}
+              className={this.state.comment ? null : 'non-active'}
+            />
+          </form>
+        </div>
       </div >
     );
   }

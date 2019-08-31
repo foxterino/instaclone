@@ -189,7 +189,7 @@ class ModalPicture extends React.Component {
             </div>
             <div className='comments-wrapper'>
               <div className='bar top-bar'>
-                <div className='options-wrapper'>
+                <div className='modal-picture-options-wrapper'>
                   <div className='profile-picture-wrapper'>
                     <img
                       src={this.state.profilePhoto} alt=''
@@ -199,7 +199,7 @@ class ModalPicture extends React.Component {
                     </Link>
                   </div>
                   <button
-                    className='options-button'
+                    className='modal-picture-options-button'
                     onClick={() => this.handleOptionsModalOpen()}
                   >
                     Options
