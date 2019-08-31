@@ -22,14 +22,7 @@ class ModalPicture extends React.Component {
   }
 
   componentDidMount() {
-    // window.addEventListener('keyup', (e) => this.handleSwitch(e));
-    // window.addEventListener('keyup', (e) => this.props.handleModalClose(e));
-
     this.handleUpdate();
-  }
-
-  componentWillUnmount() {
-    // window.onkeyup = null;
   }
 
   handleUpdate() {
@@ -117,11 +110,11 @@ class ModalPicture extends React.Component {
     else {
       likedPosts = data.likedPosts.split(',');
 
-      if (likedPosts[0] === '') {
-        likedPosts = '' + this.props.postId;
-      } else {
+      if (likedPosts[0]) {
         likedPosts.push(this.props.postId);
         likedPosts = likedPosts.join(',');
+      } else {
+        likedPosts = `${this.props.postId}`;
       }
     }
 

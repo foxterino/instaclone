@@ -82,6 +82,7 @@
   border: none;
   background: transparent;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .like-button:focus {

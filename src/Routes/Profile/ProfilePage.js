@@ -60,6 +60,9 @@ class ProfilePage extends React.Component {
 
   componentDidUpdate() {
     if (this.state.currentProfile !== this.props.match.params.profile) {
+      database.ref(`usernames/${this.state.activeUser}`).off();
+      database.ref(`usernames/${this.state.currentProfile}`).off();
+
       this.setState({
         currentProfile: this.props.match.params.profile,
         renderPostsId: [],
@@ -165,11 +168,11 @@ class ProfilePage extends React.Component {
         database.ref(`usernames/${currentProfile}`).once('value', data => {
           let followers = data.toJSON().followers.split(',');
 
-          if (followers[0] === '') {
-            followers = activeUser;
-          } else {
+          if (followers[0]) {
             followers.push(activeUser);
             followers = followers.join(',');
+          } else {
+            followers = activeUser;
           }
 
           database.ref(`usernames/${currentProfile}`).update({ followers: followers });
@@ -433,7 +436,7 @@ class ProfilePage extends React.Component {
             {posts}
           </div>
         </div>
-      </div >
+      </div>
     );
   }
 }

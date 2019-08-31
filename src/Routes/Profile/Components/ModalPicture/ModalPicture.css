@@ -170,3 +170,7 @@
   height: 30px;
   font-size: 16px;
 }
+
+.modal-window .like-button {
+  cursor: pointer;
+}
