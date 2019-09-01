@@ -8,7 +8,7 @@
 }
 
 .comments .form-wrapper {
-  border-top: 1px solid rgb(197, 197, 197);
+  border-top: 1px solid #efefef;
   background-color: #fff;
   display: flex;
 }
@@ -54,14 +54,18 @@
 }
 
 .comments li button {
-  color: rgba(153, 153, 153);
+  color: #dbdbdb;
   background: transparent;
   border: none;
   padding: 0;
-  transition: 0.05s;
+  transition: 0.25s;
   position: relative;
   font-size: 16px;
   cursor: pointer;
+}
+
+.comments li button:hover {
+  color: rgb(153, 153, 153);
 }
 
 .comments li button:focus {
@@ -75,7 +79,7 @@
 }
 
 .comments .show-all-button {
-  color: grey;
+  color: rgb(153, 153, 153);
   background: transparent;
   border: none;
   padding: 0;

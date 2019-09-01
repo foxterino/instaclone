@@ -10,7 +10,7 @@
 
 .profile .user-info {
   height: 100%;
-  border-bottom: 1px solid rgb(197, 197, 197);
+  border-bottom: 1px solid #efefef;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -113,7 +113,7 @@
 .profile .top-info .followed {
   color: rgba(0, 0, 0);
   background-color: #fff;
-  border-color: rgb(197, 197, 197);
+  border-color: #dbdbdb;
 }
 
 .profile button.options-button {
@@ -125,7 +125,7 @@
 
 .profile .create-button {
   text-decoration: none;
-  border: 1px solid rgb(197, 197, 197);
+  border: 1px solid #dbdbdb;
   border-radius: 5px;
   color: rgb(0, 0, 0);
   width: 220px;

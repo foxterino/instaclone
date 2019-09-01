@@ -81,6 +81,8 @@ class ProfilePage extends React.Component {
 
   updateProfile() {
     database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
+      if (!data.toJSON()) return;
+
       const followedUsers = data.toJSON().followedUsers.split(',');
 
       followedUsers.indexOf(this.props.match.params.profile) !== -1
