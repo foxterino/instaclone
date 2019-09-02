@@ -8,6 +8,8 @@ import NotFound from './Components/NotFound/NotFound';
 import ModalPicture from './Components/ModalPicture/Container';
 import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
+import Suggested from '../../Shared/Suggested/Suggested';
+import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
 
 class ProfilePage extends React.Component {
   state = {
@@ -22,7 +24,9 @@ class ProfilePage extends React.Component {
     modalPostId: null,
     modalInfoType: null,
     followers: [],
-    following: []
+    following: [],
+    isSuggested: false,
+    suggested: []
   };
 
   componentWillUnmount() {
@@ -71,7 +75,9 @@ class ProfilePage extends React.Component {
         isExist: null,
         modalInfoType: null,
         followers: [],
-        following: []
+        following: [],
+        isSuggested: false,
+        suggested: []
       });
 
       this.updateProfile();
@@ -292,12 +298,49 @@ class ProfilePage extends React.Component {
     });
   }
 
+  handleSuggested() {
+    if (this.state.suggested.length === 0) {
+      database.ref(`usernames/${this.state.activeUser}`).once('value', data => {
+        database.ref(`usernames`).once('value', usernames => {
+          const currentFollowedUsers = usernames.toJSON()[this.state.currentProfile].followedUsers.split(',');
+          const activeFollowedUsers = data.toJSON().followedUsers.split(',');
+          const suggested = [];
+
+          currentFollowedUsers.forEach(item => {
+            if (
+              item === this.state.currentProfile ||
+              suggested.length === 5 ||
+              item === this.state.activeUser
+            ) return;
+
+            if (activeFollowedUsers.indexOf(item) === -1) {
+              suggested.push(
+                <SuggestedItem
+                  handleFollow={this.handleFollow}
+                  activeUser={this.state.activeUser}
+                  profile={item}
+                >
+                  <Link to={item}>
+                    <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                  </Link>
+                  <Link to={item}>{item}</Link>
+                </SuggestedItem>
+              );
+            }
+          });
+
+          this.setState({ suggested: suggested });
+        });
+      });
+    }
+
+    this.setState({ isSuggested: !this.state.isSuggested });
+  }
+
   render() {
     if (this.state.redirect) return <Redirect to='/login' />
     if (this.state.isExist === null) {
-      return (
-        <div className='loading'>Loading...</div>
-      );
+      return <div className='loading'>Loading...</div>;
     }
     if (!this.state.isExist) return <NotFound />;
 
@@ -344,6 +387,7 @@ class ProfilePage extends React.Component {
                 ? 'suggested-button followed'
                 : 'suggested-button'
             }
+            onClick={() => this.handleSuggested()}
           >
             ▼
           </button>
@@ -433,6 +477,12 @@ class ProfilePage extends React.Component {
                 </ul>
               </div>
             </div>
+            {
+              this.state.isSuggested &&
+              <Suggested>
+                {this.state.suggested}
+              </Suggested>
+            }
           </div>
           <div className='main'>
             {posts}
