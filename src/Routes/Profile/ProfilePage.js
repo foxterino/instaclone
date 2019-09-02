@@ -250,91 +250,94 @@ class ProfilePage extends React.Component {
   }
 
   updateModalInfo() {
-    database.ref(`usernames/${this.state.currentProfile}`).once('value', data => {
-      database.ref(`usernames`).once('value', usernames => {
-        const followers = [];
-        const following = [];
+    database.ref(`usernames`).once('value', usernames => {
+      const followers = [];
+      const following = [];
+      const currentProfile = usernames.toJSON()[this.state.currentProfile];
 
-        for (let key in usernames.toJSON()) {
-          if (data.toJSON().followedUsers.indexOf(key) !== -1 && key !== this.state.currentProfile) {
-            following.push(
-              <ModalInfoItem
-                handleFollow={this.handleFollow}
-                activeUser={this.state.activeUser}
-                profile={key}
-              >
-                <Link to={key}>
-                  <img src={usernames.toJSON()[key].profilePhoto} alt='' />
-                  <span>{key}</span>
-                </Link>
-              </ModalInfoItem>
-            );
-          }
-
-          if (data.toJSON().followers.indexOf(key) !== -1) {
-            followers.push(
-              <ModalInfoItem
-                handleFollow={this.handleFollow}
-                activeUser={this.state.activeUser}
-                profile={key}
-              >
-                <Link to={key}>
-                  <img src={usernames.toJSON()[key].profilePhoto} alt='' />
-                  <span>{key}</span>
-                </Link>
-              </ModalInfoItem>
-            );
-          }
+      for (let key in usernames.toJSON()) {
+        if (
+          currentProfile.followedUsers.indexOf(key) !== -1 &&
+          key !== this.state.currentProfile
+        ) {
+          following.push(
+            <ModalInfoItem
+              handleFollow={this.handleFollow}
+              activeUser={this.state.activeUser}
+              profile={key}
+            >
+              <Link to={key}>
+                <img src={usernames.toJSON()[key].profilePhoto} alt='' />
+                <span>{key}</span>
+              </Link>
+            </ModalInfoItem>
+          );
         }
 
-        following.reverse();
-        followers.reverse();
+        if (currentProfile.followers.indexOf(key) !== -1) {
+          followers.push(
+            <ModalInfoItem
+              handleFollow={this.handleFollow}
+              activeUser={this.state.activeUser}
+              profile={key}
+            >
+              <Link to={key}>
+                <img src={usernames.toJSON()[key].profilePhoto} alt='' />
+                <span>{key}</span>
+              </Link>
+            </ModalInfoItem>
+          );
+        }
+      }
 
-        this.setState({
-          followers: followers,
-          following: following
-        });
+      following.reverse();
+      followers.reverse();
+
+      this.setState({
+        followers: followers,
+        following: following
       });
     });
   }
 
   handleSuggested() {
     if (this.state.suggested.length === 0) {
-      database.ref(`usernames/${this.state.activeUser}`).once('value', data => {
-        database.ref(`usernames`).once('value', usernames => {
-          const currentFollowedUsers = usernames.toJSON()[this.state.currentProfile].followedUsers.split(',');
-          const activeFollowedUsers = data.toJSON().followedUsers.split(',');
-          const suggested = [];
+      database.ref(`usernames`).once('value', usernames => {
+        const currentFollowedUsers = usernames.toJSON()[this.state.currentProfile].followedUsers.split(',');
+        const activeFollowedUsers = usernames.toJSON()[this.state.activeUser].followedUsers.split(',');
+        const suggested = [];
 
-          currentFollowedUsers.forEach(item => {
-            if (
-              item === this.state.currentProfile ||
-              suggested.length === 5 ||
-              item === this.state.activeUser
-            ) return;
+        currentFollowedUsers.forEach(item => {
+          if (
+            item === this.state.currentProfile ||
+            suggested.length === 5 ||
+            item === this.state.activeUser
+          ) return;
 
-            if (activeFollowedUsers.indexOf(item) === -1) {
-              suggested.push(
-                <SuggestedItem
-                  handleFollow={this.handleFollow}
-                  activeUser={this.state.activeUser}
-                  profile={item}
-                >
-                  <Link to={item}>
-                    <img src={usernames.toJSON()[item].profilePhoto} alt='' />
-                  </Link>
-                  <Link to={item}>{item}</Link>
-                </SuggestedItem>
-              );
-            }
-          });
+          if (activeFollowedUsers.indexOf(item) === -1) {
+            suggested.push(
+              <SuggestedItem
+                handleFollow={this.handleFollow}
+                activeUser={this.state.activeUser}
+                profile={item}
+              >
+                <Link to={item}>
+                  <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                </Link>
+                <Link to={item}>{item}</Link>
+              </SuggestedItem>
+            );
+          }
+        });
 
-          this.setState({ suggested: suggested });
+        this.setState({
+          isSuggested: !this.state.isSuggested,
+          suggested: suggested
         });
       });
+    } else {
+      this.setState({ isSuggested: !this.state.isSuggested });
     }
-
-    this.setState({ isSuggested: !this.state.isSuggested });
   }
 
   render() {
