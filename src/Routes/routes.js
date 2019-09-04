@@ -19,10 +19,10 @@ class Routes extends React.Component {
         <Route path="/login" component={LoginPage} />
         <Route path="/loginWarning" component={LoginWarning} />
         <PrivateRoute path="/feed" component={FeedPage} />
-        <PrivateRoute path="/explore" component={ExplorePage} />
+        <PrivateRoute exact path="/explore" component={ExplorePage} />
+        <PrivateRoute path="/explore/suggestions" component={SuggestedPage} />
         <PrivateRoute path="/feedback" component={FeedbackPage} />
         <PrivateRoute path='/create' component={CreatePost} />
-        <PrivateRoute path="/suggestions" component={SuggestedPage} />
         <PrivateRoute exact path="/:profile" component={ProfilePage} />
       </Switch >
     );

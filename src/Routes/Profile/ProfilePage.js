@@ -4,7 +4,7 @@ import { auth } from '../../firebase'
 import { Redirect, Link } from 'react-router-dom'
 import { database } from '../../firebase';
 import ProfilePicture from './Components/ProfilePicture/ProfilePicture';
-import NotFound from './Components/NotFound/NotFound';
+import NotFound from '../../Shared/NotFound/NotFound';
 import ModalPicture from './Components/ModalPicture/Container';
 import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
@@ -486,7 +486,7 @@ class ProfilePage extends React.Component {
               >
                 <div className='top-buttons'>
                   <span>Suggested</span>
-                  <Link to='/suggestions'>See All</Link>
+                  <Link to='/explore/suggestions'>See All</Link>
                 </div>
               </Suggested>
             }

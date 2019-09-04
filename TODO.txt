@@ -23,7 +23,7 @@
 
 // !! Suggested posts & suggested item
 // !! Реюзабильность optionsModalWindow
-!! Nested Routing
+// !! Nested Routing
 !! Suggested ppl on empty feed
 // !! Suggestion page
 

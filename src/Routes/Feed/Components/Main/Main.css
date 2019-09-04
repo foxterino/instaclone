@@ -17,3 +17,35 @@ main .empty-feed {
   display: flex;
   justify-content: center;
 }
+
+main .loading .profile-photo {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: rgb(230, 230, 230);
+  margin-right: 10px;
+}
+
+main .loading img::before {
+  content: '';
+}
+
+main .loading span {
+  color: rgb(230, 230, 230);
+  background-color: rgb(230, 230, 230);
+}
+
+main .loading .like-wrapper div {
+  margin-top: 5px;
+}
+
+main .loading .caption {
+  margin: 15px 0;
+}
+
+main .loading .loading-input {
+  border-top: 1px solid #efefef;
+  padding: 18px 16px;
+  display: flex;
+  justify-content: space-between;
+}

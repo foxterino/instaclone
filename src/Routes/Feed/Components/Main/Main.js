@@ -11,9 +11,10 @@ class Main extends React.Component {
     activeUser: null,
     followedUsers: '',
     renderPostsId: [],
-    isNewPosts: false
+    isNewPosts: false,
+    isLoaded: false
   };
-
+  
   componentDidMount() {
     database.ref(`users/${this.props.userId}`).once('value', data => {
       this.setState({ activeUser: data.toJSON().username });
@@ -57,13 +58,17 @@ class Main extends React.Component {
           }
         });
 
-        this.setState({ renderPostsId: renderPostsId });
+        this.setState({
+          renderPostsId: renderPostsId,
+          isLoaded: true
+        });
       }, 200);
     });
   }
 
   handleNewPosts() {
     this.setState({
+      isLoaded: false,
       renderPostsId: [],
       isNewPosts: false
     });
@@ -84,7 +89,36 @@ class Main extends React.Component {
 
   render() {
     let posts;
-    if (this.state.renderPostsId.length !== 0) {
+    if (!this.state.isLoaded) {
+      posts = (
+        <div className='post loading'>
+          <div className='bar top-bar'>
+            <div className='profile-picture-wrapper'>
+              <div className='profile-photo' />
+              <span>UserNameUsername</span>
+            </div>
+            <span>Options</span>
+          </div>
+          <div className='image-wrapper'>
+            <img src='#' alt='' />
+          </div>
+          <div className='bar bottom-bar'>
+            <div className='like-wrapper'>
+              <div><span>Likessss</span></div>
+              <div><span>Liasdasdke</span></div>
+            </div>
+            <div className='caption'>
+              <span>captionnnnnnnnnnnnnnnnnn</span>
+            </div>
+            <div className='loading-input'>
+              <div><span>Add a comment...</span></div>
+              <div><span>posttt</span></div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    else if (this.state.renderPostsId.length !== 0) {
       posts = this.state.renderPostsId.map((item) => {
         return (
           <Post

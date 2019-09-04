@@ -16,7 +16,7 @@
   width: 620px;
 }
 
-.post img:before {
+.post img::before {
   content: 'That is a broken one';
   display: flex;
   justify-content: center;
