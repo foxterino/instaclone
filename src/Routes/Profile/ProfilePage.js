@@ -303,44 +303,9 @@ class ProfilePage extends React.Component {
     });
   }
 
-  handleSuggested() {
-    if (this.state.suggested.length === 0) {
-      database.ref(`usernames`).once('value', usernames => {
-        const currentFollowedUsers = usernames.toJSON()[this.state.currentProfile].followedUsers.split(',');
-        const activeFollowedUsers = usernames.toJSON()[this.state.activeUser].followedUsers.split(',');
-        const suggested = [];
-
-        currentFollowedUsers.forEach(item => {
-          if (
-            item === this.state.currentProfile ||
-            suggested.length === 5 ||
-            item === this.state.activeUser
-          ) return;
-
-          if (activeFollowedUsers.indexOf(item) === -1) {
-            suggested.push(
-              <SuggestedItem
-                handleFollow={this.handleFollow}
-                activeUser={this.state.activeUser}
-                profile={item}
-              >
-                <Link to={item}>
-                  <img src={usernames.toJSON()[item].profilePhoto} alt='' />
-                </Link>
-                <Link to={item}>{item}</Link>
-              </SuggestedItem>
-            );
-          }
-        });
-
-        this.setState({
-          isSuggested: !this.state.isSuggested,
-          suggested: suggested
-        });
-      });
-    } else {
-      this.setState({ isSuggested: !this.state.isSuggested });
-    }
+  handleSuggested(suggested) {
+    if (suggested) this.setState({ suggested: suggested });
+    else this.setState({ isSuggested: !this.state.isSuggested });
   }
 
   handleOptionsModal(e) {
@@ -357,14 +322,6 @@ class ProfilePage extends React.Component {
 
       default: return;
     }
-
-
-    // if (e.target.className === 'options-modal-window-wrapper' ||
-    //   e.target.className === 'options-close-button') {
-    //   this.setState({ isModalOptions: false });
-    // }
-
-    // if (e.target.className === 'options-button') this.setState({ isModalOptions: true });
   }
 
   render() {
@@ -391,7 +348,8 @@ class ProfilePage extends React.Component {
     else {
       posts =
         <div className='empty-main'>
-          Empty.
+          <div>☹</div>
+          <span>No Posts Yet.</span>
         </div>;
     }
 
@@ -522,9 +480,13 @@ class ProfilePage extends React.Component {
             </div>
             {
               this.state.isSuggested &&
-              <Suggested>
-                {this.state.suggested}
-              </Suggested>
+              <Suggested
+                activeUser={this.state.activeUser}
+                currentProfile={this.state.currentProfile}
+                handleFollow={this.handleFollow}
+                handleSuggested={(suggested) => this.handleSuggested(suggested)}
+                suggested={this.state.suggested}
+              />
             }
           </div>
           <div className='main'>
