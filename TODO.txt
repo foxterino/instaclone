@@ -22,6 +22,10 @@
 // Стилизовать + закрытие модалки
 
 // !! Suggested posts & suggested item
+// !! Реюзабильность optionsModalWindow
+!! Suggested ppl on empty feed
+!! Suggestion page
+
 !! Доработать алгоритм рекомендации аккаунтов
 !! Стилизовать Loading страницу в профиле
 !! Стилизовать и доделать страницу NotFound

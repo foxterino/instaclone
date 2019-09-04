@@ -59,48 +59,67 @@ class FeedPage extends React.Component {
   }
 
   handleUnfollow() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
+    database.ref(`usernames/${this.state.activeUser}`).once('value', data => {
       let followedUsers = data.toJSON().followedUsers.split(',');
 
-      if (followedUsers.length === 1) {
-        followedUsers = '';
-      } else {
-        const index = followedUsers.indexOf(this.state.currentProfile);
+      const index = followedUsers.indexOf(this.state.user);
 
-        followedUsers.splice(index, 1);
-        followedUsers = followedUsers.join(',');
-      }
+      followedUsers.splice(index, 1);
+      followedUsers = followedUsers.join(',');
+
+      database.ref(`usernames/${this.state.activeUser}`).update({ followedUsers: followedUsers });
 
       database.ref(`usernames/${this.state.user}`).once('value', data => {
-        database.ref(`usernames/${this.state.user}`).update({
-          followers: data.toJSON().followers - 1
-        });
+        let followers = data.toJSON().followers.split(',');
+        const index = followers.indexOf(this.state.activeUser);
+
+        followers.splice(index, 1);
+        followers = followers.join(',');
+
+        database.ref(`usernames/${this.state.user}`).update({ followers: followers });
       });
 
-      database.ref(`users/${this.props.userId}`).update({
-        followedUsers: followedUsers
-      });
+      this.setState({ isModal: false });
 
-      const following = followedUsers.split(',').length - 1;
-      database.ref(`usernames/${this.state.activeUser}`).update({ following: following });
     });
-
-    this.setState({ isModal: false });
   }
 
   render() {
+    let options;
+    if (this.state.activeUser === this.state.user) {
+      options = (
+        <button className='dangerous-button' onClick={() => this.handleDeletePost()} >
+          Delete
+        </button>
+      );
+    } else {
+      options = (
+        <>
+          <a className='dangerous-button' href='#'>Report inappropriate</a>
+          <button className='dangerous-button' onClick={() => this.handleUnfollow()} >
+            Unfollow
+          </button>
+        </>
+      );
+    }
+
     return (
       <EventHandler eventName='beforeunload' callback={() => this.updateBD()}>
-        <OptionsModalWindow
-          isModal={this.state.isModal}
-          handleModalClose={(e) => this.handleModalClose(e)}
-          postId={this.state.postId}
-          handleUnfollow={() => this.handleUnfollow()}
-          handleDeletePost={
-            this.state.activeUser === this.state.user ?
-              () => this.handleDeletePost() : null
-          }
-        />
+        {
+          this.state.isModal &&
+          <OptionsModalWindow handleModalClose={(e) => this.handleModalClose(e)}>
+            {options}
+            <a href='#'>Go to post</a>
+            <a href='#'>Share</a>
+            <a href='#'>Copy link</a>
+            <button
+              className='options-close-button'
+              onClick={(e) => this.handleModalClose(e)}
+            >
+              Cancel
+           </button>
+          </OptionsModalWindow>
+        }
         <Main
           handleModalOpen={(activeUser, user, postId) => { this.handleModalOpen(activeUser, user, postId) }}
           deletedPosts={this.state.deletedPosts}

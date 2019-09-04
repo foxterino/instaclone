@@ -151,6 +151,17 @@ class ModalPicture extends React.Component {
   render() {
     if (!this.state.user) return null;
 
+    let options;
+    if (this.state.activeUser === this.state.user) {
+      options = (
+        <button className='dangerous-button' onClick={() => this.handleDeletePost()} >
+          Delete
+        </button>
+      );
+    } else {
+      options = <a className='dangerous-button' href='#'>Report inappropriate</a>;
+    }
+
     return (
       <EventHandler
         eventName='keyup'
@@ -163,15 +174,21 @@ class ModalPicture extends React.Component {
           className={'modal-window-wrapper'}
           onClick={this.props.handleModalClose}
         >
-          <OptionsModalWindow
-            isModal={this.state.isOptionsModal}
-            handleModalClose={(e) => this.handleOptionsModalClose(e)}
-            postId={this.props.postId}
-            handleDeletePost={
-              this.state.activeUser === this.state.user ?
-                () => this.handleDeletePost() : null
-            }
-          />
+          {
+            this.state.isOptionsModal &&
+            <OptionsModalWindow handleModalClose={(e) => this.handleOptionsModalClose(e)}>
+              {options}
+              <a href='#'>Go to post</a>
+              <a href='#'>Share</a>
+              <a href='#'>Copy link</a>
+              <button
+                className='options-close-button'
+                onClick={(e) => this.handleOptionsModalClose(e)}
+              >
+                Cancel
+              </button>
+            </OptionsModalWindow>
+          }
           <button
             className={
               this.props.isPrevSwitch ? 'previous-button' : 'hidden'}

@@ -10,6 +10,7 @@ import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 import Suggested from '../../Shared/Suggested/Suggested';
 import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
+import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow';
 
 class ProfilePage extends React.Component {
   state = {
@@ -26,7 +27,8 @@ class ProfilePage extends React.Component {
     followers: [],
     following: [],
     isSuggested: false,
-    suggested: []
+    suggested: [],
+    isOptionsModal: false
   };
 
   componentWillUnmount() {
@@ -77,7 +79,8 @@ class ProfilePage extends React.Component {
         followers: [],
         following: [],
         isSuggested: false,
-        suggested: []
+        suggested: [],
+        isOptionsModal: false
       });
 
       this.updateProfile();
@@ -340,6 +343,30 @@ class ProfilePage extends React.Component {
     }
   }
 
+  handleOptionsModal(e) {
+    switch (e.target.className) {
+      case 'options-modal-window-wrapper':
+      //throw case
+      case 'options-close-button':
+        this.setState({ isOptionsModal: false });
+        break;
+
+      case 'options-button':
+        this.setState({ isOptionsModal: true });
+        break;
+
+      default: return;
+    }
+
+
+    // if (e.target.className === 'options-modal-window-wrapper' ||
+    //   e.target.className === 'options-close-button') {
+    //   this.setState({ isModalOptions: false });
+    // }
+
+    // if (e.target.className === 'options-button') this.setState({ isModalOptions: true });
+  }
+
   render() {
     if (this.state.redirect) return <Redirect to='/login' />
     if (this.state.isExist === null) {
@@ -394,7 +421,7 @@ class ProfilePage extends React.Component {
           >
             ▼
           </button>
-          <button className='options-button'>
+          <button className='options-button' onClick={(e) => this.handleOptionsModal(e)}>
             Options
           </button>
         </>
@@ -423,6 +450,19 @@ class ProfilePage extends React.Component {
     return (
       <div className='profile-wrapper'>
         <div className='profile'>
+          {
+            this.state.isOptionsModal &&
+            <OptionsModalWindow handleModalClose={(e) => this.handleOptionsModal(e)}>
+              <button className='dangerous-button'>Report User</button>
+              <button className='dangerous-button'>Block this user</button>
+              <button
+                className='options-close-button'
+                onClick={(e) => this.handleOptionsModal(e)}
+              >
+                Cancel
+            </button>
+            </OptionsModalWindow>
+          }
           {
             this.state.isModal &&
             <ModalPicture
