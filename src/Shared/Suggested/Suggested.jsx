@@ -10,7 +10,9 @@ function Suggested(props) {
       database.ref(`usernames`).once('value', usernames => {
         const currentFollowedUsers = usernames.toJSON()[props.currentProfile].followedUsers.split(',');
         const activeFollowedUsers = usernames.toJSON()[props.activeUser].followedUsers.split(',');
-        const activeFollowers = usernames.toJSON()[props.activeUser].followers.split(',');
+        const activeFollowers = usernames.toJSON()[props.activeUser].followers.length === 0
+          ? []
+          : usernames.toJSON()[props.activeUser].followers.split(',');
         const suggested = [];
         const suggestedByUsername = [];
 
@@ -89,14 +91,7 @@ function Suggested(props) {
 
   return (
     <div className='suggested'>
-      <div className='top-buttons'>
-        <span>
-          Suggested
-        </span>
-        <button>
-          See All
-        </button>
-      </div>
+      {props.children}
       {content}
     </div>
   );

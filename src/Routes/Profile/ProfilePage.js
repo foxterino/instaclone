@@ -9,7 +9,6 @@ import ModalPicture from './Components/ModalPicture/Container';
 import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 import Suggested from '../../Shared/Suggested/Suggested';
-import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
 import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow';
 
 class ProfilePage extends React.Component {
@@ -37,9 +36,7 @@ class ProfilePage extends React.Component {
 
   componentDidMount() {
     database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({
-        activeUser: data.toJSON().username
-      });
+      this.setState({ activeUser: data.toJSON().username });
     })
       .then(() => {
         this.setState({ currentProfile: this.props.match.params.profile });
@@ -484,9 +481,14 @@ class ProfilePage extends React.Component {
                 activeUser={this.state.activeUser}
                 currentProfile={this.state.currentProfile}
                 handleFollow={this.handleFollow}
-                handleSuggested={(suggested) => this.handleSuggested(suggested)}
                 suggested={this.state.suggested}
-              />
+                handleSuggested={(suggested) => this.handleSuggested(suggested)}
+              >
+                <div className='top-buttons'>
+                  <span>Suggested</span>
+                  <Link to='/suggestions'>See All</Link>
+                </div>
+              </Suggested>
             }
           </div>
           <div className='main'>

@@ -9,6 +9,7 @@ import LoginWarning from './LoginWarning/Container';
 import RegistrationPage from './Registration/Container';
 import CreatePost from './CreatePost/Container';
 import PrivateRoute from './PrivateRoute/Container';
+import SuggestedPage from './SuggestedPage/Container';
 
 class Routes extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class Routes extends React.Component {
         <PrivateRoute path="/explore" component={ExplorePage} />
         <PrivateRoute path="/feedback" component={FeedbackPage} />
         <PrivateRoute path='/create' component={CreatePost} />
+        <PrivateRoute path="/suggestions" component={SuggestedPage} />
         <PrivateRoute exact path="/:profile" component={ProfilePage} />
       </Switch >
     );

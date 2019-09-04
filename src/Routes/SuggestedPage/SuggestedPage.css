@@ -1,0 +1,57 @@
+.suggested-page {
+  padding: 0 660px;
+}
+
+.suggested-page .suggested {
+  height: auto;
+  box-shadow: 0 2px 0 hsl(220, 7%, 83%);
+  margin: 0;
+}
+
+.suggested-page .suggested ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.suggested-page .suggested ul li {
+  padding: 8px 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border: none;
+}
+
+.suggested-page .suggested ul li img,
+.suggested-page .suggested ul li img::before {
+  height: 50px;
+  width: 50px;
+  font-size: 14px;
+}
+
+.suggested-page .suggested ul li button {
+  width: 100px;
+  margin-left: 350px;
+}
+
+.suggested-page .suggested .empty {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 0 hsl(220, 7%, 83%), inset 4px 0 0 rgb(243, 212, 76);
+}
+
+.suggested-page h4 {
+  margin: 40px 0 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+}

@@ -29,17 +29,15 @@
   font-size: 14px;
 }
 
-.suggested .top-buttons button {
-  background: transparent;
-  border: none;
+.suggested .top-buttons a {
+  text-decoration: none;
   font-size: 14px;
   color: #3897f0;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
 }
 
-.suggested .top-buttons button:focus {
+.suggested .top-buttons a:focus {
   outline: none;
   color: #3897f0ad;
 }
