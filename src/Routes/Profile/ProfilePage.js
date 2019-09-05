@@ -15,19 +15,31 @@ class ProfilePage extends React.Component {
   state = {
     redirect: false,
     activeUser: null,
-    isExist: null,
-    renderPostsId: [],
     currentProfile: null,
+
+    isExist: null,
     isFollowed: null,
+
+    renderPostsId: [],
     profilePhoto: "",
+
     isModal: false,
     modalPostId: null,
     modalInfoType: null,
+
     followers: [],
     following: [],
+
     isSuggested: false,
     suggested: [],
-    isOptionsModal: false
+
+    isOptionsModal: false,
+
+    isChangePhotoModal: false,
+    isChangePhotoInput: false,
+
+    profilePhotoSrc: '',
+    error: false
   };
 
   componentWillUnmount() {
@@ -77,7 +89,11 @@ class ProfilePage extends React.Component {
         following: [],
         isSuggested: false,
         suggested: [],
-        isOptionsModal: false
+        isOptionsModal: false,
+        isChangePhotoModal: false,
+        isChangePhotoInput: false,
+        profilePhotoSrc: '',
+        error: false
       });
 
       this.updateProfile();
@@ -307,8 +323,9 @@ class ProfilePage extends React.Component {
 
   handleOptionsModal(e) {
     switch (e.target.className) {
+      //fallthrough case
       case 'options-modal-window-wrapper':
-      //throw case
+      // eslint-disable-next-line no-fallthrough
       case 'options-close-button':
         this.setState({ isOptionsModal: false });
         break;
@@ -319,6 +336,76 @@ class ProfilePage extends React.Component {
 
       default: return;
     }
+  }
+
+  handleChangePhotoModal(e) {
+    switch (e.target.className) {
+      case 'remove-photo':
+        database.ref(`usernames/${this.state.activeUser}`).update({ profilePhoto: '' });
+
+        this.setState({
+          isChangePhotoModal: false,
+          isChangePhotoInput: false,
+          profilePhotoSrc: '',
+          error: false
+        });
+        break;
+
+      case 'save-button':
+        if (!this.state.profilePhotoSrc) {
+          this.setState({ error: true });
+        } else {
+          database.ref(`usernames/${this.state.activeUser}`).update({ profilePhoto: this.state.profilePhotoSrc });
+
+          this.setState({
+            isChangePhotoModal: false,
+            isChangePhotoInput: false,
+            profilePhotoSrc: '',
+            error: false
+          });
+        }
+        break;
+
+      //fallthrough case
+      case 'options-modal-window-wrapper':
+      // eslint-disable-next-line no-fallthrough
+      case 'options-close-button':
+        this.setState({
+          isChangePhotoModal: false,
+          isChangePhotoInput: false,
+          profilePhotoSrc: '',
+          error: false
+        });
+        break;
+
+      case 'cancel-button':
+        this.setState({
+          isChangePhotoInput: false,
+          profilePhotoSrc: '',
+          error: false
+        });
+        break;
+
+      case 'upload-photo':
+        this.setState({
+          isChangePhotoInput: true,
+          profilePhotoSrc: ''
+        });
+        break
+
+      case 'profile-photo active':
+        this.setState({ isChangePhotoModal: true });
+        break;
+
+      default: return;
+    }
+  }
+
+  handleChange(e) {
+    this.setState({
+      profilePhotoSrc: e.target.value,
+      error: false
+    });
   }
 
   render() {
@@ -410,12 +497,24 @@ class ProfilePage extends React.Component {
             <OptionsModalWindow handleModalClose={(e) => this.handleOptionsModal(e)}>
               <button className='dangerous-button'>Report User</button>
               <button className='dangerous-button'>Block this user</button>
-              <button
-                className='options-close-button'
-                onClick={(e) => this.handleOptionsModal(e)}
-              >
-                Cancel
-            </button>
+            </OptionsModalWindow>
+          }
+          {
+            this.state.isChangePhotoModal &&
+            <OptionsModalWindow handleModalClose={(e) => this.handleChangePhotoModal(e)}>
+              <h3>Change Profile Photo</h3>
+              <button className='upload-photo'>Upload Photo</button>
+              {
+                this.state.isChangePhotoInput &&
+                <div>
+                  <input onChange={(e) => this.handleChange(e)} />
+                  <div>
+                    <button className='save-button'>Save</button>
+                    <button className='cancel-button'>Cancel</button>
+                  </div>
+                </div>
+              }
+              <button className='remove-photo'>Remove Current Photo</button>
             </OptionsModalWindow>
           }
           {
@@ -440,7 +539,11 @@ class ProfilePage extends React.Component {
           }
           <div className='user-info-wrapper'>
             <div className='user-info'>
-              <img src={this.state.profilePhoto} alt='' className='profile-photo' />
+              <img
+                src={this.state.profilePhoto} alt=''
+                className={this.state.activeUser === this.state.currentProfile ? 'profile-photo active' : 'profile-photo'}
+                onClick={this.state.activeUser === this.state.currentProfile ? (e) => this.handleChangePhotoModal(e) : null}
+              />
               <div className='main-info'>
                 <div className='top-info'>
                   <p>{this.props.match.params.profile}</p>

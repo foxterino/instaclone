@@ -18,7 +18,7 @@
   width: 420px;
   background-color: white;
   border: 1px solid rgb(197, 197, 197);
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,7 +30,7 @@
 .options-modal-window a {
   color: rgb(35, 31, 32);
   text-decoration: none;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   border-bottom: 1px solid #efefef;
   width: 100%;
   height: 60px;
@@ -49,7 +49,7 @@ button.dangerous-button {
   border-bottom: 1px solid #efefef;
   width: 100%;
   height: 60px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   background: transparent;
   cursor: pointer;
 }

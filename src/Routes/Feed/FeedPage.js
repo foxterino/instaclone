@@ -112,12 +112,6 @@ class FeedPage extends React.Component {
             <a href='#'>Go to post</a>
             <a href='#'>Share</a>
             <a href='#'>Copy link</a>
-            <button
-              className='options-close-button'
-              onClick={(e) => this.handleModalClose(e)}
-            >
-              Cancel
-           </button>
           </OptionsModalWindow>
         }
         <Main

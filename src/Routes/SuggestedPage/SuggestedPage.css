@@ -47,7 +47,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 0 hsl(220, 7%, 83%), inset 4px 0 0 rgb(243, 212, 76);
+  box-shadow: 0 2px 0 hsl(220, 7%, 83%), inset 4px 0 0 rgb(244, 202, 100);
 }
 
 .suggested-page h4 {

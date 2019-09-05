@@ -33,6 +33,7 @@ main .loading img::before {
 main .loading span {
   color: rgb(230, 230, 230);
   background-color: rgb(230, 230, 230);
+  border-radius: 3px;
 }
 
 main .loading .like-wrapper div {

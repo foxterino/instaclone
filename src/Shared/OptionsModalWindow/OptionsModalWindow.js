@@ -9,6 +9,7 @@ function OptionsModalWindow(props) {
     >
       <div className='options-modal-window'>
         {props.children}
+        <button className='options-close-button'>Cancel</button>
       </div>
     </div >
   );
