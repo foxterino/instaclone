@@ -21,7 +21,7 @@ class ProfilePage extends React.Component {
     isFollowed: null,
 
     renderPostsId: [],
-    profilePhoto: "",
+    profilePhoto: '',
 
     isModal: false,
     modalPostId: null,
@@ -352,6 +352,8 @@ class ProfilePage extends React.Component {
         break;
 
       case 'save-button':
+        e.preventDefault();
+
         if (!this.state.profilePhotoSrc) {
           this.setState({ error: true });
         } else {
@@ -506,12 +508,24 @@ class ProfilePage extends React.Component {
               <button className='upload-photo'>Upload Photo</button>
               {
                 this.state.isChangePhotoInput &&
-                <div>
-                  <input onChange={(e) => this.handleChange(e)} />
-                  <div>
-                    <button className='save-button'>Save</button>
-                    <button className='cancel-button'>Cancel</button>
-                  </div>
+                <div className='profile-photo-edit-wrapper'>
+                  <form>
+                    <input
+                      type='text'
+                      className={this.state.error && 'error'}
+                      value={this.state.profilePhotoSrc}
+                      onChange={(e) => this.handleChange(e)}
+                      placeholder='Enter image url...'
+                    />
+                    <div className='buttons-wrapper'>
+                      <input
+                        type='submit'
+                        value='Save'
+                        className='save-button'
+                      />
+                      <button className='cancel-button'>Cancel</button>
+                    </div>
+                  </form>
                 </div>
               }
               <button className='remove-photo'>Remove Current Photo</button>

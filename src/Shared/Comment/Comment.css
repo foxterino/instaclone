@@ -52,7 +52,7 @@
   transition: 0.1s;
 }
 
-#edit input {
+#edit input[type='text'] {
   box-sizing: border-box;
   padding-left: 10px;
   margin-bottom: 15px;

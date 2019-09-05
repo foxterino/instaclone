@@ -36,7 +36,9 @@ function Comment(props) {
     props.handleIsEditing(true);
   }
 
-  function handleSave() {
+  function handleSave(e) {
+    e.preventDefault();
+
     if (!newComment) {
       setError(true);
       return;
@@ -81,23 +83,28 @@ function Comment(props) {
   if (isEdit) {
     return (
       <li id='edit'>
-        <div className='edit-wrapper'>
-          <Link to={`/${props.user}`}>{props.user}</Link>
-          <input
-            className={error && 'error'}
-            type='text'
-            value={newComment}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div className='buttons-wrapper'>
-          <button className='save-button' onClick={handleSave}>
-            Save
-          </button>
-          <button className='cancel-button' onClick={handleCancel}>
-            Cancel
+        <form>
+          <div className='edit-wrapper'>
+            <Link to={`/${props.user}`}>{props.user}</Link>
+            <input
+              className={error && 'error'}
+              type='text'
+              value={newComment}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+          <div className='buttons-wrapper'>
+            <input
+              type='submit'
+              value='Save'
+              className='save-button'
+              onClick={(e) => handleSave(e)}
+            />
+            <button className='cancel-button' onClick={handleCancel}>
+              Cancel
         </button>
-        </div>
+          </div>
+        </form>
       </li>
     );
   }
