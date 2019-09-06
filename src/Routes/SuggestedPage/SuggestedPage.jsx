@@ -86,6 +86,7 @@ class SuggestedPage extends React.Component {
               suggested={this.state.suggested}
               handleSuggested={(suggested) => this.handleSuggested(suggested)}
               amount={30}
+              handledAmount={this.state.suggested.length}
             />
           </>
         }
