@@ -20,6 +20,10 @@ main .empty-feed {
   text-align: center;
 }
 
+main .empty-feed .empty-feed-alert {
+  margin-bottom: 40px;
+}
+
 main .loading .profile-photo {
   height: 45px;
   width: 45px;
@@ -51,4 +55,10 @@ main .loading .loading-input {
   padding: 18px 16px;
   display: flex;
   justify-content: space-between;
+}
+
+main .suggested {
+  width: 620px;
+  margin-top: 0;
+  margin-bottom: 60px;
 }

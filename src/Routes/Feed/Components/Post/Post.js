@@ -48,8 +48,10 @@ class Post extends React.Component {
 
     database.ref(this.props.dbRefPath).on('value', data => {
       const likedPosts = data.toJSON().likedPosts.split(',').map((item) => {
-        return +item;
+        if (item === '') return item;
+        else return +item;
       });
+
       const isLiked = likedPosts.indexOf(this.props.postId) !== -1;
       this.setState({
         isLiked: isLiked,

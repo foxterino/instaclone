@@ -95,7 +95,7 @@ class FeedPage extends React.Component {
     } else {
       options = (
         <>
-          <a className='dangerous-button' href='#'>Report inappropriate</a>
+          <button className='dangerous-button'>Report inappropriate</button>
           <button className='dangerous-button' onClick={() => this.handleUnfollow()} >
             Unfollow
           </button>

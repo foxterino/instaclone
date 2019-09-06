@@ -24,6 +24,10 @@ class Main extends React.Component {
       this.setState({ activeUser: data.toJSON().username });
     }).then(() => {
       database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
+        if (this.state.isLoaded && data.toJSON().followedUsers.length > this.state.followedUsers.length) {
+          this.setState({ isNewPosts: true });
+        }
+
         this.setState({
           followedUsers: data.toJSON().followedUsers,
           currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
@@ -39,11 +43,6 @@ class Main extends React.Component {
           followedUsers.indexOf(data.toJSON().user) !== -1) {
           this.setState({ isNewPosts: true });
         }
-      });
-
-      database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
-        this.setState({ renderPostsId: [] });
-        this.updateFeed();
       });
     });
   }
@@ -193,8 +192,8 @@ class Main extends React.Component {
     else {
       posts =
         <div className='empty-feed'>
-          Your feed is empty. Subscribe someone.
-              <Suggested
+          <span className='empty-feed-alert'>Your feed is empty. Subscribe someone.</span>
+          <Suggested
             activeUser={this.state.activeUser}
             currentProfile={this.state.currentSuggestUser}
             handleFollow={this.handleFollow}
@@ -211,7 +210,25 @@ class Main extends React.Component {
         </div>;
     }
 
-    if (Array.isArray(posts)) posts.reverse();
+    if (Array.isArray(posts)) {
+      posts.reverse();
+      posts.splice(1, 0,
+        <Suggested
+          activeUser={this.state.activeUser}
+          currentProfile={this.state.currentSuggestUser}
+          handleFollow={this.handleFollow}
+          suggested={this.state.suggested}
+          handleSuggested={(suggested) => this.handleSuggested(suggested)}
+          amount={20}
+          handledAmount={3}
+        >
+          <div className='top-buttons'>
+            <span>Suggested</span>
+            <Link to='/explore/suggestions'>See All</Link>
+          </div>
+        </Suggested>
+      );
+    }
 
     return (
       <EventHandler eventName='scroll' callback={() => this.handleScroll()} >

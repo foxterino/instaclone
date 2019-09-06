@@ -84,7 +84,10 @@ function Suggested(props) {
               item === props.activeUser
             ) return;
 
-            if (suggestedByUsername.indexOf(item) === -1) {
+            if (
+              activeFollowedUsers.indexOf(item) === -1 &&
+              suggestedByUsername.indexOf(item) === -1
+            ) {
               suggested.push(
                 <SuggestedItem
                   handleFollow={props.handleFollow}

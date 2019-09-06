@@ -36,7 +36,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* font-size: 14px; */
 }
 
 .options-modal-window button {
@@ -56,6 +55,7 @@ button.dangerous-button {
   height: 50px;
   background: transparent;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .options-modal-window button.options-close-button {
