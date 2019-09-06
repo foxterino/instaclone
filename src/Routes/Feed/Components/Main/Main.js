@@ -199,7 +199,7 @@ class Main extends React.Component {
             handleFollow={this.handleFollow}
             suggested={this.state.suggested}
             handleSuggested={(suggested) => this.handleSuggested(suggested)}
-            amount={20}
+            amount={30}
             handledAmount={3}
           >
             <div className='top-buttons'>
@@ -219,7 +219,7 @@ class Main extends React.Component {
           handleFollow={this.handleFollow}
           suggested={this.state.suggested}
           handleSuggested={(suggested) => this.handleSuggested(suggested)}
-          amount={20}
+          amount={30}
           handledAmount={3}
         >
           <div className='top-buttons'>
