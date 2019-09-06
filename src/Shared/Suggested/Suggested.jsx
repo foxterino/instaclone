@@ -125,10 +125,10 @@ function Suggested(props) {
     content = (
       <>
         {
-          translateX <= '-796' &&
+          translateX <= (-199 * props.handledAmount) &&
           <button
             className='left-button'
-            onClick={() => handleTranslateX(796)}
+            onClick={() => handleTranslateX(199 * props.handledAmount)}
           >
             {'<'}
           </button>
@@ -140,9 +140,9 @@ function Suggested(props) {
         </div>
         {
           props.suggested.length >= props.handledAmount &&
-          translateX !== Math.floor(props.suggested.length / props.handledAmount) * (-796) &&
+          translateX !== (Math.round(props.suggested.length / props.handledAmount + 0.25) - 1) * (-199 * props.handledAmount) &&
           <button className='right-button'
-            onClick={() => handleTranslateX(-796)}
+            onClick={() => handleTranslateX(-199 * props.handledAmount)}
           >
             {'>'}
           </button>
