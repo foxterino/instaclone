@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  position: relative;
 }
 
 .suggested .empty {
@@ -42,6 +43,10 @@
   color: #3897f0ad;
 }
 
+.suggested .list-wrapper {
+  overflow: hidden;
+}
+
 .suggested ul {
   list-style: none;
   display: flex;
@@ -49,15 +54,16 @@
   padding: 0;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
+  transition-duration: 1.5s;
 }
 
 .suggested ul li {
   border: 1px solid #efefef;
   border-radius: 3px;
-  width: 170px;
+  width: 175px;
+  min-width: 175px;
   height: 200px;
-  margin: 0 10px;
+  margin-left: 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -97,6 +103,38 @@
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
+}
+
+.suggested .left-button,
+.suggested .right-button {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  z-index: 2;
+  margin-top: 15px;
+  border: none;
+  opacity: 0.6;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  background-color: rgb(97, 96, 96);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.suggested .left-button:focus,
+.suggested .right-button:focus {
+  outline: none;
+}
+
+.suggested .left-button {
+  margin-left: 10px;
+}
+
+.suggested .right-button {
+  left: 100%;
+  margin-left: -35px;
 }
 
 .suggested .follow-button {

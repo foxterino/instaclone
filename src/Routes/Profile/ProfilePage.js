@@ -600,6 +600,8 @@ class ProfilePage extends React.Component {
                 handleFollow={this.handleFollow}
                 suggested={this.state.suggested}
                 handleSuggested={(suggested) => this.handleSuggested(suggested)}
+                amount={5}
+                handledAmount={4}
               >
                 <div className='top-buttons'>
                   <span>Suggested</span>

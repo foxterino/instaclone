@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Suggested.css';
 import { database } from '../../firebase';
 import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
@@ -22,7 +22,7 @@ function Suggested(props) {
         currentFollowedUsers.forEach(item => {
           if (
             item === props.currentProfile ||
-            suggested.length === 5 ||
+            suggested.length === props.amount ||
             item === props.activeUser
           ) return;
 
@@ -44,11 +44,11 @@ function Suggested(props) {
           }
         });
 
-        if (suggested.length !== 5) {
+        if (suggested.length !== props.amount) {
           activeFollowers.forEach(item => {
             if (
               item === props.currentProfile ||
-              suggested.length === 5
+              suggested.length === props.amount
             ) return;
 
             if (
@@ -73,10 +73,46 @@ function Suggested(props) {
           });
         }
 
+        if (suggested.length !== props.amount) {
+          const usernamesArray = Object.keys(usernames.toJSON());
+          usernamesArray.reverse();
+
+          usernamesArray.forEach(item => {
+            if (
+              item === props.currentProfile ||
+              suggested.length === props.amount ||
+              item === props.activeUser
+            ) return;
+
+            if (suggestedByUsername.indexOf(item) === -1) {
+              suggested.push(
+                <SuggestedItem
+                  handleFollow={props.handleFollow}
+                  activeUser={props.activeUser}
+                  profile={item}
+                >
+                  <Link to={item}>
+                    <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                  </Link>
+                  <Link to={item}>{item}</Link>
+                </SuggestedItem>
+              );
+
+              suggestedByUsername.push(item);
+            }
+          });
+        }
+
         props.handleSuggested(suggested);
       });
     }
   }, [props]);
+
+  const [translateX, setTranslateX] = useState(0);
+
+  function handleTranslateX(amount) {
+    setTranslateX(translateX + amount);
+  }
 
   let content;
   if (props.suggested.length === 0) {
@@ -86,7 +122,33 @@ function Suggested(props) {
      </div>
     );
   } else {
-    content = <ul>{props.suggested}</ul>;
+    content = (
+      <>
+        {
+          translateX <= '-796' &&
+          <button
+            className='left-button'
+            onClick={() => handleTranslateX(796)}
+          >
+            {'<'}
+          </button>
+        }
+        <div className='list-wrapper'>
+          <ul style={{ transform: `translateX(${translateX}px)` }}>
+            {props.suggested}
+          </ul>
+        </div>
+        {
+          props.suggested.length >= props.handledAmount &&
+          translateX !== Math.floor(props.suggested.length / props.handledAmount) * (-796) &&
+          <button className='right-button'
+            onClick={() => handleTranslateX(-796)}
+          >
+            {'>'}
+          </button>
+        }
+      </>
+    );
   }
 
   return (

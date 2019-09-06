@@ -14,8 +14,10 @@ main div.post-wrapper {
 
 main .empty-feed {
   width: 620px;
+  flex-direction: column;
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 main .loading .profile-photo {

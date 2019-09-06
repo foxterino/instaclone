@@ -5,6 +5,8 @@ import Stories from '../Stories/Stories'
 import { database } from '../../../../firebase'
 import UpdateFeed from '../UpdateFeed/UpdateFeed';
 import EventHandler from '../../../../Shared/EventHandler/EventHandler'
+import Suggested from '../../../../Shared/Suggested/Suggested';
+import { Link } from 'react-router-dom';
 
 class Main extends React.Component {
   state = {
@@ -12,15 +14,20 @@ class Main extends React.Component {
     followedUsers: '',
     renderPostsId: [],
     isNewPosts: false,
-    isLoaded: false
+    isLoaded: false,
+    currentSuggestUser: null,
+    suggested: []
   };
-  
+
   componentDidMount() {
     database.ref(`users/${this.props.userId}`).once('value', data => {
       this.setState({ activeUser: data.toJSON().username });
     }).then(() => {
       database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
-        this.setState({ followedUsers: data.toJSON().followedUsers });
+        this.setState({
+          followedUsers: data.toJSON().followedUsers,
+          currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
+        });
       });
 
       this.updateFeed();
@@ -87,6 +94,58 @@ class Main extends React.Component {
     }
   }
 
+  handleFollow(activeUser, currentProfile) {
+    database.ref(`usernames/${activeUser}`).once('value', data => {
+      let followedUsers = data.toJSON().followedUsers.split(',');
+
+      if (this.state.isFollowed) {
+        const index = followedUsers.indexOf(currentProfile);
+
+        followedUsers.splice(index, 1);
+        followedUsers = followedUsers.join(',');
+
+        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
+
+        database.ref(`usernames/${currentProfile}`).once('value', data => {
+          let followers = data.toJSON().followers.split(',');
+          const index = followers.indexOf(activeUser);
+
+          followers.splice(index, 1);
+          followers = followers.join(',');
+
+          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
+        });
+
+        this.setState({ isFollowed: false });
+      }
+      else {
+        followedUsers.push(currentProfile);
+        followedUsers = followedUsers.join(',');
+
+        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
+
+        database.ref(`usernames/${currentProfile}`).once('value', data => {
+          let followers = data.toJSON().followers.split(',');
+
+          if (followers[0]) {
+            followers.push(activeUser);
+            followers = followers.join(',');
+          } else {
+            followers = activeUser;
+          }
+
+          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
+        });
+
+        this.setState({ isFollowed: true });
+      }
+    });
+  }
+
+  handleSuggested(suggested) {
+    this.setState({ suggested: suggested });
+  }
+
   render() {
     let posts;
     if (!this.state.isLoaded) {
@@ -135,6 +194,20 @@ class Main extends React.Component {
       posts =
         <div className='empty-feed'>
           Your feed is empty. Subscribe someone.
+              <Suggested
+            activeUser={this.state.activeUser}
+            currentProfile={this.state.currentSuggestUser}
+            handleFollow={this.handleFollow}
+            suggested={this.state.suggested}
+            handleSuggested={(suggested) => this.handleSuggested(suggested)}
+            amount={20}
+            handledAmount={3}
+          >
+            <div className='top-buttons'>
+              <span>Suggested</span>
+              <Link to='/explore/suggestions'>See All</Link>
+            </div>
+          </Suggested>
         </div>;
     }
 
