@@ -16,7 +16,7 @@ nav {
   padding: 10px 100px;
   box-sizing: border-box;
   transition: 0.5s;
-  z-index: 2;
+  z-index: 3;
 }
 
 nav p {

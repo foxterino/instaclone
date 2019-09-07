@@ -18,6 +18,16 @@ class FeedPage extends React.Component {
     this.updateBD();
   }
 
+  componentDidMount() {
+    database.ref('posts').on('child_removed', data => {
+      this.setState({ deletedPosts: [...this.state.deletedPosts, data.toJSON().id] });
+
+      database.ref('users').once('value', users => {
+        this.updateLikes(users.toJSON(), data.toJSON().id);
+      });
+    });
+  }
+
   handleModalOpen(activeUser, user, postId) {
     this.setState({
       isModal: true,
@@ -53,9 +63,40 @@ class FeedPage extends React.Component {
   }
 
   updateBD() {
-    this.state.deletedPosts.forEach((item) => {
-      database.ref(`posts/${item}`).remove();
+    database.ref('posts').once('value', data => {
+      const deletedPostsByActiveUser = this.state.deletedPosts.filter(item => {
+        return data.toJSON()[item] && this.state.activeUser === data.toJSON()[item].user;
+      });
+
+        deletedPostsByActiveUser.forEach((item) => {
+          database.ref(`posts/${item}`).remove();
+        });
+
+      this.setState({ deletedPosts: [] });
     });
+  }
+
+  updateLikes(data, postId) {
+    for (let key in data) {
+      let likedPosts = data[key].likedPosts.split(',').map((item) => {
+        return +item;
+      });
+
+      if (likedPosts.indexOf(postId) !== -1) {
+        if (likedPosts.length === 1) {
+          likedPosts = '';
+        } else {
+          const postIndex = likedPosts.indexOf(postId);
+
+          likedPosts.splice(postIndex, 1);
+          likedPosts = likedPosts.join(',');
+        }
+
+        database.ref(`users/${key}`).update({
+          likedPosts: likedPosts
+        });
+      }
+    }
   }
 
   handleUnfollow() {
@@ -118,6 +159,7 @@ class FeedPage extends React.Component {
           handleModalOpen={(activeUser, user, postId) => { this.handleModalOpen(activeUser, user, postId) }}
           deletedPosts={this.state.deletedPosts}
           handleUndoDeletePost={(postId) => this.handleUndoDeletePost(postId)}
+          updateBD={() => this.updateBD()}
         />
       </EventHandler>
     );

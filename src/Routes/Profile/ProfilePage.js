@@ -57,19 +57,24 @@ class ProfilePage extends React.Component {
         this.updateProfilePictures();
       });
 
-    database.ref('posts').on('child_added', data => {
-      this.setState({ renderPostsId: [] });
-      this.updateProfilePictures();
-    });
-
     database.ref('posts').on('child_removed', data => {
-      this.setState({
-        renderPostsId: [],
-        isModal: false
-      });
-      setTimeout(() => {
-        this.updateProfilePictures();
-      }, 400);
+      if (this.state.currentProfile === this.state.activeUser) {
+        this.setState({
+          renderPostsId: [],
+          isModal: false
+        });
+        setTimeout(() => {
+          this.updateProfilePictures();
+        }, 400);
+      }
+
+      if (
+        this.state.currentProfile !== this.state.activeUser &&
+        this.state.modalPostId === data.toJSON().id
+      ) {
+        alert('This post has been deleted');
+        this.setState({ isModal: false });
+      }
     });
   }
 

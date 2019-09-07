@@ -45,6 +45,17 @@ class Main extends React.Component {
         }
       });
     });
+
+    database.ref('posts').on('child_removed', data => {
+      if (data.toJSON().user === this.state.activeUser) {
+        this.setState({
+          isLoaded: false,
+          renderPostsId: []
+        });
+
+        this.updateFeed();
+      }
+    });
   }
 
   updateFeed() {
@@ -78,6 +89,9 @@ class Main extends React.Component {
       renderPostsId: [],
       isNewPosts: false
     });
+
+    this.props.updateBD();
+
     this.updateFeed();
     window.scrollTo(0, 0);
   }
@@ -85,11 +99,7 @@ class Main extends React.Component {
   handleScroll() {
     const pageY = window.pageYOffset || document.documentElement.scrollTop;
     if (pageY === 0 && this.state.isNewPosts) {
-      this.setState({
-        renderPostsId: [],
-        isNewPosts: false
-      });
-      setTimeout(() => this.updateFeed());
+      this.handleNewPosts();
     }
   }
 
