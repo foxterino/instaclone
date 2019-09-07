@@ -26,17 +26,17 @@ function Suggested(props) {
             item === props.activeUser
           ) return;
 
-          if (activeFollowedUsers.indexOf(item) === -1) {
+          if (item && activeFollowedUsers.indexOf(item) === -1) {
             suggested.push(
               <SuggestedItem
                 handleFollow={props.handleFollow}
                 activeUser={props.activeUser}
                 profile={item}
               >
-                <Link to={item}>
+                <Link to={`/${item}`}>
                   <img src={usernames.toJSON()[item].profilePhoto} alt='' />
                 </Link>
-                <Link to={item}>{item}</Link>
+                <Link to={`/${item}`} className='username-link'>{item}</Link>
               </SuggestedItem>
             );
 
@@ -61,10 +61,10 @@ function Suggested(props) {
                   activeUser={props.activeUser}
                   profile={item}
                 >
-                  <Link to={item}>
+                  <Link to={`/${item}`}>
                     <img src={usernames.toJSON()[item].profilePhoto} alt='' />
                   </Link>
-                  <Link to={item}>{item}</Link>
+                  <Link to={`/${item}`} className='username-link'>{item}</Link>
                 </SuggestedItem>
               );
 
@@ -94,10 +94,10 @@ function Suggested(props) {
                   activeUser={props.activeUser}
                   profile={item}
                 >
-                  <Link to={item}>
+                  <Link to={`/${item}`}>
                     <img src={usernames.toJSON()[item].profilePhoto} alt='' />
                   </Link>
-                  <Link to={item}>{item}</Link>
+                  <Link to={`/${item}`} className='username-link'>{item}</Link>
                 </SuggestedItem>
               );
 
