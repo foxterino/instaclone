@@ -70,7 +70,8 @@ class ProfilePage extends React.Component {
 
       if (
         this.state.currentProfile !== this.state.activeUser &&
-        this.state.modalPostId === data.toJSON().id
+        this.state.modalPostId === data.toJSON().id &&
+        this.state.isModal
       ) {
         alert('This post has been deleted');
         this.setState({ isModal: false });

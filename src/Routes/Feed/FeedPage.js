@@ -21,10 +21,6 @@ class FeedPage extends React.Component {
   componentDidMount() {
     database.ref('posts').on('child_removed', data => {
       this.setState({ deletedPosts: [...this.state.deletedPosts, data.toJSON().id] });
-
-      database.ref('users').once('value', users => {
-        this.updateLikes(users.toJSON(), data.toJSON().id);
-      });
     });
   }
 
@@ -74,29 +70,6 @@ class FeedPage extends React.Component {
 
       this.setState({ deletedPosts: [] });
     });
-  }
-
-  updateLikes(data, postId) {
-    for (let key in data) {
-      let likedPosts = data[key].likedPosts.split(',').map((item) => {
-        return +item;
-      });
-
-      if (likedPosts.indexOf(postId) !== -1) {
-        if (likedPosts.length === 1) {
-          likedPosts = '';
-        } else {
-          const postIndex = likedPosts.indexOf(postId);
-
-          likedPosts.splice(postIndex, 1);
-          likedPosts = likedPosts.join(',');
-        }
-
-        database.ref(`users/${key}`).update({
-          likedPosts: likedPosts
-        });
-      }
-    }
   }
 
   handleUnfollow() {
