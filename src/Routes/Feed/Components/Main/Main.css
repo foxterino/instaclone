@@ -10,6 +10,19 @@ main div.post-wrapper {
   width: auto;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+main div.post-wrapper .rest-posts {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid rgb(56, 151, 240);
+  height: 40px;
+  width: 220px;
+  box-shadow: 0 2px 0 hsl(220, 7%, 83%);
 }
 
 main .empty-feed {
@@ -21,7 +34,7 @@ main .empty-feed {
 }
 
 main .empty-feed .empty-feed-alert {
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 }
 
 main .loading .profile-photo {

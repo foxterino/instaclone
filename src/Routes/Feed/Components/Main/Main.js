@@ -178,7 +178,7 @@ class Main extends React.Component {
     });;
 
     restPosts.unshift(
-      <div>You may be interested in.</div>
+      <div className='rest-posts'>You may be interested in.</div>
     );
 
     let posts;
