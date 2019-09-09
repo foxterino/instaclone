@@ -146,6 +146,10 @@
   height: 45px;
   width: 45px;
   border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(224, 221, 221);
 }
 
 .modal-window .top-bar .profile-picture-wrapper {

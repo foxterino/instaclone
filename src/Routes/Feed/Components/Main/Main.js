@@ -13,6 +13,7 @@ class Main extends React.Component {
     activeUser: null,
     followedUsers: '',
     renderPostsId: [],
+    restPosts: [],
     isNewPosts: false,
     isLoaded: false,
     currentSuggestUser: null,
@@ -63,6 +64,7 @@ class Main extends React.Component {
       setTimeout(() => {
         const posts = [];
         let renderPostsId = [];
+        const restPosts = [];
         const followedUsers = this.state.followedUsers.split(',');
 
         for (let key in data.toJSON()) {
@@ -72,11 +74,18 @@ class Main extends React.Component {
         posts.forEach((item) => {
           if (followedUsers.indexOf(item.user) !== -1) {
             renderPostsId = [...renderPostsId, item.id];
+          } else {
+            restPosts.push(item.id);
           }
+        });
+
+        restPosts.sort((a, b) => {
+          return data.toJSON()[b].likeCount - data.toJSON()[a].likeCount;
         });
 
         this.setState({
           renderPostsId: renderPostsId,
+          restPosts: restPosts,
           isLoaded: true
         });
       }, 200);
@@ -156,6 +165,22 @@ class Main extends React.Component {
   }
 
   render() {
+    let restPosts = this.state.restPosts.map((item) => {
+      return (
+        <Post
+          postId={item}
+          dbRefPath={`users/${this.props.userId}`}
+          handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, false)}
+          handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
+          isDeleted={this.props.deletedPosts.indexOf(item) !== -1}
+        />
+      );
+    });;
+
+    restPosts.unshift(
+      <div>You may be interested in.</div>
+    );
+
     let posts;
     if (!this.state.isLoaded) {
       posts = (
@@ -192,7 +217,7 @@ class Main extends React.Component {
           <Post
             postId={item}
             dbRefPath={`users/${this.props.userId}`}
-            handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId)}
+            handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, true)}
             handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
             isDeleted={this.props.deletedPosts.indexOf(item) !== -1}
           />
@@ -200,24 +225,33 @@ class Main extends React.Component {
       });
     }
     else {
-      posts =
-        <div className='empty-feed'>
-          <span className='empty-feed-alert'>Your feed is empty. Subscribe someone.</span>
-          <Suggested
-            activeUser={this.state.activeUser}
-            currentProfile={this.state.currentSuggestUser}
-            handleFollow={this.handleFollow}
-            suggested={this.state.suggested}
-            handleSuggested={(suggested) => this.handleSuggested(suggested)}
-            amount={30}
-            handledAmount={3}
-          >
-            <div className='top-buttons'>
-              <span>Suggested</span>
-              <Link to='/explore/suggestions'>See All</Link>
-            </div>
-          </Suggested>
-        </div>;
+      restPosts.splice(2, 0,
+        <Suggested
+          activeUser={this.state.activeUser}
+          currentProfile={this.state.currentSuggestUser}
+          handleFollow={this.handleFollow}
+          suggested={this.state.suggested}
+          handleSuggested={(suggested) => this.handleSuggested(suggested)}
+          amount={30}
+          handledAmount={3}
+        >
+          <div className='top-buttons'>
+            <span>Suggested</span>
+            <Link to='/explore/suggestions'>See All</Link>
+          </div>
+        </Suggested>
+      );
+
+      posts = (
+        <>
+          <div className='empty-feed'>
+            <span className='empty-feed-alert'>Your feed is empty. Subscribe someone.</span>
+          </div>
+          <div className='post-wrapper'>
+            {restPosts}
+          </div>
+        </>
+      );
     }
 
     if (Array.isArray(posts)) {
@@ -238,6 +272,8 @@ class Main extends React.Component {
           </div>
         </Suggested>
       );
+
+      posts = [...posts, ...restPosts];
     }
 
     return (
@@ -250,7 +286,6 @@ class Main extends React.Component {
           <div className='post-wrapper'>
             {posts}
           </div>
-          <Stories />
         </main>
       </EventHandler>
     );

@@ -72,7 +72,15 @@ class Header extends React.Component {
     return (
       <header>
         <nav>
-          <p>That's my instaclone btw wow</p>
+          <div className='home-wrapper'>
+            <div>
+              <NavLink to='/feed'
+                activeClassName='active'
+              >
+                <span>Home</span>
+              </NavLink >
+            </div>
+          </div>
           <div className='search-bar-wrapper' onClick={(e) => this.handleModal(e)}>
             <input
               value={this.state.value}
@@ -85,24 +93,10 @@ class Header extends React.Component {
           </div>
           <ul>
             <li>
-              <NavLink to='/feed'
-                activeClassName='active'
-              >
-                <span>Home</span>
-              </NavLink >
-            </li>
-            <li>
               <NavLink to='/explore'
                 activeClassName='active'
               >
                 <span>Explore</span>
-              </NavLink >
-            </li>
-            <li>
-              <NavLink to='/feedback'
-                activeClassName='active'
-              >
-                <span>Feedback</span>
               </NavLink >
             </li>
             <li>

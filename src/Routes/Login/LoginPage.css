@@ -1,6 +1,6 @@
 .login-page {
   height: 100%;
-  background: url('https://pp.userapi.com/c852132/v852132690/17df0d/8ay-d6xGXG8.jpg');
+  background: url(../../Assets/login.jpg);
   background-size: cover;
   display: flex;
   flex-direction: column;

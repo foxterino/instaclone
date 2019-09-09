@@ -1,6 +1,6 @@
 .registration-page {
   height: 100%;
-  background: url('https://pp.userapi.com/c855220/v855220058/acb97/ciubfsl84Nc.jpg');
+  background: url(../../Assets/registration.jpg);
   background-size: cover;
   display: flex;
   flex-direction: column;

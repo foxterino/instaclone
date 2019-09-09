@@ -11,7 +11,8 @@ class FeedPage extends React.Component {
     activeUser: null,
     user: null,
     postId: null,
-    deletedPosts: []
+    deletedPosts: [],
+    isFollowed: null
   };
 
   componentWillUnmount() {
@@ -24,12 +25,14 @@ class FeedPage extends React.Component {
     });
   }
 
-  handleModalOpen(activeUser, user, postId) {
+  handleModalOpen(activeUser, user, postId, isFollowed) {
+    console.log(isFollowed);
     this.setState({
       isModal: true,
       activeUser: activeUser,
       user: user,
-      postId: postId
+      postId: postId,
+      isFollowed: isFollowed
     });
   }
 
@@ -64,9 +67,9 @@ class FeedPage extends React.Component {
         return data.toJSON()[item] && this.state.activeUser === data.toJSON()[item].user;
       });
 
-        deletedPostsByActiveUser.forEach((item) => {
-          database.ref(`posts/${item}`).remove();
-        });
+      deletedPostsByActiveUser.forEach((item) => {
+        database.ref(`posts/${item}`).remove();
+      });
 
       this.setState({ deletedPosts: [] });
     });
@@ -110,9 +113,12 @@ class FeedPage extends React.Component {
       options = (
         <>
           <button className='dangerous-button'>Report inappropriate</button>
-          <button className='dangerous-button' onClick={() => this.handleUnfollow()} >
-            Unfollow
-          </button>
+          {
+            this.state.isFollowed &&
+            <button className='dangerous-button' onClick={() => this.handleUnfollow()} >
+              Unfollow
+            </button>
+          }
         </>
       );
     }
@@ -129,7 +135,7 @@ class FeedPage extends React.Component {
           </OptionsModalWindow>
         }
         <Main
-          handleModalOpen={(activeUser, user, postId) => { this.handleModalOpen(activeUser, user, postId) }}
+          handleModalOpen={(activeUser, user, postId, isFollowed) => { this.handleModalOpen(activeUser, user, postId, isFollowed) }}
           deletedPosts={this.state.deletedPosts}
           handleUndoDeletePost={(postId) => this.handleUndoDeletePost(postId)}
           updateBD={() => this.updateBD()}

@@ -61,7 +61,7 @@ class LoginPage extends React.Component {
               value={this.state.username}
               handleChange={(e) => this.handleUserChange(e)}
               type='text'
-              label='Username'
+              label='E-mail'
             />
             <FormInput
               value={this.state.password}
