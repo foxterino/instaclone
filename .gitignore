@@ -10,6 +10,9 @@ TODO.txt
 .env
 package-lock.json
 
+#future components
+/src/Future
+
 # testing
 /coverage
 

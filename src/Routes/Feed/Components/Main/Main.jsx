@@ -1,7 +1,6 @@
 import React from 'react';
 import './Main.css'
 import Post from '../Post/Post'
-import Stories from '../Stories/Stories'
 import { database } from '../../../../firebase'
 import UpdateFeed from '../UpdateFeed/UpdateFeed';
 import EventHandler from '../../../../Shared/EventHandler/EventHandler'
