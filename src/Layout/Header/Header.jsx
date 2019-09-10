@@ -23,7 +23,7 @@ class Header extends React.Component {
       for (let key in data.toJSON()) {
         if (key.includes(this.state.value)) {
           searchResults.push(
-            <a href={key} className='search-bar'>
+            <a href={`/${key}`} className='search-bar'>
               <img src={data.toJSON()[key].profilePhoto} alt='' />
               <span>{key}</span>
             </a>

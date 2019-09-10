@@ -124,6 +124,7 @@ class ModalPicture extends React.Component {
   }
 
   handleSwitch(e) {
+    if (this.state.isOptionsModal) return;
     if (e.key === 'ArrowRight' && !this.props.isNextSwitch) return;
     if (e.key === 'ArrowLeft' && !this.props.isPrevSwitch) return;
 
