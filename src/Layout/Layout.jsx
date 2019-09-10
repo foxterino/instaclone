@@ -2,7 +2,7 @@ import React from 'react'
 import './Layout.css'
 import Header from './Header/Header'
 import UpdownButton from './UpdownButton/UpdownButton'
-import { database } from '../firebase';
+import { database } from '../firebaseConfig';
 
 class Layout extends React.Component {
   state = { activeUser: null }

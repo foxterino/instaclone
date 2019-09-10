@@ -2,7 +2,7 @@ import React from 'react';
 import './LoginPage.css'
 import { Link, Redirect } from "react-router-dom";
 import FormInput from '../../Shared/FormInput/FormInput'
-import { auth } from '../../firebase'
+import { auth } from '../../firebaseConfig'
 
 class LoginPage extends React.Component {
   state = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from '../../../../firebase';
+import { database } from '../../../../firebaseConfig';
 import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
 import './Post.css'
 import Comments from '../../../../Shared/Comments/Comments';

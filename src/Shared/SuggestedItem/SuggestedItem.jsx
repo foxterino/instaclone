@@ -1,6 +1,6 @@
 import React from 'react';
 import './SuggestedItem.css';
-import { database } from '../../firebase';
+import { database } from '../../firebaseConfig';
 
 class SuggestedItem extends React.Component {
   state = {

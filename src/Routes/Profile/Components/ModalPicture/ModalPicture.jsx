@@ -1,6 +1,6 @@
 import React from 'react';
 import './ModalPicture.css';
-import { database } from '../../../../firebase'
+import { database } from '../../../../firebaseConfig'
 import { Link } from 'react-router-dom';
 import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
 import Comments from '../../../../Shared/Comments/Comments';

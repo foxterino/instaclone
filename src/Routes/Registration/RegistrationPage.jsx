@@ -2,7 +2,7 @@ import React from 'react'
 import './RegistrationPage.css'
 import { Link, Redirect } from "react-router-dom";
 import FormInput from '../../Shared/FormInput/FormInput'
-import { auth, database } from '../../firebase'
+import { auth, database } from '../../firebaseConfig'
 
 class RegistrationPage extends React.Component {
   state = {

@@ -1,8 +1,7 @@
 import React from 'react';
 import './ProfilePage.css'
-import { auth } from '../../firebase'
 import { Redirect, Link } from 'react-router-dom'
-import { database } from '../../firebase';
+import { database, auth } from '../../firebaseConfig';
 import ProfilePicture from './Components/ProfilePicture/ProfilePicture';
 import NotFound from '../../Shared/NotFound/NotFound';
 import ModalPicture from './Components/ModalPicture/Container';
@@ -10,6 +9,7 @@ import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 import Suggested from '../../Shared/Suggested/Suggested';
 import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow';
+import { handleFollow } from '../../Services/Api';
 
 class ProfilePage extends React.Component {
   state = {
@@ -166,51 +166,8 @@ class ProfilePage extends React.Component {
   }
 
   handleFollow(activeUser, currentProfile) {
-    database.ref(`usernames/${activeUser}`).once('value', data => {
-      let followedUsers = data.toJSON().followedUsers.split(',');
-
-      if (this.state.isFollowed) {
-        const index = followedUsers.indexOf(currentProfile);
-
-        followedUsers.splice(index, 1);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-          const index = followers.indexOf(activeUser);
-
-          followers.splice(index, 1);
-          followers = followers.join(',');
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: false });
-      }
-      else {
-        followedUsers.push(currentProfile);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-
-          if (followers[0]) {
-            followers.push(activeUser);
-            followers = followers.join(',');
-          } else {
-            followers = activeUser;
-          }
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: true });
-      }
-    });
+    handleFollow(activeUser, currentProfile, this.state.isFollowed);
+    this.setState({ isFollowed: !this.state.isFollowed });
   }
 
   handleLogout() {

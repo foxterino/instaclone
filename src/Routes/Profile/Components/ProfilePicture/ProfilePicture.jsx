@@ -1,5 +1,5 @@
 import React from 'react';
-import { database } from '../../../../firebase';
+import { database } from '../../../../firebaseConfig';
 import './ProfilePicture.css';
 
 class ProfilePicture extends React.Component {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.css'
 import { NavLink } from "react-router-dom";
-import { database } from '../../firebase'
+import { database } from '../../firebaseConfig'
 
 class Header extends React.Component {
   state = {

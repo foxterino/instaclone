@@ -2,8 +2,9 @@ import React from 'react';
 import './FeedPage.css'
 import Main from './Components/Main/Container'
 import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow'
-import { database } from '../../firebase';
+import { database } from '../../firebaseConfig';
 import EventHandler from '../../Shared/EventHandler/EventHandler';
+import { handleFollow } from '../../Services/Api';
 
 class FeedPage extends React.Component {
   state = {
@@ -26,7 +27,6 @@ class FeedPage extends React.Component {
   }
 
   handleModalOpen(activeUser, user, postId, isFollowed) {
-    console.log(isFollowed);
     this.setState({
       isModal: true,
       activeUser: activeUser,
@@ -61,44 +61,24 @@ class FeedPage extends React.Component {
     }
   }
 
-  updateBD() {
-    database.ref('posts').once('value', data => {
-      const deletedPostsByActiveUser = this.state.deletedPosts.filter(item => {
-        return data.toJSON()[item] && this.state.activeUser === data.toJSON()[item].user;
-      });
+  async updateBD() {
+    let data = await database.ref('posts').once('value', data => data);
+    data = data.toJSON();
 
-      deletedPostsByActiveUser.forEach((item) => {
-        database.ref(`posts/${item}`).remove();
-      });
-
-      this.setState({ deletedPosts: [] });
+    const deletedPostsByActiveUser = this.state.deletedPosts.filter(item => {
+      return data[item] && this.state.activeUser === data[item].user;
     });
+
+    deletedPostsByActiveUser.forEach((item) => {
+      database.ref(`posts/${item}`).remove();
+    });
+
+    this.setState({ deletedPosts: [] });
   }
 
-  handleUnfollow() {
-    database.ref(`usernames/${this.state.activeUser}`).once('value', data => {
-      let followedUsers = data.toJSON().followedUsers.split(',');
-
-      const index = followedUsers.indexOf(this.state.user);
-
-      followedUsers.splice(index, 1);
-      followedUsers = followedUsers.join(',');
-
-      database.ref(`usernames/${this.state.activeUser}`).update({ followedUsers: followedUsers });
-
-      database.ref(`usernames/${this.state.user}`).once('value', data => {
-        let followers = data.toJSON().followers.split(',');
-        const index = followers.indexOf(this.state.activeUser);
-
-        followers.splice(index, 1);
-        followers = followers.join(',');
-
-        database.ref(`usernames/${this.state.user}`).update({ followers: followers });
-      });
-
-      this.setState({ isModal: false });
-
-    });
+  async handleUnfollow() {
+    handleFollow(this.state.activeUser, this.state.user, true);
+    this.setState({ isModal: false });
   }
 
   render() {

@@ -1,11 +1,12 @@
 import React from 'react';
 import './Main.css'
 import Post from '../Post/Post'
-import { database } from '../../../../firebase'
+import { database } from '../../../../firebaseConfig'
 import UpdateFeed from '../UpdateFeed/UpdateFeed';
 import EventHandler from '../../../../Shared/EventHandler/EventHandler'
 import Suggested from '../../../../Shared/Suggested/Suggested';
 import { Link } from 'react-router-dom';
+import { handleFollow } from '../../../../Services/Api';
 
 class Main extends React.Component {
   state = {
@@ -22,35 +23,35 @@ class Main extends React.Component {
     paginationId: 0
   };
 
-  componentDidMount() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({ activeUser: data.toJSON().username });
-    }).then(() => {
-      database.ref(`usernames/${this.state.activeUser}`).on('value', data => {
-        if (this.state.isLoaded && data.toJSON().followedUsers.length > this.state.followedUsers.length) {
-          this.setState({ isNewPosts: true });
-        }
+  async componentDidMount() {
+    let username = await database.ref(`users/${this.props.userId}`).once('value', data => data);
+    username = username.toJSON();
+    this.setState({ activeUser: username.username });
 
-        this.setState({
-          followedUsers: data.toJSON().followedUsers,
-          currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
-        });
+    database.ref(`usernames/${this.state.activeUser || username.username}`).on('value', data => {
+      if (this.state.isLoaded && data.toJSON().followedUsers.length > this.state.followedUsers.length) {
+        this.setState({ isNewPosts: true });
+      }
+
+      this.setState({
+        followedUsers: data.toJSON().followedUsers,
+        currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
       });
+    });
 
-      database.ref('posts').once('value', data => {
-        this.setState({ paginationId: Object.keys(data.toJSON()).pop() });
-      });
+    let posts = await database.ref('posts').once('value', data => data);
+    posts = posts.toJSON();
+    this.setState({ paginationId: Object.keys(posts).pop() });
 
-      this.updateFeed();
+    this.updateFeed();
 
-      database.ref('posts').on('child_added', data => {
-        const followedUsers = this.state.followedUsers.split(',');
+    database.ref('posts').on('child_added', data => {
+      const followedUsers = this.state.followedUsers.split(',');
 
-        if (this.state.renderPostsId.length !== 0 &&
-          followedUsers.indexOf(data.toJSON().user) !== -1) {
-          this.setState({ isNewPosts: true });
-        }
-      });
+      if (this.state.renderPostsId.length !== 0 &&
+        followedUsers.indexOf(data.toJSON().user) !== -1) {
+        this.setState({ isNewPosts: true });
+      }
     });
 
     database.ref('posts').on('child_removed', data => {
@@ -65,56 +66,56 @@ class Main extends React.Component {
     });
   }
 
-  updateFeed() {
-    database.ref('posts').once('value', data => {
+  async updateFeed() {
+    setTimeout(async () => {
+      const data = await database.ref('posts').once('value', data => data);
+      const posts = data.toJSON();
+      let renderPostsId = [];
+      let restPosts = [];
+      const followedUsers = this.state.followedUsers.split(',');
+      let i;
+
+
+      if (!this.state.isRestPosts) {
+        for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
+          if (!posts[i]) continue;
+
+          if (followedUsers.indexOf(posts[i].user) !== -1) {
+            renderPostsId = [...renderPostsId, posts[i].id];
+          }
+        }
+      }
+
+      if (i === -1) {
+        let data = await database.ref('posts').once('value', data => data)
+        data = data.toJSON();
+
+        this.setState({
+          paginationId: Object.keys(data).pop(),
+          isRestPosts: true
+        });
+      }
+
       setTimeout(() => {
-        const posts = data.toJSON();
-        let renderPostsId = [];
-        let restPosts = [];
-        const followedUsers = this.state.followedUsers.split(',');
-        let i;
-
-
-        if (!this.state.isRestPosts) {
-          for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
+        if (this.state.isRestPosts || i === -1) {
+          for (i = this.state.paginationId; restPosts.length < 3 && i >= 0; i--) {
             if (!posts[i]) continue;
 
-            if (followedUsers.indexOf(posts[i].user) !== -1) {
-              renderPostsId = [...renderPostsId, posts[i].id];
+            if (followedUsers.indexOf(posts[i].user) === -1) {
+              restPosts = [...restPosts, posts[i].id];
             }
           }
         }
 
-        if (i === -1) {
-          database.ref('posts').once('value', data => {
-            this.setState({
-              paginationId: Object.keys(data.toJSON()).pop(),
-              isRestPosts: true
-            });
-          });
-        }
-
-        setTimeout(() => {
-          if (this.state.isRestPosts || i === -1) {
-            for (i = this.state.paginationId; restPosts.length < 3 && i >= 0; i--) {
-              if (!posts[i]) continue;
-
-              if (followedUsers.indexOf(posts[i].user) === -1) {
-                restPosts = [...restPosts, posts[i].id];
-              }
-            }
-          }
-
-          this.setState({
-            paginationId: i,
-            renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
-            restPosts: [...this.state.restPosts, ...restPosts],
-            isLoaded: true,
-            isLoadingNewPosts: false
-          });
-        }, 200);
+        this.setState({
+          paginationId: i,
+          renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
+          restPosts: [...this.state.restPosts, ...restPosts],
+          isLoaded: true,
+          isLoadingNewPosts: false
+        });
       }, 200);
-    });
+    }, 200);
   }
 
   handleNewPosts() {
@@ -156,51 +157,8 @@ class Main extends React.Component {
   }
 
   handleFollow(activeUser, currentProfile) {
-    database.ref(`usernames/${activeUser}`).once('value', data => {
-      let followedUsers = data.toJSON().followedUsers.split(',');
-
-      if (this.state.isFollowed) {
-        const index = followedUsers.indexOf(currentProfile);
-
-        followedUsers.splice(index, 1);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-          const index = followers.indexOf(activeUser);
-
-          followers.splice(index, 1);
-          followers = followers.join(',');
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: false });
-      }
-      else {
-        followedUsers.push(currentProfile);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-
-          if (followers[0]) {
-            followers.push(activeUser);
-            followers = followers.join(',');
-          } else {
-            followers = activeUser;
-          }
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: true });
-      }
-    });
+    handleFollow(activeUser, currentProfile, this.state.isFollowed);
+    this.setState({ isFollowed: !this.state.isFollowed });
   }
 
   handleSuggested(suggested) {

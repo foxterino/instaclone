@@ -1,7 +1,8 @@
 import React from 'react';
 import './SuggestedPage.css';
-import { database } from '../../firebase';
+import { database } from '../../firebaseConfig';
 import Suggested from '../../Shared/Suggested/Suggested';
+import { handleFollow } from '../../Services/Api';
 
 class SuggestedPage extends React.Component {
   state = {
@@ -25,51 +26,8 @@ class SuggestedPage extends React.Component {
   }
 
   handleFollow(activeUser, currentProfile) {
-    database.ref(`usernames/${activeUser}`).once('value', data => {
-      let followedUsers = data.toJSON().followedUsers.split(',');
-
-      if (this.state.isFollowed) {
-        const index = followedUsers.indexOf(currentProfile);
-
-        followedUsers.splice(index, 1);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-          const index = followers.indexOf(activeUser);
-
-          followers.splice(index, 1);
-          followers = followers.join(',');
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: false });
-      }
-      else {
-        followedUsers.push(currentProfile);
-        followedUsers = followedUsers.join(',');
-
-        database.ref(`usernames/${activeUser}`).update({ followedUsers: followedUsers });
-
-        database.ref(`usernames/${currentProfile}`).once('value', data => {
-          let followers = data.toJSON().followers.split(',');
-
-          if (followers[0]) {
-            followers.push(activeUser);
-            followers = followers.join(',');
-          } else {
-            followers = activeUser;
-          }
-
-          database.ref(`usernames/${currentProfile}`).update({ followers: followers });
-        });
-
-        this.setState({ isFollowed: true });
-      }
-    });
+    handleFollow(activeUser, currentProfile, this.state.isFollowed);
+    this.setState({ isFollowed: !this.state.isFollowed });
   }
 
   render() {

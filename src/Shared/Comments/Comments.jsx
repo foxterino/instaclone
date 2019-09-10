@@ -1,7 +1,7 @@
 import React from 'react';
 import './Comments.css';
 import Comment from '../Comment/Comment'
-import { database } from '../../firebase';
+import { database } from '../../firebaseConfig';
 
 class Comments extends React.Component {
   state = {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Suggested.css';
-import { database } from '../../firebase';
+import { database } from '../../firebaseConfig';
 import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
 import { Link } from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { database } from '../../../../firebase';
+import { database } from '../../../../firebaseConfig';
 
 export class ModalInfoItem extends Component {
   state = {

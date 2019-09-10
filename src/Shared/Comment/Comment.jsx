@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import './Comment.css';
-import { database } from '../../firebase'
+import { database } from '../../firebaseConfig'
 import { Link } from 'react-router-dom';
 
 function Comment(props) {
