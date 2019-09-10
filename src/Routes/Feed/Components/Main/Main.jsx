@@ -13,10 +13,13 @@ class Main extends React.Component {
     followedUsers: '',
     renderPostsId: [],
     restPosts: [],
+    isLoadingNewPosts: false,
+    isRestPosts: false,
     isNewPosts: false,
     isLoaded: false,
     currentSuggestUser: null,
-    suggested: []
+    suggested: [],
+    paginationId: 0
   };
 
   componentDidMount() {
@@ -32,6 +35,10 @@ class Main extends React.Component {
           followedUsers: data.toJSON().followedUsers,
           currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
         });
+      });
+
+      database.ref('posts').once('value', data => {
+        this.setState({ paginationId: Object.keys(data.toJSON()).pop() });
       });
 
       this.updateFeed();
@@ -61,41 +68,65 @@ class Main extends React.Component {
   updateFeed() {
     database.ref('posts').once('value', data => {
       setTimeout(() => {
-        const posts = [];
+        const posts = data.toJSON();
         let renderPostsId = [];
-        const restPosts = [];
+        let restPosts = [];
         const followedUsers = this.state.followedUsers.split(',');
+        let i;
 
-        for (let key in data.toJSON()) {
-          posts.push(data.toJSON()[key]);
+
+        if (!this.state.isRestPosts) {
+          for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
+            if (!posts[i]) continue;
+
+            if (followedUsers.indexOf(posts[i].user) !== -1) {
+              renderPostsId = [...renderPostsId, posts[i].id];
+            }
+          }
         }
 
-        posts.forEach((item) => {
-          if (followedUsers.indexOf(item.user) !== -1) {
-            renderPostsId = [...renderPostsId, item.id];
-          } else {
-            restPosts.push(item.id);
+        if (i === -1) {
+          database.ref('posts').once('value', data => {
+            this.setState({
+              paginationId: Object.keys(data.toJSON()).pop(),
+              isRestPosts: true
+            });
+          });
+        }
+
+        setTimeout(() => {
+          if (this.state.isRestPosts || i === -1) {
+            for (i = this.state.paginationId; restPosts.length < 3 && i >= 0; i--) {
+              if (!posts[i]) continue;
+
+              if (followedUsers.indexOf(posts[i].user) === -1) {
+                restPosts = [...restPosts, posts[i].id];
+              }
+            }
           }
-        });
 
-        restPosts.sort((a, b) => {
-          return data.toJSON()[b].likeCount - data.toJSON()[a].likeCount;
-        });
-
-        this.setState({
-          renderPostsId: renderPostsId,
-          restPosts: restPosts,
-          isLoaded: true
-        });
+          this.setState({
+            paginationId: i,
+            renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
+            restPosts: [...this.state.restPosts, ...restPosts],
+            isLoaded: true,
+            isLoadingNewPosts: false
+          });
+        }, 200);
       }, 200);
     });
   }
 
   handleNewPosts() {
-    this.setState({
-      isLoaded: false,
-      renderPostsId: [],
-      isNewPosts: false
+    database.ref('posts').once('value', data => {
+      this.setState({
+        paginationId: Object.keys(data.toJSON()).pop(),
+        isRestPosts: false,
+        isLoaded: false,
+        renderPostsId: [],
+        restPosts: [],
+        isNewPosts: false
+      });
     });
 
     this.props.updateBD();
@@ -108,6 +139,19 @@ class Main extends React.Component {
     const pageY = window.pageYOffset || document.documentElement.scrollTop;
     if (pageY === 0 && this.state.isNewPosts) {
       this.handleNewPosts();
+    }
+
+    const condition = this.state.isRestPosts && this.state.paginationId === -1;
+    const pageHeight = document.documentElement.scrollTop;
+    const scrollPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollOffset = pageHeight / scrollPosition;
+
+    if (!condition && !this.state.isLoadingNewPosts && scrollOffset > 0.8) {
+      this.setState({ isLoadingNewPosts: true });
+
+      setTimeout(() => {
+        this.updateFeed();
+      }, 200);
     }
   }
 
@@ -176,9 +220,11 @@ class Main extends React.Component {
       );
     });;
 
-    restPosts.unshift(
-      <div className='rest-posts'>You may be interested in.</div>
-    );
+    if (restPosts.length !== 0) {
+      restPosts.unshift(
+        <div className='rest-posts'>You may be interested in.</div>
+      );
+    }
 
     let posts;
     if (!this.state.isLoaded) {
@@ -254,7 +300,6 @@ class Main extends React.Component {
     }
 
     if (Array.isArray(posts)) {
-      posts.reverse();
       posts.splice(1, 0,
         <Suggested
           activeUser={this.state.activeUser}
