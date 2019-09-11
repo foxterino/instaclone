@@ -55,15 +55,14 @@ class FeedPage extends React.Component {
     } else {
       const index = this.state.deletedPosts.indexOf(postId);
       const deletedPosts = this.state.deletedPosts.slice();
-      deletedPosts.splice(index, 1);
 
+      deletedPosts.splice(index, 1);
       this.setState({ deletedPosts: deletedPosts });
     }
   }
 
   async updateBD() {
     const data = await database.ref('posts').once('value').then(data => data.val());
-
     const deletedPostsByActiveUser = this.state.deletedPosts.filter(item => {
       return data[item] && this.state.activeUser === data[item].user;
     });

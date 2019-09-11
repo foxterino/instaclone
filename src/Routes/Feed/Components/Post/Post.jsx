@@ -46,10 +46,7 @@ class Post extends React.Component {
     });
 
     database.ref(`users/${this.props.userId}`).on('value', data => {
-      const likedPosts = data.toJSON().likedPosts.split(',').map((item) => {
-        if (item === '') return item;
-        else return +item;
-      });
+      const likedPosts = data.toJSON().likedPosts.split(',').map(item => item === '' ? item : +item);
 
       const isLiked = likedPosts.indexOf(this.props.postId) !== -1;
       this.setState({

@@ -11,7 +11,7 @@ const OptionsModalWindow = (props) => {
         {props.children}
         <button className='options-close-button'>Cancel</button>
       </div>
-    </div >
+    </div>
   );
 }
 

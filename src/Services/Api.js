@@ -53,7 +53,6 @@ export const handleLike = async (e, currentLikeCount, isLiked, postId, userId) =
 
 export const updateLikedPosts = async (isLiked, postId, userId) => {
   const data = await database.ref(`users/${userId}`).once('value').then(data => data.val());
-
   let likedPosts;
 
   if (isLiked) {
