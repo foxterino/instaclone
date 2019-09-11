@@ -118,19 +118,6 @@ class ProfilePage extends React.Component {
         : this.setState({ isFollowed: false });
     });
 
-    database.ref('usernames').once('value', data => {
-      const usernames = [];
-      for (let key in data.toJSON()) {
-        usernames.push(key);
-      }
-
-      if (usernames.indexOf(this.props.match.params.profile) === -1) {
-        this.setState({ isExist: false });
-      } else {
-        this.setState({ isExist: true });
-      }
-    });
-
     database.ref(`usernames/${this.props.match.params.profile}`).on('value', data => {
       if (data.toJSON()) {
         const followedUsers = data.toJSON().followedUsers.split(',');
@@ -145,24 +132,40 @@ class ProfilePage extends React.Component {
     });
   }
 
-  updateProfilePictures() {
-    database.ref('posts').once('value', data => {
-      setTimeout(() => {
-        const posts = [];
-        for (let key in data.toJSON()) {
-          posts.push(data.toJSON()[key]);
+  async updateProfilePictures() {
+    setTimeout(async () => {
+      const data = await database.ref('posts').once('value').then(data => data.val());
+      const posts = [];
+      let renderPostsId = [];
+
+      for (let key in data) {
+        posts.push(data[key]);
+      }
+
+      posts.forEach((item) => {
+        if (item.user === this.props.match.params.profile) {
+          renderPostsId = [...renderPostsId, item.id];
         }
+      })
 
-        let renderPostsId = [];
-        posts.forEach((item) => {
-          if (item.user === this.props.match.params.profile) {
-            renderPostsId = [...renderPostsId, item.id];
-          }
-        })
+      this.setState({ renderPostsId: renderPostsId });
+      this.checkIsExist();
+    }, 200);
+  }
 
-        this.setState({ renderPostsId: renderPostsId });
-      }, 200);
-    });
+  async checkIsExist() {
+    const data = await database.ref('usernames').once('value').then(data => data.val());
+    const usernames = [];
+
+    for (let key in data) {
+      usernames.push(key);
+    }
+
+    if (usernames.indexOf(this.props.match.params.profile) === -1) {
+      this.setState({ isExist: false });
+    } else {
+      this.setState({ isExist: true });
+    }
   }
 
   handleFollow(activeUser, currentProfile) {
@@ -228,54 +231,53 @@ class ProfilePage extends React.Component {
     }
   }
 
-  updateModalInfo() {
-    database.ref(`usernames`).once('value', usernames => {
-      const followers = [];
-      const following = [];
-      const currentProfile = usernames.toJSON()[this.state.currentProfile];
+  async updateModalInfo() {
+    const usernames = await database.ref(`usernames`).once('value').then(data => data.val());
+    const followers = [];
+    const following = [];
+    const currentProfile = usernames[this.state.currentProfile];
 
-      for (let key in usernames.toJSON()) {
-        if (
-          currentProfile.followedUsers.indexOf(key) !== -1 &&
-          key !== this.state.currentProfile
-        ) {
-          following.push(
-            <ModalInfoItem
-              handleFollow={this.handleFollow}
-              activeUser={this.state.activeUser}
-              profile={key}
-            >
-              <Link to={key}>
-                <img src={usernames.toJSON()[key].profilePhoto} alt='' />
-                <span>{key}</span>
-              </Link>
-            </ModalInfoItem>
-          );
-        }
-
-        if (currentProfile.followers.indexOf(key) !== -1) {
-          followers.push(
-            <ModalInfoItem
-              handleFollow={this.handleFollow}
-              activeUser={this.state.activeUser}
-              profile={key}
-            >
-              <Link to={key}>
-                <img src={usernames.toJSON()[key].profilePhoto} alt='' />
-                <span>{key}</span>
-              </Link>
-            </ModalInfoItem>
-          );
-        }
+    for (let key in usernames) {
+      if (
+        currentProfile.followedUsers.indexOf(key) !== -1 &&
+        key !== this.state.currentProfile
+      ) {
+        following.push(
+          <ModalInfoItem
+            handleFollow={this.handleFollow}
+            activeUser={this.state.activeUser}
+            profile={key}
+          >
+            <Link to={key}>
+              <img src={usernames[key].profilePhoto} alt='' />
+              <span>{key}</span>
+            </Link>
+          </ModalInfoItem>
+        );
       }
 
-      following.reverse();
-      followers.reverse();
+      if (currentProfile.followers.indexOf(key) !== -1) {
+        followers.push(
+          <ModalInfoItem
+            handleFollow={this.handleFollow}
+            activeUser={this.state.activeUser}
+            profile={key}
+          >
+            <Link to={key}>
+              <img src={usernames[key].profilePhoto} alt='' />
+              <span>{key}</span>
+            </Link>
+          </ModalInfoItem>
+        );
+      }
+    }
 
-      this.setState({
-        followers: followers,
-        following: following
-      });
+    following.reverse();
+    followers.reverse();
+
+    this.setState({
+      followers: followers,
+      following: following
     });
   }
 
@@ -376,7 +378,11 @@ class ProfilePage extends React.Component {
   render() {
     if (this.state.redirect) return <Redirect to='/login' />
     if (this.state.isExist === null) {
-      return <div className='loading'>Loading...</div>;
+      return (
+        <div className='profile'>
+          <div className='loading'>Loading...</div>
+        </div>
+      );
     }
     if (!this.state.isExist) return <NotFound />;
 

@@ -4,7 +4,7 @@ import './Comment.css';
 import { database } from '../../firebaseConfig'
 import { Link } from 'react-router-dom';
 
-function Comment(props) {
+const Comment = (props) => {
   const [isMoreButton, setIsMoreButton] = useState(props.text.length > 100);
 
   const [isEdit, setIsEdit] = useState(false);
@@ -20,23 +20,23 @@ function Comment(props) {
     }
   }, [props.text]);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     setNewComment(e.target.value);
     setError(false);
   }
 
-  function handleDelete() {
+  const handleDelete = () => {
     database.ref(`posts/${props.postId}/comments/${props.id}`).remove();
   }
 
-  function handleEdit() {
+  const handleEdit = () => {
     if (props.isEditing) return;
 
     setIsEdit(true);
     props.handleIsEditing(true);
   }
 
-  function handleSave(e) {
+  const handleSave = (e) => {
     e.preventDefault();
 
     if (!newComment) {
@@ -52,7 +52,7 @@ function Comment(props) {
     props.handleIsEditing(false);
   }
 
-  function handleCancel() {
+  const handleCancel = () => {
     setNewComment(props.text);
     setError(false);
     setIsEdit(false);
@@ -60,7 +60,6 @@ function Comment(props) {
   }
 
   let options;
-
   if (props.activeUser === props.user) {
     options = (
       <>

@@ -1,7 +1,7 @@
 import React from 'react'
 import './OptionsModalWindow.css'
 
-function OptionsModalWindow(props) {
+const OptionsModalWindow = (props) => {
   return (
     <div
       className='options-modal-window-wrapper'

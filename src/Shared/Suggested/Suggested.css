@@ -18,6 +18,13 @@
   align-items: center;
 }
 
+.suggested .loading {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .suggested .top-buttons {
   display: flex;
   justify-content: space-between;

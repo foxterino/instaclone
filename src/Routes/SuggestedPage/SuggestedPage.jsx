@@ -11,14 +11,12 @@ class SuggestedPage extends React.Component {
     suggested: []
   }
 
-  componentDidMount() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({ activeUser: data.toJSON().username });
+  async componentDidMount() {
+    const activeUser = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
+    const userInfo = await database.ref(`usernames/${activeUser.username}`).once('value').then(data => data.val());
 
-      database.ref(`usernames/${data.toJSON().username}`).once('value', data => {
-        this.setState({ currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0] });
-      });
-    });
+    this.setState({ activeUser: activeUser.username });
+    this.setState({ currentSuggestUser: userInfo.followedUsers.split(',').slice(-1)[0] });
   }
 
   handleSuggested(suggested) {

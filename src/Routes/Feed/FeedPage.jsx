@@ -62,8 +62,7 @@ class FeedPage extends React.Component {
   }
 
   async updateBD() {
-    let data = await database.ref('posts').once('value', data => data);
-    data = data.toJSON();
+    const data = await database.ref('posts').once('value').then(data => data.val());
 
     const deletedPostsByActiveUser = this.state.deletedPosts.filter(item => {
       return data[item] && this.state.activeUser === data[item].user;

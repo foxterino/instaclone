@@ -314,3 +314,10 @@
 .profile .profile-photo-edit-wrapper input:focus {
   outline: none;
 }
+
+.profile .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

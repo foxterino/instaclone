@@ -4,6 +4,7 @@ import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
 import './Post.css'
 import Comments from '../../../../Shared/Comments/Comments';
 import { Link, Redirect } from 'react-router-dom';
+import { handleLike } from '../../../../Services/Api';
 
 class Post extends React.Component {
   state = {
@@ -16,7 +17,8 @@ class Post extends React.Component {
     activeUser: '',
     comments: [],
     redirect: false,
-    profilePhoto: ''
+    profilePhoto: '',
+    isLikeUpdating: false
   }
 
   componentDidMount() {
@@ -25,6 +27,7 @@ class Post extends React.Component {
 
       const info = data.toJSON();
       const comments = [];
+
       for (let key in info.comments) {
         comments.push(info.comments[key]);
       }
@@ -38,15 +41,11 @@ class Post extends React.Component {
       });
 
       database.ref(`usernames/${info.user}`).on('value', data => {
-        if (data.toJSON().profilePhoto) {
-          this.setState({ profilePhoto: data.toJSON().profilePhoto });
-        } else {
-          this.setState({ profilePhoto: '#' });
-        }
+        this.setState({ profilePhoto: data.toJSON().profilePhoto });
       });
     });
 
-    database.ref(this.props.dbRefPath).on('value', data => {
+    database.ref(`users/${this.props.userId}`).on('value', data => {
       const likedPosts = data.toJSON().likedPosts.split(',').map((item) => {
         if (item === '') return item;
         else return +item;
@@ -61,59 +60,22 @@ class Post extends React.Component {
   }
 
   handleLike(e) {
-    e.target.classList.toggle('liked');
+    if (this.state.isLikeUpdating) return;
 
-    let likeCount = this.state.isLiked ?
-      this.state.likeCount - 1 : this.state.likeCount + 1;
+    this.setState({ isLikeUpdating: true });
+    handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
 
-    database.ref(`posts/${this.props.postId}`).update({ likeCount: likeCount })
-      .then(() => {
-        database.ref(this.props.dbRefPath).once('value', data => {
-          this.updateIsLiked(data.toJSON());
-        });
-      })
-      .then(() => {
-        if (this.state.isLiked) {
-          this.setState({ isLikeAnim: true });
+    setTimeout(() => {
+      this.setState({ isLikeUpdating: false });
 
-          setTimeout(() => {
-            this.setState({ isLikeAnim: false })
-          }, 2000);
-        }
-      });
-  }
+      if (this.state.isLiked) {
+        this.setState({ isLikeAnim: true });
 
-  updateIsLiked(data) {
-    let likedPosts;
-
-    if (this.state.isLiked) {
-      likedPosts = data.likedPosts.split(',').map((item) => {
-        return +item;
-      });
-
-      if (likedPosts.length === 1) {
-        likedPosts = '';
-      } else {
-        const postIndex = likedPosts.indexOf(this.props.postId);
-
-        likedPosts.splice(postIndex, 1);
-        likedPosts = likedPosts.join(',');
+        setTimeout(() => {
+          this.setState({ isLikeAnim: false })
+        }, 2000);
       }
-    }
-    else {
-      likedPosts = data.likedPosts.split(',');
-
-      if (likedPosts[0]) {
-        likedPosts.push(this.props.postId);
-        likedPosts = likedPosts.join(',');
-      } else {
-        likedPosts = `${this.props.postId}`;
-      }
-    }
-
-    database.ref(this.props.dbRefPath).update({
-      likedPosts: likedPosts
-    });
+    }, 200);
   }
 
   handleRedirectToProfile() {

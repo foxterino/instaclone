@@ -7,10 +7,9 @@ import { database } from '../firebaseConfig';
 class Layout extends React.Component {
   state = { activeUser: null }
 
-  componentDidMount() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({ activeUser: data.toJSON().username });
-    });
+  async componentDidMount() {
+    const activeUser = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
+    this.setState({ activeUser: activeUser.username });
 
     database.ref('posts').on('child_removed', data => {
       database.ref('users').once('value', users => {

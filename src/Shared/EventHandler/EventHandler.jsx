@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-function EventHandler({ eventName, callback, children }) {
+const EventHandler = ({ eventName, callback, children }) => {
   useEffect(() => {
     window.addEventListener(eventName, callback);
 

@@ -24,9 +24,13 @@ class Main extends React.Component {
   };
 
   async componentDidMount() {
-    let username = await database.ref(`users/${this.props.userId}`).once('value', data => data);
-    username = username.toJSON();
-    this.setState({ activeUser: username.username });
+    const username = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
+    const posts = await database.ref('posts').once('value').then(data => data.val());
+
+    this.setState({
+      activeUser: username.username,
+      paginationId: Object.keys(posts).pop()
+    });
 
     database.ref(`usernames/${this.state.activeUser || username.username}`).on('value', data => {
       if (this.state.isLoaded && data.toJSON().followedUsers.length > this.state.followedUsers.length) {
@@ -38,10 +42,6 @@ class Main extends React.Component {
         currentSuggestUser: data.toJSON().followedUsers.split(',').slice(-1)[0]
       });
     });
-
-    let posts = await database.ref('posts').once('value', data => data);
-    posts = posts.toJSON();
-    this.setState({ paginationId: Object.keys(posts).pop() });
 
     this.updateFeed();
 
@@ -68,13 +68,11 @@ class Main extends React.Component {
 
   async updateFeed() {
     setTimeout(async () => {
-      const data = await database.ref('posts').once('value', data => data);
-      const posts = data.toJSON();
+      const posts = await database.ref('posts').once('value').then(data => data.val());
+      const followedUsers = this.state.followedUsers.split(',');
       let renderPostsId = [];
       let restPosts = [];
-      const followedUsers = this.state.followedUsers.split(',');
       let i;
-
 
       if (!this.state.isRestPosts) {
         for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
@@ -87,8 +85,7 @@ class Main extends React.Component {
       }
 
       if (i === -1) {
-        let data = await database.ref('posts').once('value', data => data)
-        data = data.toJSON();
+        const data = await database.ref('posts').once('value').then(data => data.val());
 
         this.setState({
           paginationId: Object.keys(data).pop(),
@@ -170,7 +167,7 @@ class Main extends React.Component {
       return (
         <Post
           postId={item}
-          dbRefPath={`users/${this.props.userId}`}
+          userId={this.props.userId}
           handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, false)}
           handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
           isDeleted={this.props.deletedPosts.indexOf(item) !== -1}
@@ -219,7 +216,7 @@ class Main extends React.Component {
         return (
           <Post
             postId={item}
-            dbRefPath={`users/${this.props.userId}`}
+            userId={this.props.userId}
             handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, true)}
             handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
             isDeleted={this.props.deletedPosts.indexOf(item) !== -1}

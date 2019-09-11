@@ -50,6 +50,13 @@
   box-shadow: 0 2px 0 hsl(220, 7%, 83%), inset 4px 0 0 rgb(244, 202, 100);
 }
 
+.suggested-page .suggested .loading {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .suggested-page h4 {
   margin: 40px 0 10px 0;
   font-size: 16px;

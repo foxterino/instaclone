@@ -4,15 +4,19 @@ import { database } from '../../firebaseConfig';
 import SuggestedItem from '../../Shared/SuggestedItem/SuggestedItem';
 import { Link } from 'react-router-dom';
 
-function Suggested(props) {
+const Suggested = (props) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [translateX, setTranslateX] = useState(0);
+
   useEffect(() => {
-    if (props.suggested.length === 0) {
-      database.ref(`usernames`).once('value', usernames => {
-        const currentFollowedUsers = usernames.toJSON()[props.currentProfile].followedUsers.split(',');
-        const activeFollowedUsers = usernames.toJSON()[props.activeUser].followedUsers.split(',');
-        const activeFollowers = usernames.toJSON()[props.activeUser].followers.length === 0
+    const updateSuggeted = async () => {
+      if (props.suggested.length === 0) {
+        const usernames = await database.ref(`usernames`).once('value').then(data => data.val());
+        const currentFollowedUsers = usernames[props.currentProfile].followedUsers.split(',');
+        const activeFollowedUsers = usernames[props.activeUser].followedUsers.split(',');
+        const activeFollowers = usernames[props.activeUser].followers.length === 0
           ? []
-          : usernames.toJSON()[props.activeUser].followers.split(',');
+          : usernames[props.activeUser].followers.split(',');
         const suggested = [];
         const suggestedByUsername = [];
 
@@ -34,7 +38,7 @@ function Suggested(props) {
                 profile={item}
               >
                 <Link to={`/${item}`}>
-                  <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                  <img src={usernames[item].profilePhoto} alt='' />
                 </Link>
                 <Link to={`/${item}`} className='username-link'>{item}</Link>
               </SuggestedItem>
@@ -62,7 +66,7 @@ function Suggested(props) {
                   profile={item}
                 >
                   <Link to={`/${item}`}>
-                    <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                    <img src={usernames[item].profilePhoto} alt='' />
                   </Link>
                   <Link to={`/${item}`} className='username-link'>{item}</Link>
                 </SuggestedItem>
@@ -74,7 +78,7 @@ function Suggested(props) {
         }
 
         if (suggested.length !== props.amount) {
-          const usernamesArray = Object.keys(usernames.toJSON());
+          const usernamesArray = Object.keys(usernames);
           usernamesArray.reverse();
 
           usernamesArray.forEach(item => {
@@ -95,7 +99,7 @@ function Suggested(props) {
                   profile={item}
                 >
                   <Link to={`/${item}`}>
-                    <img src={usernames.toJSON()[item].profilePhoto} alt='' />
+                    <img src={usernames[item].profilePhoto} alt='' />
                   </Link>
                   <Link to={`/${item}`} className='username-link'>{item}</Link>
                 </SuggestedItem>
@@ -107,18 +111,22 @@ function Suggested(props) {
         }
 
         props.handleSuggested(suggested);
-      });
+        setIsLoaded(true);
+      }
     }
+
+    updateSuggeted();
   }, [props]);
 
-  const [translateX, setTranslateX] = useState(0);
-
-  function handleTranslateX(amount) {
+  const handleTranslateX = (amount) => {
     setTranslateX(translateX + amount);
   }
 
   let content;
-  if (props.suggested.length === 0) {
+  if (!isLoaded) {
+    content = <div className='loading'>Loading...</div>;
+  }
+  else if (props.suggested.length === 0) {
     content = (
       <div className='empty'>
         We have nothing to suggest u now lol sorry

@@ -112,33 +112,32 @@ class RegistrationPage extends React.Component {
   handleSignup(e) {
     e.preventDefault();
 
-    database.ref('usernames').once('value', data => {
-      const usernameWithoutSpace = this.state.username.split(' ');
-      const usernames = [];
-      for (let key in data.toJSON()) {
-        usernames.push(key);
-      }
+    const data = database.ref('usernames').once('value').then(data => data.val());
+    const usernameWithoutSpace = this.state.username.split(' ');
+    const usernames = [];
+    for (let key in data) {
+      usernames.push(key);
+    }
 
-      if (usernames.indexOf(this.state.username.toLowerCase()) !== -1) {
-        this.setState({
-          errors: {
-            username: true
-          },
-          errorMessage: 'This username isn\'t available.'
-        });
-      }
-      else if (usernameWithoutSpace.length > 1) {
-        this.setState({
-          errors: {
-            username: true
-          },
-          errorMessage: 'Usernames cannot contain spaces...'
-        })
-      }
-      else {
-        this.registration();
-      }
-    });
+    if (usernames.indexOf(this.state.username.toLowerCase()) !== -1) {
+      this.setState({
+        errors: {
+          username: true
+        },
+        errorMessage: 'This username isn\'t available.'
+      });
+    }
+    else if (usernameWithoutSpace.length > 1) {
+      this.setState({
+        errors: {
+          username: true
+        },
+        errorMessage: 'Usernames cannot contain spaces...'
+      })
+    }
+    else {
+      this.registration();
+    }
   }
 
   render() {

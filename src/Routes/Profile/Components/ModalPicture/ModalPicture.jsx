@@ -1,6 +1,7 @@
 import React from 'react';
 import './ModalPicture.css';
 import { database } from '../../../../firebaseConfig'
+import { handleLike } from '../../../../Services/Api';
 import { Link } from 'react-router-dom';
 import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
 import Comments from '../../../../Shared/Comments/Comments';
@@ -18,7 +19,8 @@ class ModalPicture extends React.Component {
     activeUser: '',
     comments: [],
     profilePhoto: '',
-    isOptionsModal: false
+    isOptionsModal: false,
+    isLikeUpdating: false
   }
 
   componentDidMount() {
@@ -30,97 +32,56 @@ class ModalPicture extends React.Component {
       if (!data.toJSON()) return;
 
       const info = data.toJSON();
-      this.setState({
-        user: info.user,
-        imageSrc: info.imageSrc,
-        likeCount: info.likeCount,
-        caption: info.caption
-      });
-
-      database.ref(`usernames/${info.user}`).on('value', data => {
-        if (data.toJSON().profilePhoto) {
-          this.setState({ profilePhoto: data.toJSON().profilePhoto });
-        } else {
-          this.setState({ profilePhoto: '#' });
-        }
-      });
-
       const comments = [];
+
       for (let key in data.toJSON().comments) {
         comments.push(data.toJSON().comments[key]);
       }
 
-      this.setState({ comments: comments });
+      this.setState({
+        user: info.user,
+        imageSrc: info.imageSrc,
+        likeCount: info.likeCount,
+        caption: info.caption,
+        comments: comments
+      });
+
+      database.ref(`usernames/${info.user}`).on('value', data => {
+        this.setState({ profilePhoto: data.toJSON().profilePhoto });
+      });
     });
 
     database.ref(`users/${this.props.userId}`).on('value', data => {
       const likedPosts = data.toJSON().likedPosts.split(',').map((item) => {
-        return +item;
+        if (item === '') return item;
+        else return +item;
       });
 
       const isLiked = likedPosts.indexOf(this.props.postId) !== -1;
       this.setState({
         isLiked: isLiked,
-        isLikeAnim: false,
         activeUser: data.toJSON().username
       });
     });
   }
 
   handleLike(e) {
-    e.target.classList.toggle('liked');
+    if (this.state.isLikeUpdating) return;
 
-    let likeCount = this.state.isLiked ?
-      this.state.likeCount - 1 : this.state.likeCount + 1;
+    this.setState({ isLikeUpdating: true });
+    handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
 
-    database.ref(`posts/${this.props.postId}`).update({ likeCount: likeCount })
-      .then(() => {
-        database.ref(`users/${this.props.userId}`).once('value', data => {
-          this.updateIsLiked(data.toJSON());
-        });
-      })
-      .then(() => {
-        if (this.state.isLiked) {
-          this.setState({ isLikeAnim: true });
+    setTimeout(() => {
+      this.setState({ isLikeUpdating: false });
 
-          setTimeout(() => {
-            this.setState({ isLikeAnim: false })
-          }, 2000);
-        }
-      });
-  }
+      if (this.state.isLiked) {
+        this.setState({ isLikeAnim: true });
 
-  updateIsLiked(data) {
-    let likedPosts;
-
-    if (this.state.isLiked) {
-      likedPosts = data.likedPosts.split(',').map((item) => {
-        return +item;
-      });
-
-      if (likedPosts.length === 1) {
-        likedPosts = '';
-      } else {
-        const postIndex = likedPosts.indexOf(this.props.postId);
-
-        likedPosts.splice(postIndex, 1);
-        likedPosts = likedPosts.join(',');
+        setTimeout(() => {
+          this.setState({ isLikeAnim: false })
+        }, 2000);
       }
-    }
-    else {
-      likedPosts = data.likedPosts.split(',');
-
-      if (likedPosts[0]) {
-        likedPosts.push(this.props.postId);
-        likedPosts = likedPosts.join(',');
-      } else {
-        likedPosts = `${this.props.postId}`;
-      }
-    }
-
-    database.ref(`users/${this.props.userId}`).update({
-      likedPosts: likedPosts
-    });
+    }, 200);
   }
 
   handleSwitch(e) {
@@ -128,10 +89,19 @@ class ModalPicture extends React.Component {
     if (e.key === 'ArrowRight' && !this.props.isNextSwitch) return;
     if (e.key === 'ArrowLeft' && !this.props.isPrevSwitch) return;
 
-    this.props.handleModalSwitch(e);
-    setTimeout(() => {
-      this.handleUpdate();
-    })
+    if (
+      e.target.className === 'next-button' ||
+      e.key === 'ArrowRight' ||
+      e.target.className === 'previous-button' ||
+      e.key === 'ArrowLeft'
+    ) {
+      this.props.handleModalSwitch(e);
+      this.setState({ isLikeAnim: false });
+
+      setTimeout(() => {
+        this.handleUpdate();
+      })
+    }
   }
 
   handleOptionsModalOpen() {

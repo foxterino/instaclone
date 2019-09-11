@@ -10,7 +10,7 @@ class Header extends React.Component {
     isModal: false
   };
 
-  handleChange(e) {
+  async handleChange(e) {
     this.setState({ value: e.target.value });
 
     if (!e.target.value) {
@@ -18,21 +18,21 @@ class Header extends React.Component {
       return;
     }
 
-    database.ref('usernames').once('value', data => {
-      let searchResults = [];
-      for (let key in data.toJSON()) {
-        if (key.includes(this.state.value)) {
-          searchResults.push(
-            <a href={`/${key}`} className='search-bar'>
-              <img src={data.toJSON()[key].profilePhoto} alt='' />
-              <span>{key}</span>
-            </a>
-          );
-        }
-      }
+    const usernames = await database.ref('usernames').once('value').then(data => data.val());
+    let searchResults = [];
 
-      this.setState({ searchResults: searchResults });
-    });
+    for (let key in usernames) {
+      if (key.includes(this.state.value)) {
+        searchResults.push(
+          <a href={`/${key}`} className='search-bar'>
+            <img src={usernames[key].profilePhoto} alt='' />
+            <span>{key}</span>
+          </a>
+        );
+      }
+    }
+
+    this.setState({ searchResults: searchResults });
   }
 
   handleModal(e) {

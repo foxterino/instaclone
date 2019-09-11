@@ -24,7 +24,7 @@ class CreatePost extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
 
     let imageSrcError = false;
@@ -44,35 +44,28 @@ class CreatePost extends React.Component {
       return;
     }
 
-    let username;
-    let postId;
+    const username = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val().username);
+    const postsList = await database.ref('posts').once('value').then(data => data.val());
+    const posts = [];
 
-    database.ref(`users/${this.props.userId}`).once('value', data => {
-      username = data.toJSON().username;
+    for (let key in postsList) {
+      posts.push(postsList[key]);
+    }
 
-      database.ref('posts').once('value', data => {
-        const posts = [];
-        for (let key in data.toJSON()) {
-          posts.push(data.toJSON()[key]);
-        }
+    const postId = postsList ? posts[posts.length - 1].id + 1 : 0;
 
-        postId = data.toJSON() ? posts[posts.length - 1].id + 1 : 0;
-      })
-        .then(() => {
-          database.ref('posts').update({
-            [postId]: {
-              caption: this.state.caption,
-              imageSrc: this.state.imageSrc,
-              likeCount: 0,
-              user: username,
-              id: postId
-            }
-          });
-        });
-    })
-      .then(() => {
-        this.setState({ redirect: true });
-      });
+    database.ref('posts').update({
+      [postId]: {
+        caption: this.state.caption,
+        imageSrc: this.state.imageSrc,
+        likeCount: 0,
+        user: username,
+        id: postId
+      }
+    }).then(() => {
+      this.setState({ redirect: true });
+    });
+
   }
 
   render() {
