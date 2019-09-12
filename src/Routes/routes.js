@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import FeedPage from './Feed/Container'
 import LoginPage from './Login/Container'
 import ProfilePage from './Profile/Container'
-import ExplorePage from './Explore/ExplorePage';
+import ExplorePage from './Explore/Container';
 import LoginWarning from './LoginWarning/Container';
 import RegistrationPage from './Registration/Container';
 import CreatePost from './CreatePost/Container';

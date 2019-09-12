@@ -12,15 +12,19 @@ class Main extends React.Component {
   state = {
     activeUser: null,
     followedUsers: '',
+
     renderPostsId: [],
     restPosts: [],
-    isLoadingNewPosts: false,
-    isRestPosts: false,
+
     isNewPosts: false,
     isLoaded: false,
+
     currentSuggestUser: null,
     suggested: [],
-    paginationId: 0
+
+    paginationId: 0,
+    isLoadingNewPosts: false,
+    isRestPosts: false
   };
 
   async componentDidMount() {

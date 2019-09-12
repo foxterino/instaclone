@@ -44,6 +44,7 @@ class ProfilePage extends React.Component {
 
   componentWillUnmount() {
     document.title = 'Instaclone';
+    database.ref('posts').off();
   }
 
   componentDidMount() {
@@ -185,7 +186,10 @@ class ProfilePage extends React.Component {
     });
   }
 
-  handleModalOpen(postId) {
+  async handleModalOpen(postId) {
+    const data = await database.ref(`posts/${postId}`).once('value').then(data => data.val());
+    if (!data) return;
+
     this.setState({
       isModal: true,
       modalPostId: postId

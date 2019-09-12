@@ -1,0 +1,49 @@
+.explore {
+  padding: 0 470px 0 470px;
+}
+
+.explore .suggested-wrapper {
+  margin: 0 10px;
+  max-width: 940px;
+}
+
+.explore .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 40%;
+}
+
+.explore .main {
+  height: auto;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.explore .main:last-of-type {
+  margin-right: auto;
+}
+
+.explore .main .empty-main {
+  width: 100%;
+  margin-top: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #262626;
+}
+
+.explore .main .empty-main div {
+  font-size: 50px;
+}
+
+.explore .main .empty-main span {
+  color: #262626;
+  font-size: 28px;
+  font-weight: 300;
+}
