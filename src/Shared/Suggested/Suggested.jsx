@@ -124,7 +124,7 @@ const Suggested = (props) => {
 
   let content;
   if (!isLoaded) {
-    content = <div className='loading'>Loading...</div>;
+    content = <div className='suggested-loading'>Loading...</div>;
   }
   else if (props.suggested.length === 0) {
     content = (

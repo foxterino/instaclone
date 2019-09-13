@@ -1,0 +1,28 @@
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 37%;
+}
+
+.loading-anim {
+  transition: 0;
+  width: 60px;
+  height: 60px;
+  border: 2px dashed black;
+  border-left: 2px dashed black;
+  border-bottom: 2px dashed black;
+  border-radius: 50%;
+  animation: spin 5s linear 0s infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

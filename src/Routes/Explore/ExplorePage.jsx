@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import ModalPicture from '../Profile/Components/ModalPicture/Container';
 import ProfilePicture from '../Profile/Components/ProfilePicture/ProfilePicture';
 import EventHandler from '../../Shared/EventHandler/EventHandler';
+import Loading from '../../Shared/Loading/Loading';
 
 class ExplorePage extends React.Component {
   state = {
@@ -143,9 +144,7 @@ class ExplorePage extends React.Component {
   render() {
     let posts;
     if (!this.state.isLoaded) {
-      posts = (
-        <div className='loading'>Loading...</div>
-      );
+      posts = <Loading />;
     } else if (this.state.renderPostsId.length !== 0) {
       posts = this.state.renderPostsId.map((item) => {
         return (

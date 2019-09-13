@@ -10,6 +10,7 @@ import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 import Suggested from '../../Shared/Suggested/Suggested';
 import OptionsModalWindow from '../../Shared/OptionsModalWindow/OptionsModalWindow';
 import { handleFollow } from '../../Services/Api';
+import Loading from '../../Shared/Loading/Loading';
 
 class ProfilePage extends React.Component {
   state = {
@@ -165,7 +166,7 @@ class ProfilePage extends React.Component {
     if (usernames.indexOf(this.props.match.params.profile) === -1) {
       this.setState({ isExist: false });
     } else {
-      this.setState({ isExist: true });
+      this.setState({ isExist: null });
     }
   }
 
@@ -384,7 +385,9 @@ class ProfilePage extends React.Component {
     if (this.state.isExist === null) {
       return (
         <div className='profile'>
-          <div className='loading'>Loading...</div>
+          <div className="main">
+            <Loading />
+          </div>
         </div>
       );
     }

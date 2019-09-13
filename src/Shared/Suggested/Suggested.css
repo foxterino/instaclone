@@ -18,7 +18,7 @@
   align-items: center;
 }
 
-.suggested .loading {
+.suggested .suggested-loading {
   height: 200px;
   display: flex;
   justify-content: center;
