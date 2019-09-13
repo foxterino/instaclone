@@ -166,7 +166,7 @@ class ProfilePage extends React.Component {
     if (usernames.indexOf(this.props.match.params.profile) === -1) {
       this.setState({ isExist: false });
     } else {
-      this.setState({ isExist: null });
+      this.setState({ isExist: true });
     }
   }
 
