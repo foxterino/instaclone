@@ -102,7 +102,6 @@ class ExplorePage extends React.Component {
   handleModalClose(e) {
     if (
       e.target.className === 'modal-window-wrapper' ||
-      e.target.className === 'hidden' ||
       e.key === 'Escape'
     )
       this.setState({ isModal: false });
@@ -110,6 +109,7 @@ class ExplorePage extends React.Component {
 
   handleModalSwitch(e) {
     const modalIndex = this.state.renderPostsId.indexOf(this.state.modalPostId);
+    const target = e.key || e.target;
 
     if (modalIndex >= this.state.renderPostsId.length - 3 && this.state.paginationId !== -1) {
       this.setState({ isLoadingNewPosts: true });
@@ -119,12 +119,12 @@ class ExplorePage extends React.Component {
       }, 200);
     }
 
-    if (e.target.className === 'next-button' || e.key === 'ArrowRight') {
+    if (target === 'ArrowRight' || target.className === 'next-button') {
       this.setState({
         modalPostId: this.state.renderPostsId[modalIndex + 1],
       });
     }
-    else if (e.target.className === 'previous-button' || e.key === 'ArrowLeft') {
+    else if (target === 'ArrowLeft' || target.className === 'previous-button') {
       this.setState({
         modalPostId: this.state.renderPostsId[modalIndex - 1],
       });

@@ -158,12 +158,11 @@ class ModalPicture extends React.Component {
             </OptionsModalWindow>
           }
           <button
-            className={
-              this.props.isPrevSwitch ? 'previous-button' : 'hidden'}
+            className={this.props.isPrevSwitch ? 'previous-button' : 'hidden'}
             onClick={this.props.isPrevSwitch ? (e) => this.handleSwitch(e) : null}
           >
-            Prev
-        </button>
+            <div className={this.props.isPrevSwitch ? 'previous-button' : 'hidden'}></div>
+          </button>
           <div className='modal-window'>
             <div
               className='image-wrapper'
@@ -220,8 +219,8 @@ class ModalPicture extends React.Component {
             className={this.props.isNextSwitch ? 'next-button' : 'hidden'}
             onClick={this.props.isNextSwitch ? (e) => this.handleSwitch(e) : null}
           >
-            Next
-        </button>
+            <div className={this.props.isNextSwitch ? 'next-button' : 'hidden'}></div>
+          </button>
         </div>
       </EventHandler>
     );

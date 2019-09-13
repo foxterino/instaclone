@@ -46,33 +46,40 @@
   color: #fff;
 }
 
-.modal-window-wrapper .previous-button,
-.modal-window-wrapper .next-button {
+.modal-window-wrapper button.previous-button,
+.modal-window-wrapper button.next-button {
+  padding: 0;
   opacity: 1;
   cursor: pointer;
-  width: 120px;
+  width: 40px;
   height: 50px;
-  font-size: 15px;
-  background-color: #fff;
-  border: 1px solid #bbcbcb;
-  transition: 0.25s;
+  background: transparent;
+  border: none;
+  overflow: hidden;
 }
 
-.modal-window-wrapper .previous-button:hover {
-  color: #fff;
-  border: 2px solid hsl(227, 10%, 10%);
-  box-shadow: inset -8em 0 0 0 hsl(227, 10%, 10%);
+.modal-window-wrapper button.previous-button {
+  padding-left: 12px;
+}
+.modal-window-wrapper button.next-button {
+  padding-left: 12px;
+  transform: rotate(-180deg);
 }
 
-.modal-window-wrapper .next-button:hover {
-  color: #fff;
-  border: 2px solid hsl(227, 10%, 10%);
-  box-shadow: inset 8em 0 0 0 hsl(227, 10%, 10%);
+.modal-window-wrapper button.previous-button div,
+.modal-window-wrapper button.next-button div {
+  opacity: 1;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-top: 4px solid #fff;
+  border-left: 4px solid #fff;
+  transform: rotate(-45deg);
 }
 
 .modal-window-wrapper .hidden {
-  width: 120px;
-  height: 50px;
+  width: 40px;
+  height: 0px;
   opacity: 0;
   cursor: default;
 }

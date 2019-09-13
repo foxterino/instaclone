@@ -200,21 +200,22 @@ class ProfilePage extends React.Component {
   handleModalClose(e) {
     if (
       e.target.className === 'modal-window-wrapper' ||
-      e.target.className === 'hidden' ||
       e.key === 'Escape'
-    )
+    ) {
       this.setState({ isModal: false });
+    }
   }
 
   handleModalSwitch(e) {
+    const target = e.key || e.target;
     const modalIndex = this.state.renderPostsId.indexOf(this.state.modalPostId);
 
-    if (e.target.className === 'next-button' || e.key === 'ArrowRight') {
+    if (target === 'ArrowRight' || target.className === 'next-button') {
       this.setState({
         modalPostId: this.state.renderPostsId[modalIndex - 1],
       });
     }
-    else if (e.target.className === 'previous-button' || e.key === 'ArrowLeft') {
+    else if (target === 'ArrowLeft' || target.className === 'previous-button') {
       this.setState({
         modalPostId: this.state.renderPostsId[modalIndex + 1],
       });
