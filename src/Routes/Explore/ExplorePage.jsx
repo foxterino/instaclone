@@ -141,6 +141,8 @@ class ExplorePage extends React.Component {
   }
 
   handleScroll() {
+    if (!this.state.isLoaded) return;
+
     const pageHeight = document.documentElement.scrollTop;
     const scrollPosition = document.documentElement.scrollHeight - document.documentElement.clientHeight;
     const scrollOffset = pageHeight / scrollPosition;

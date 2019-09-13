@@ -26,7 +26,7 @@ main div.post-wrapper .rest-posts {
 }
 
 main .empty-feed {
-  width: 620px;
+  width: 600px;
   flex-direction: column;
   display: flex;
   justify-content: center;
@@ -37,6 +37,12 @@ main .empty-feed .empty-feed-alert {
   margin-bottom: 60px;
 }
 
+main .empty-feed .empty-feed-alert a {
+  text-decoration: none;
+  color: rgb(56, 151, 240);
+  font-weight: 600;
+}
+
 main .loading .profile-photo {
   height: 45px;
   width: 45px;
@@ -45,8 +51,10 @@ main .loading .profile-photo {
   margin-right: 10px;
 }
 
-main .loading img::before {
-  content: '';
+main .loading .loading-image {
+  width: 600px;
+  height: 540px;
+  background-color: rgb(230, 230, 230);
 }
 
 main .loading span {

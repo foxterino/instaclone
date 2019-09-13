@@ -138,6 +138,8 @@ class Main extends React.Component {
   }
 
   handleScroll() {
+    if (!this.state.isLoaded) return;
+
     const pageY = window.pageYOffset || document.documentElement.scrollTop;
     if (pageY === 0 && this.state.isNewPosts) {
       this.handleNewPosts();
@@ -197,7 +199,7 @@ class Main extends React.Component {
             <span>Options</span>
           </div>
           <div className='image-wrapper'>
-            <img src='#' alt='' />
+            <div className="loading-image"></div>
           </div>
           <div className='bar bottom-bar'>
             <div className='like-wrapper'>
@@ -249,7 +251,10 @@ class Main extends React.Component {
       posts = (
         <>
           <div className='empty-feed'>
-            <span className='empty-feed-alert'>Your feed is empty. Subscribe someone.</span>
+            <span className='empty-feed-alert'>
+              {'Your feed is empty.\n'}
+              <Link to='/explore/suggestions'>Subscribe someone.</Link>
+            </span>
           </div>
           <div className='post-wrapper'>
             {restPosts}
