@@ -419,6 +419,8 @@ class ProfilePage extends React.Component {
 
     let userInfoButtons;
     if (this.props.match.params.profile !== this.state.activeUser) {
+      const suggestedButtonClassName = this.state.isSuggested ? 'active' : '';
+
       userInfoButtons = (
         <>
           <button
@@ -434,8 +436,8 @@ class ProfilePage extends React.Component {
           <button
             className={
               this.state.isFollowed
-                ? 'suggested-button followed'
-                : 'suggested-button'
+                ? `suggested-button followed ${suggestedButtonClassName}`
+                : `suggested-button ${suggestedButtonClassName}`
             }
             onClick={() => this.handleSuggested()}
           >

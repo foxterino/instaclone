@@ -111,8 +111,9 @@ const Suggested = (props) => {
         }
 
         props.handleSuggested(suggested);
-        setIsLoaded(true);
       }
+
+      setIsLoaded(true);
     }
 
     updateSuggeted();

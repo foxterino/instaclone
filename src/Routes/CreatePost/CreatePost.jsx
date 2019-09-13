@@ -57,7 +57,7 @@ class CreatePost extends React.Component {
     database.ref('posts').update({
       [postId]: {
         caption: this.state.caption,
-        imageSrc: this.state.imageSrc,
+        imageSrc: this.state.imageSrc.trim(),
         likeCount: 0,
         user: username,
         id: postId

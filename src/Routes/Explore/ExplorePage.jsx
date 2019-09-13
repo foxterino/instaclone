@@ -82,7 +82,16 @@ class ExplorePage extends React.Component {
 
   async handleModalOpen(postId) {
     const data = await database.ref(`posts/${postId}`).once('value').then(data => data.val());
+    const modalIndex = this.state.renderPostsId.indexOf(postId);
+
     if (!data) return;
+    if (modalIndex === this.state.renderPostsId.length - 1 && this.state.paginationId !== -1) {
+      this.setState({ isLoadingNewPosts: true });
+
+      setTimeout(() => {
+        this.updateFeed();
+      }, 200);
+    }
 
     this.setState({
       isModal: true,
@@ -101,6 +110,14 @@ class ExplorePage extends React.Component {
 
   handleModalSwitch(e) {
     const modalIndex = this.state.renderPostsId.indexOf(this.state.modalPostId);
+
+    if (modalIndex >= this.state.renderPostsId.length - 3 && this.state.paginationId !== -1) {
+      this.setState({ isLoadingNewPosts: true });
+
+      setTimeout(() => {
+        this.updateFeed();
+      }, 200);
+    }
 
     if (e.target.className === 'next-button' || e.key === 'ArrowRight') {
       this.setState({
