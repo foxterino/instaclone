@@ -1,9 +1,10 @@
 .explore {
-  padding: 0 470px 0 470px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .explore .suggested-wrapper {
-  margin: 0 10px;
   max-width: 940px;
 }
 
@@ -28,6 +29,10 @@
 
 .explore .suggested .top-buttons {
   padding: 0;
+}
+
+.explore .main-wrapper {
+  width: 960px;
 }
 
 .explore .main {

@@ -30,22 +30,24 @@ class SuggestedPage extends React.Component {
 
   render() {
     return (
-      <div className='suggested-page'>
-        {
-          this.state.activeUser && this.state.currentSuggestUser &&
-          <>
-            <h4>Suggested</h4>
-            <Suggested
-              activeUser={this.state.activeUser}
-              currentProfile={this.state.currentSuggestUser}
-              handleFollow={this.handleFollow}
-              suggested={this.state.suggested}
-              handleSuggested={(suggested) => this.handleSuggested(suggested)}
-              amount={30}
-              handledAmount={this.state.suggested.length}
-            />
-          </>
-        }
+      <div className="suggested-page-wrapper">
+        <div className='suggested-page'>
+          {
+            this.state.activeUser && this.state.currentSuggestUser &&
+            <>
+              <h4>Suggested</h4>
+              <Suggested
+                activeUser={this.state.activeUser}
+                currentProfile={this.state.currentSuggestUser}
+                handleFollow={this.handleFollow}
+                suggested={this.state.suggested}
+                handleSuggested={(suggested) => this.handleSuggested(suggested)}
+                amount={30}
+                handledAmount={this.state.suggested.length}
+              />
+            </>
+          }
+        </div>
       </div>
     );
   }

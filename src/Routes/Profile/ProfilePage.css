@@ -1,10 +1,12 @@
 .profile {
   height: 92%;
-  padding: 0 470px 0 470px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile .user-info-wrapper {
-  max-width: 943px;
+  width: 940px;
   margin: 60px 10px 0px 10px;
   padding-bottom: 40px;
   border-bottom: 1px solid #efefef;
@@ -202,7 +204,12 @@
   background-color: rgb(224, 221, 221);
 }
 
+.profile .main-wrapper {
+  width: 960px;
+}
+
 .profile .main {
+  max-width: 960px;
   height: auto;
   margin-top: 30px;
   display: flex;

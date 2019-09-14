@@ -163,7 +163,7 @@ class ExplorePage extends React.Component {
   render() {
     let posts;
     if (!this.state.isLoaded) {
-      posts = <Loading />;
+      return <Loading />;
     } else if (this.state.renderPostsId.length !== 0) {
       posts = this.state.renderPostsId.map((item) => {
         return (
@@ -193,28 +193,27 @@ class ExplorePage extends React.Component {
               isNextSwitch={isNextSwitch}
             />
           }
-          {
-            this.state.isLoaded &&
-            <div className='suggested-wrapper'>
-              <Suggested
-                activeUser={this.state.activeUser}
-                currentProfile={this.state.currentSuggestUser}
-                handleFollow={this.handleFollow}
-                suggested={this.state.suggested}
-                handleSuggested={(suggested) => this.handleSuggested(suggested)}
-                amount={30}
-                handledAmount={4}
-              >
-                <div className='top-buttons'>
-                  <span>Discover People</span>
-                  <Link to='/explore/suggestions'>See All</Link>
-                </div>
-              </Suggested>
+          <div className='suggested-wrapper'>
+            <Suggested
+              activeUser={this.state.activeUser}
+              currentProfile={this.state.currentSuggestUser}
+              handleFollow={this.handleFollow}
+              suggested={this.state.suggested}
+              handleSuggested={(suggested) => this.handleSuggested(suggested)}
+              amount={30}
+              handledAmount={4}
+            >
+              <div className='top-buttons'>
+                <span>Discover People</span>
+                <Link to='/explore/suggestions'>See All</Link>
+              </div>
+            </Suggested>
+          </div>
+          <div className="main-wrapper">
+            <div className='explore-sign'>Explore</div>
+            <div className={this.state.isLoaded ? 'main' : 'main loading'}>
+              {posts}
             </div>
-          }
-          <div className='explore-sign'>Explore</div>
-          <div className='main'>
-            {posts}
           </div>
         </div>
       </EventHandler>

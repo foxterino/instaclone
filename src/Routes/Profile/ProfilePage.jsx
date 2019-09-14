@@ -384,13 +384,7 @@ class ProfilePage extends React.Component {
   render() {
     if (this.state.redirect) return <Redirect to='/login' />
     if (this.state.isExist === null) {
-      return (
-        <div className='profile'>
-          <div className="main">
-            <Loading />
-          </div>
-        </div>
-      );
+      return <Loading />;
     }
     if (!this.state.isExist) return <NotFound />;
 
@@ -589,8 +583,10 @@ class ProfilePage extends React.Component {
               </Suggested>
             }
           </div>
-          <div className='main'>
-            {posts}
+          <div className="main-wrapper">
+            <div className='main'>
+              {posts}
+            </div>
           </div>
         </div>
       </div>
