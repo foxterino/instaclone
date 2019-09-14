@@ -206,12 +206,13 @@ class ExplorePage extends React.Component {
                 handledAmount={4}
               >
                 <div className='top-buttons'>
-                  <span>Suggested</span>
+                  <span>Discover People</span>
                   <Link to='/explore/suggestions'>See All</Link>
                 </div>
               </Suggested>
             </div>
           }
+          <div className='explore-sign'>Explore</div>
           <div className='main'>
             {posts}
           </div>
