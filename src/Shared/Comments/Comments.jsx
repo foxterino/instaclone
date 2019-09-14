@@ -41,7 +41,7 @@ class Comments extends React.Component {
   }
 
   render() {
-    let comments = this.props.comments.map((item) => {
+    let comments = this.props.comments.map((item, i) => {
       return <Comment
         text={item.text}
         user={item.user}
@@ -51,6 +51,7 @@ class Comments extends React.Component {
         postAuthor={this.props.postAuthor}
         isEditing={this.state.isEditing}
         handleIsEditing={(state) => this.handleIsEditing(state)}
+        key={item.id}
       />
     })
 

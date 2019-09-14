@@ -8,6 +8,8 @@ export const handleFollow = async (activeUser, currentProfile, isFollowed) => {
   if (isFollowed) {
     const index = followedUsers.indexOf(currentProfile);
 
+    if (index === -1) return;
+
     followedUsers.splice(index, 1);
     followedUsers = followedUsers.join(',');
 

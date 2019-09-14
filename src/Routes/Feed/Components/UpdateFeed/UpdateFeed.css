@@ -1,6 +1,7 @@
 .update-feed {
   position: fixed;
   top: 80px;
+  z-index: 3;
 }
 
 .update-feed button {

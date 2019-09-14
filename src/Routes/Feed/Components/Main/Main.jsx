@@ -177,13 +177,14 @@ class Main extends React.Component {
           handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, false)}
           handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
           isDeleted={this.props.deletedPosts.indexOf(item) !== -1}
+          key={item}
         />
       );
     });;
 
     if (restPosts.length !== 0) {
       restPosts.unshift(
-        <div className='rest-posts'>You may be interested in.</div>
+        <div className='rest-posts' key={'rest-posts'}>You may be interested in.</div>
       );
     }
 
@@ -226,6 +227,7 @@ class Main extends React.Component {
             handleModalOpen={(activeUser, user, postId) => this.props.handleModalOpen(activeUser, user, postId, true)}
             handleUndoDeletePost={() => this.props.handleUndoDeletePost(item)}
             isDeleted={this.props.deletedPosts.indexOf(item) !== -1}
+            key={item}
           />
         );
       });
@@ -240,6 +242,7 @@ class Main extends React.Component {
           handleSuggested={(suggested) => this.handleSuggested(suggested)}
           amount={30}
           handledAmount={3}
+          key={'suggested'}
         >
           <div className='top-buttons'>
             <span>Suggested</span>
@@ -273,6 +276,7 @@ class Main extends React.Component {
           handleSuggested={(suggested) => this.handleSuggested(suggested)}
           amount={30}
           handledAmount={3}
+          key={'suggested'}
         >
           <div className='top-buttons'>
             <span>Suggested</span>

@@ -36,6 +36,7 @@ const Suggested = (props) => {
                 handleFollow={props.handleFollow}
                 activeUser={props.activeUser}
                 profile={item}
+                key={suggested.length}
               >
                 <Link to={`/${item}`}>
                   <img src={usernames[item].profilePhoto} alt='' />
@@ -64,6 +65,7 @@ const Suggested = (props) => {
                   handleFollow={props.handleFollow}
                   activeUser={props.activeUser}
                   profile={item}
+                  key={suggested.length}
                 >
                   <Link to={`/${item}`}>
                     <img src={usernames[item].profilePhoto} alt='' />
@@ -97,6 +99,7 @@ const Suggested = (props) => {
                   handleFollow={props.handleFollow}
                   activeUser={props.activeUser}
                   profile={item}
+                  key={suggested.length}
                 >
                   <Link to={`/${item}`}>
                     <img src={usernames[item].profilePhoto} alt='' />

@@ -393,11 +393,12 @@ class ProfilePage extends React.Component {
 
     let posts;
     if (this.state.renderPostsId.length !== 0) {
-      posts = this.state.renderPostsId.map((item) => {
+      posts = this.state.renderPostsId.map((item, i) => {
         return (
           <ProfilePicture
             postId={item}
             handleModalOpen={() => this.handleModalOpen(item)}
+            key={item}
           />
         );
       });
