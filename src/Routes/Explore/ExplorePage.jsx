@@ -4,8 +4,8 @@ import Suggested from '../../Shared/Suggested/Suggested';
 import { handleFollow } from '../../Services/Api';
 import { database } from '../../firebaseConfig';
 import { Link } from 'react-router-dom';
-import ModalPicture from '../Profile/Components/ModalPicture/Container';
-import ProfilePicture from '../Profile/Components/ProfilePicture/ProfilePicture';
+import ModalPicture from '../../Shared/ModalPicture/Container';
+import PictureItem from '../../Shared/PictureItem/PictureItem';
 import EventHandler from '../../Shared/EventHandler/EventHandler';
 import Loading from '../../Shared/Loading/Loading';
 
@@ -165,9 +165,9 @@ class ExplorePage extends React.Component {
     if (!this.state.isLoaded) {
       return <Loading />;
     } else if (this.state.renderPostsId.length !== 0) {
-      posts = this.state.renderPostsId.map((item, i) => {
+      posts = this.state.renderPostsId.map(item => {
         return (
-          <ProfilePicture
+          <PictureItem
             postId={item}
             handleModalOpen={() => this.handleModalOpen(item)}
             key={item}

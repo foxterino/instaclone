@@ -133,7 +133,7 @@ const Suggested = (props) => {
   else if (props.suggested.length === 0) {
     content = (
       <div className='empty'>
-        We have nothing to suggest u now lol sorry
+        We have nothing to suggest you now.
      </div>
     );
   } else {

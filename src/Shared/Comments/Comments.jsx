@@ -41,7 +41,7 @@ class Comments extends React.Component {
   }
 
   render() {
-    let comments = this.props.comments.map((item, i) => {
+    let comments = this.props.comments.map(item => {
       return <Comment
         text={item.text}
         user={item.user}

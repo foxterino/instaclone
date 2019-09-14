@@ -1,8 +1,8 @@
 import React from 'react';
-import { database } from '../../../../firebaseConfig';
-import './ProfilePicture.css';
+import { database } from '../../firebaseConfig';
+import './PictureItem.css';
 
-class ProfilePicture extends React.Component {
+class PictureItem extends React.Component {
   state = {
     imageSrc: '',
     likeCount: null,
@@ -44,4 +44,4 @@ class ProfilePicture extends React.Component {
   }
 }
 
-export default ProfilePicture;
+export default PictureItem;

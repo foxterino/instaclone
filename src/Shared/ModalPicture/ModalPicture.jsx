@@ -1,12 +1,12 @@
 import React from 'react';
 import './ModalPicture.css';
-import { database } from '../../../../firebaseConfig'
-import { handleLike } from '../../../../Services/Api';
+import { database } from '../../firebaseConfig'
+import { handleLike } from '../../Services/Api';
 import { Link } from 'react-router-dom';
-import LikeAnimation from '../../../../Shared/LikeAnimation/LikeAnimation';
-import Comments from '../../../../Shared/Comments/Comments';
-import OptionsModalWindow from '../../../../Shared/OptionsModalWindow/OptionsModalWindow';
-import EventHandler from '../../../../Shared/EventHandler/EventHandler';
+import LikeAnimation from '../LikeAnimation/LikeAnimation';
+import Comments from '../Comments/Comments';
+import OptionsModalWindow from '../OptionsModalWindow/OptionsModalWindow';
+import EventHandler from '../EventHandler/EventHandler';
 
 class ModalPicture extends React.Component {
   state = {

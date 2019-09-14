@@ -34,7 +34,7 @@ nav input {
   padding-left: 10px;
   width: 250px;
   height: 25px;
-  border: 0.5px solid rgb(197, 197, 197);
+  border: 1px solid rgb(197, 197, 197);
   border-radius: 2px;
   background-color: rgb(247, 247, 247);
 }
@@ -168,6 +168,7 @@ nav .home-wrapper a.active {
   cursor: default;
 }
 
-nav ul li a.active span {
+nav ul li a.active span,
+nav .home-wrapper a.active span {
   cursor: pointer;
 }

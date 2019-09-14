@@ -18,8 +18,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.02);
-  box-shadow: inset 4px 0 0 rgb(244, 202, 100);
+  background-color: rgba(255, 229, 100, 0.3);
+  box-shadow: inset 4px 0 0 #ffe564;
 }
 
 #edit .buttons-wrapper {
@@ -58,7 +58,7 @@
   margin-bottom: 15px;
   width: 100%;
   height: 40px;
-  border: 0.5px solid rgb(197, 197, 197);
+  border: 1px solid rgb(197, 197, 197);
   border-radius: 2px;
   background-color: rgb(247, 247, 247);
   transition: 0.5s;

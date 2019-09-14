@@ -2,9 +2,9 @@ import React from 'react';
 import './ProfilePage.css'
 import { Redirect, Link } from 'react-router-dom'
 import { database, auth } from '../../firebaseConfig';
-import ProfilePicture from './Components/ProfilePicture/ProfilePicture';
+import PictureItem from '../../Shared/PictureItem/PictureItem';
 import NotFound from '../../Shared/NotFound/NotFound';
-import ModalPicture from './Components/ModalPicture/Container';
+import ModalPicture from '../../Shared/ModalPicture/Container';
 import ModalInfo from './Components/ModalInfo/ModalInfo';
 import ModalInfoItem from './Components/ModalInfoItem/ModalInfoItem';
 import Suggested from '../../Shared/Suggested/Suggested';
@@ -239,44 +239,47 @@ class ProfilePage extends React.Component {
 
   async updateModalInfo() {
     const usernames = await database.ref(`usernames`).once('value').then(data => data.val());
+    const currentProfile = usernames[this.state.currentProfile];
+    const currentFollowing = currentProfile.followedUsers.split(',');
+    const currentFollowers = currentProfile.followers.split(',');
     const followers = [];
     const following = [];
-    const currentProfile = usernames[this.state.currentProfile];
 
-    for (let key in usernames) {
-      if (
-        currentProfile.followedUsers.indexOf(key) !== -1 &&
-        key !== this.state.currentProfile
-      ) {
+    currentFollowing.forEach(item => {
+      if (item !== this.state.currentProfile) {
         following.push(
           <ModalInfoItem
             handleFollow={this.handleFollow}
             activeUser={this.state.activeUser}
-            profile={key}
+            profile={item}
+            key={item}
           >
-            <Link to={key}>
-              <img src={usernames[key].profilePhoto} alt='' />
-              <span>{key}</span>
+            <Link to={item}>
+              <img src={usernames[item].profilePhoto} alt='' />
+              <span>{item}</span>
             </Link>
           </ModalInfoItem>
         );
       }
+    });
 
-      if (currentProfile.followers.indexOf(key) !== -1) {
+    currentFollowers.forEach(item => {
+      if (item !== '') {
         followers.push(
           <ModalInfoItem
             handleFollow={this.handleFollow}
             activeUser={this.state.activeUser}
-            profile={key}
+            profile={item}
+            key={item}
           >
-            <Link to={key}>
-              <img src={usernames[key].profilePhoto} alt='' />
-              <span>{key}</span>
+            <Link to={item}>
+              <img src={usernames[item].profilePhoto} alt='' />
+              <span>{item}</span>
             </Link>
           </ModalInfoItem>
         );
       }
-    }
+    });
 
     following.reverse();
     followers.reverse();
@@ -393,9 +396,9 @@ class ProfilePage extends React.Component {
 
     let posts;
     if (this.state.renderPostsId.length !== 0) {
-      posts = this.state.renderPostsId.map((item, i) => {
+      posts = this.state.renderPostsId.map(item => {
         return (
-          <ProfilePicture
+          <PictureItem
             postId={item}
             handleModalOpen={() => this.handleModalOpen(item)}
             key={item}
