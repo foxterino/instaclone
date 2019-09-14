@@ -152,21 +152,21 @@ class RegistrationPage extends React.Component {
             <form>
               <FormInput
                 value={this.state.email}
-                className={this.state.errors.email && 'error'}
+                className={this.state.errors.email ? 'error' : null}
                 handleChange={(e) => this.handleEmailChange(e)}
                 type='text'
                 label='Email'
               />
               <FormInput
                 value={this.state.username}
-                className={this.state.errors.username && 'error'}
+                className={this.state.errors.username ? 'error' : null}
                 handleChange={(e) => this.handleUsernameChange(e)}
                 type='text'
                 label='Username'
               />
               <FormInput
                 value={this.state.password}
-                className={this.state.errors.password && 'error'}
+                className={this.state.errors.password ? 'error' : null}
                 handleChange={(e) => this.handlePasswordChange(e)}
                 type='password'
                 label='Password'

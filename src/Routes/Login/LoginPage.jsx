@@ -72,7 +72,7 @@ class LoginPage extends React.Component {
             <input
               type='submit'
               value='Log in'
-              className={!this.state.username && 'non-active'}
+              className={!this.state.username ? 'non-active' : null}
               onClick={this.state.username ? (e) => this.handleSubmit(e) : null}
             />
             <span className={

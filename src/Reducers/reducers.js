@@ -5,11 +5,11 @@ const initialState = {
   isAuthenticated: localStorage.getItem('isLoggined') || false
 }
 
-function userInfo(state = initialState, actions) {
-  switch (actions.type) {
+function userInfo(state = initialState, action) {
+  switch (action.type) {
     case LOGIN:
       return {
-        userId: actions.userId,
+        userId: action.userId,
         isAuthenticated: true
       }
 

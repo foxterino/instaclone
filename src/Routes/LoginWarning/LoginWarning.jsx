@@ -23,7 +23,7 @@ class LoginWarning extends React.Component {
             </span>
             </div>
             <div className='link-wrapper'>
-              <Link class='login-link' to={{
+              <Link className='login-link' to={{
                 pathname: '/login',
                 state: { from: this.props.location.state.from }
               }}

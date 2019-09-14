@@ -10,6 +10,12 @@ class Comments extends React.Component {
     isEditing: false
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.postId !== this.props.postId) {
+      this.handleIsEditing(false);
+    }
+  }
+
   handleIsEditing(state) {
     this.setState({ isEditing: state });
   }

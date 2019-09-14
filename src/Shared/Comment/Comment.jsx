@@ -1,24 +1,19 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Comment.css';
 import { database } from '../../firebaseConfig'
 import { Link } from 'react-router-dom';
 
 const Comment = (props) => {
   const [isMoreButton, setIsMoreButton] = useState(props.text.length > 100);
-
   const [isEdit, setIsEdit] = useState(false);
   const [newComment, setNewComment] = useState(props.text);
   const [error, setError] = useState(false);
 
+  const inputEl = useRef(null);
+
   useEffect(() => {
     setNewComment(props.text);
-
-    return () => {
-      props.handleIsEditing(false);
-      setIsEdit(false);
-    }
-  }, [props.text]);
+  }, [props, props.text]);
 
   const handleChange = (e) => {
     setNewComment(e.target.value);
@@ -34,6 +29,8 @@ const Comment = (props) => {
 
     setIsEdit(true);
     props.handleIsEditing(true);
+
+    setTimeout(() => inputEl.current.focus(), 200);
   }
 
   const handleSave = (e) => {
@@ -86,10 +83,11 @@ const Comment = (props) => {
           <div className='edit-wrapper'>
             <Link to={`/${props.user}`}>{props.user}</Link>
             <input
-              className={error && 'error'}
+              className={error ? 'error' : null}
               type='text'
               value={newComment}
               onChange={(e) => handleChange(e)}
+              ref={inputEl}
             />
           </div>
           <div className='buttons-wrapper'>
@@ -125,7 +123,6 @@ const Comment = (props) => {
             </button>
           }
         </span>
-
       </div>
       <div className='options-wrapper'>
         {options}
