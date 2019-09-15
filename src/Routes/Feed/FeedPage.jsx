@@ -49,7 +49,13 @@ class FeedPage extends React.Component {
     });
   }
 
-  handleUndoDeletePost(postId) {
+  async handleUndoDeletePost(postId) {
+    const post = await database.ref(`posts/${postId}`).once('value').then(data => data.val());
+    if (!post) {
+      alert('You can\'t return this post.');
+      return;
+    }
+
     if (this.state.deletedPosts.length === 1) {
       this.setState({ deletedPosts: [] });
     } else {

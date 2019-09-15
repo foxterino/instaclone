@@ -82,7 +82,7 @@ class CreatePost extends React.Component {
               name='imageSrc'
               value={this.state.imageSrc}
               onChange={(e) => this.handleChange(e)}
-              className={this.state.errors.imageSrc && 'error'}
+              className={this.state.errors.imageSrc ? 'error' : null}
               placeholder='Enter image url'
             />
             <input
@@ -90,7 +90,7 @@ class CreatePost extends React.Component {
               name='caption'
               value={this.state.caption}
               onChange={(e) => this.handleChange(e)}
-              className={this.state.errors.caption && 'error'}
+              className={this.state.errors.caption ? 'error' : null}
               placeholder='Add a caption'
             />
             <input

@@ -86,7 +86,7 @@ class Post extends React.Component {
           <span>{`Post ${this.props.postId} has been removed.`}</span>
           {
             this.state.activeUser === this.state.user &&
-            < button onClick={() => this.props.handleUndoDeletePost()}>Undo</button>
+            <button onClick={() => this.props.handleUndoDeletePost()}>Undo</button>
           }
         </div >
       );

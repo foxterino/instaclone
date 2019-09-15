@@ -18,7 +18,7 @@
 }
 
 .update-feed button:hover {
-  box-shadow: 0 0.5em 0.5em -0.4em rgb(226, 38, 38);
+  box-shadow: 0 0.5em 0.5em -0.4em #3897f0;
   transform: translateY(-0.25em);
 }
 
