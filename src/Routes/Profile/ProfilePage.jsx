@@ -48,16 +48,16 @@ class ProfilePage extends React.Component {
     database.ref('posts').off();
   }
 
-  componentDidMount() {
-    database.ref(`users/${this.props.userId}`).once('value', data => {
-      this.setState({ activeUser: data.toJSON().username });
-    })
-      .then(() => {
-        this.setState({ currentProfile: this.props.match.params.profile });
+  async componentDidMount() {
+    const username = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
 
-        this.updateProfile();
-        this.updateProfilePictures();
-      });
+    await this.setState({
+      activeUser: username.username,
+      currentProfile: this.props.match.params.profile
+    });
+
+    this.updateProfile();
+    this.updateProfilePictures();
 
     database.ref('posts').on('child_removed', data => {
       if (this.state.currentProfile === this.state.activeUser) {
@@ -65,9 +65,8 @@ class ProfilePage extends React.Component {
           renderPostsId: [],
           isModal: false
         });
-        setTimeout(() => {
-          this.updateProfilePictures();
-        }, 400);
+
+        this.updateProfilePictures();
       }
 
       if (
@@ -135,24 +134,22 @@ class ProfilePage extends React.Component {
   }
 
   async updateProfilePictures() {
-    setTimeout(async () => {
-      const data = await database.ref('posts').once('value').then(data => data.val());
-      const posts = [];
-      let renderPostsId = [];
+    const data = await database.ref('posts').once('value').then(data => data.val());
+    const posts = [];
+    let renderPostsId = [];
 
-      for (let key in data) {
-        posts.push(data[key]);
+    for (let key in data) {
+      posts.push(data[key]);
+    }
+
+    posts.forEach((item) => {
+      if (item.user === this.props.match.params.profile) {
+        renderPostsId = [...renderPostsId, item.id];
       }
+    })
 
-      posts.forEach((item) => {
-        if (item.user === this.props.match.params.profile) {
-          renderPostsId = [...renderPostsId, item.id];
-        }
-      })
-
-      this.setState({ renderPostsId: renderPostsId });
-      this.checkIsExist();
-    }, 200);
+    this.setState({ renderPostsId: renderPostsId });
+    this.checkIsExist();
   }
 
   async checkIsExist() {

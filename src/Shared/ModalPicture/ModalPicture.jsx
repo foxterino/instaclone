@@ -62,26 +62,24 @@ class ModalPicture extends React.Component {
     });
   }
 
-  handleLike(e) {
+  async handleLike(e) {
     if (this.state.isLikeUpdating) return;
 
     this.setState({ isLikeUpdating: true });
-    handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
+    await handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
 
-    setTimeout(() => {
-      this.setState({ isLikeUpdating: false });
+    this.setState({ isLikeUpdating: false });
 
-      if (this.state.isLiked) {
-        this.setState({ isLikeAnim: true });
+    if (!this.state.isLiked) {
+      this.setState({ isLikeAnim: true });
 
-        setTimeout(() => {
-          this.setState({ isLikeAnim: false })
-        }, 2000);
-      }
-    }, 200);
+      setTimeout(() => {
+        this.setState({ isLikeAnim: false })
+      }, 2000);
+    }
   }
 
-  handleSwitch(e) {
+  async handleSwitch(e) {
     if (this.state.isOptionsModal) return;
     if (e.key === 'ArrowRight' && !this.props.isNextSwitch) return;
     if (e.key === 'ArrowLeft' && !this.props.isPrevSwitch) return;
@@ -92,12 +90,10 @@ class ModalPicture extends React.Component {
       e.target.className === 'previous-button' ||
       e.key === 'ArrowLeft'
     ) {
-      this.props.handleModalSwitch(e);
+      await this.props.handleModalSwitch(e);
       this.setState({ isLikeAnim: false });
 
-      setTimeout(() => {
-        this.handleUpdate();
-      })
+      this.handleUpdate();
     }
   }
 

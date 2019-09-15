@@ -30,11 +30,18 @@ class Main extends React.Component {
   async componentDidMount() {
     const username = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
     const posts = await database.ref('posts').once('value').then(data => data.val());
+    const usernames = await database.ref(`usernames/${this.state.activeUser || username.username}`).once('value').then(data => data.val());
+    const isNewPosts = this.state.isLoaded && usernames.followedUsers.length > this.state.followedUsers.length;
 
-    this.setState({
+    await this.setState({
       activeUser: username.username,
-      paginationId: Object.keys(posts).pop()
+      paginationId: Object.keys(posts).pop(),
+      followedUsers: usernames.followedUsers,
+      currentSuggestUser: usernames.followedUsers.split(',').slice(-1)[0],
+      isNewPosts: isNewPosts
     });
+
+    this.updateFeed();
 
     database.ref(`usernames/${this.state.activeUser || username.username}`).on('value', data => {
       if (this.state.isLoaded && data.toJSON().followedUsers.length > this.state.followedUsers.length) {
@@ -47,8 +54,6 @@ class Main extends React.Component {
       });
     });
 
-    this.updateFeed();
-
     database.ref('posts').on('child_added', data => {
       const followedUsers = this.state.followedUsers.split(',');
 
@@ -57,78 +62,65 @@ class Main extends React.Component {
         this.setState({ isNewPosts: true });
       }
     });
-
-    database.ref('posts').on('child_removed', data => {
-      if (data.toJSON().user === this.state.activeUser) {
-        this.setState({
-          isLoaded: false,
-          renderPostsId: []
-        });
-
-        this.updateFeed();
-      }
-    });
   }
 
   async updateFeed() {
-    setTimeout(async () => {
-      const posts = await database.ref('posts').once('value').then(data => data.val());
-      const followedUsers = this.state.followedUsers.split(',');
-      let renderPostsId = [];
-      let restPosts = [];
-      let i;
+    const posts = await database.ref('posts').once('value').then(data => data.val());
+    const followedUsers = this.state.followedUsers.split(',');
+    let renderPostsId = [];
+    let restPosts = [];
+    let i;
 
-      if (!this.state.isRestPosts) {
-        for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
+    if (!this.state.isRestPosts) {
+      for (i = this.state.paginationId; renderPostsId.length < 3 && i >= 0; i--) {
+        if (!posts[i]) continue;
+
+        if (followedUsers.indexOf(posts[i].user) !== -1) {
+          renderPostsId = [...renderPostsId, posts[i].id];
+        }
+      }
+    }
+
+    if (i === -1) {
+      const data = await database.ref('posts').once('value').then(data => data.val());
+
+      this.setState({
+        paginationId: Object.keys(data).pop(),
+        isRestPosts: true
+      });
+    }
+
+    setTimeout(() => {
+      if (this.state.isRestPosts || i === -1) {
+        for (i = this.state.paginationId; restPosts.length < 3 && i >= 0; i--) {
           if (!posts[i]) continue;
 
-          if (followedUsers.indexOf(posts[i].user) !== -1) {
-            renderPostsId = [...renderPostsId, posts[i].id];
+          if (followedUsers.indexOf(posts[i].user) === -1) {
+            restPosts = [...restPosts, posts[i].id];
           }
         }
       }
 
-      if (i === -1) {
-        const data = await database.ref('posts').once('value').then(data => data.val());
-
-        this.setState({
-          paginationId: Object.keys(data).pop(),
-          isRestPosts: true
-        });
-      }
-
-      setTimeout(() => {
-        if (this.state.isRestPosts || i === -1) {
-          for (i = this.state.paginationId; restPosts.length < 3 && i >= 0; i--) {
-            if (!posts[i]) continue;
-
-            if (followedUsers.indexOf(posts[i].user) === -1) {
-              restPosts = [...restPosts, posts[i].id];
-            }
-          }
-        }
-
-        this.setState({
-          paginationId: i,
-          renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
-          restPosts: [...this.state.restPosts, ...restPosts],
-          isLoaded: true,
-          isLoadingNewPosts: false
-        });
-      }, 200);
+      this.setState({
+        paginationId: i,
+        renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
+        restPosts: [...this.state.restPosts, ...restPosts],
+        isLoaded: true,
+        isLoadingNewPosts: false
+      });
     }, 200);
   }
 
-  handleNewPosts() {
-    database.ref('posts').once('value', data => {
-      this.setState({
-        paginationId: Object.keys(data.toJSON()).pop(),
-        isRestPosts: false,
-        isLoaded: false,
-        renderPostsId: [],
-        restPosts: [],
-        isNewPosts: false
-      });
+  async handleNewPosts() {
+    const posts = await database.ref('posts').once('value').then(data => data.val());
+
+    await this.setState({
+      paginationId: Object.keys(posts).pop(),
+      isRestPosts: false,
+      isLoaded: false,
+      renderPostsId: [],
+      restPosts: [],
+      isNewPosts: false
     });
 
     this.props.updateBD();
@@ -137,7 +129,7 @@ class Main extends React.Component {
     window.scrollTo(0, 0);
   }
 
-  handleScroll() {
+  async handleScroll() {
     if (!this.state.isLoaded) return;
 
     const pageY = window.pageYOffset || document.documentElement.scrollTop;
@@ -151,11 +143,9 @@ class Main extends React.Component {
     const scrollOffset = pageHeight / scrollPosition;
 
     if (!condition && !this.state.isLoadingNewPosts && scrollOffset > 0.8) {
-      this.setState({ isLoadingNewPosts: true });
+      await this.setState({ isLoadingNewPosts: true });
 
-      setTimeout(() => {
-        this.updateFeed();
-      }, 200);
+      this.updateFeed();
     }
   }
 

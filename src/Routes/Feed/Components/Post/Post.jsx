@@ -56,23 +56,21 @@ class Post extends React.Component {
     });
   }
 
-  handleLike(e) {
+  async handleLike(e) {
     if (this.state.isLikeUpdating) return;
 
     this.setState({ isLikeUpdating: true });
-    handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
+    await handleLike(e, this.state.likeCount, this.state.isLiked, this.props.postId, this.props.userId);
 
-    setTimeout(() => {
-      this.setState({ isLikeUpdating: false });
+    this.setState({ isLikeUpdating: false });
 
-      if (this.state.isLiked) {
-        this.setState({ isLikeAnim: true });
+    if (!this.state.isLiked) {
+      this.setState({ isLikeAnim: true });
 
-        setTimeout(() => {
-          this.setState({ isLikeAnim: false })
-        }, 2000);
-      }
-    }, 200);
+      setTimeout(() => {
+        this.setState({ isLikeAnim: false })
+      }, 2000);
+    }
   }
 
   handleRedirectToProfile() {

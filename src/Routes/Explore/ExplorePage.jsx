@@ -36,7 +36,7 @@ class ExplorePage extends React.Component {
     const currentSuggestUser = await database.ref(`usernames/${this.state.activeUser || username.username}`).once('value').then(data => data.val());
     const posts = await database.ref('posts').once('value').then(data => data.val());
 
-    this.setState({
+    await this.setState({
       activeUser: username.username,
       followedUsers: currentSuggestUser.followedUsers,
       currentSuggestUser: currentSuggestUser.followedUsers.split(',').slice(-1)[0],
@@ -57,27 +57,25 @@ class ExplorePage extends React.Component {
   }
 
   async updateFeed() {
-    setTimeout(async () => {
-      const posts = await database.ref('posts').once('value').then(data => data.val());
-      const followedUsers = this.state.followedUsers.split(',');
-      let renderPostsId = [];
-      let i;
+    const posts = await database.ref('posts').once('value').then(data => data.val());
+    const followedUsers = this.state.followedUsers.split(',');
+    let renderPostsId = [];
+    let i;
 
-      for (i = this.state.paginationId; renderPostsId.length < 6 && i >= 0; i--) {
-        if (!posts[i]) continue;
+    for (i = this.state.paginationId; renderPostsId.length < 6 && i >= 0; i--) {
+      if (!posts[i]) continue;
 
-        if (followedUsers.indexOf(posts[i].user) === -1) {
-          renderPostsId = [...renderPostsId, posts[i].id];
-        }
+      if (followedUsers.indexOf(posts[i].user) === -1) {
+        renderPostsId = [...renderPostsId, posts[i].id];
       }
+    }
 
-      this.setState({
-        paginationId: i,
-        renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
-        isLoaded: true,
-        isLoadingNewPosts: false
-      });
-    }, 200);
+    this.setState({
+      paginationId: i,
+      renderPostsId: [...this.state.renderPostsId, ...renderPostsId],
+      isLoaded: true,
+      isLoadingNewPosts: false
+    });
   }
 
   async handleModalOpen(postId) {
@@ -86,11 +84,9 @@ class ExplorePage extends React.Component {
 
     if (!data) return;
     if (modalIndex === this.state.renderPostsId.length - 1 && this.state.paginationId !== -1) {
-      this.setState({ isLoadingNewPosts: true });
+      await this.setState({ isLoadingNewPosts: true });
 
-      setTimeout(() => {
-        this.updateFeed();
-      }, 200);
+      this.updateFeed();
     }
 
     this.setState({
@@ -107,16 +103,14 @@ class ExplorePage extends React.Component {
       this.setState({ isModal: false });
   }
 
-  handleModalSwitch(e) {
+  async handleModalSwitch(e) {
     const modalIndex = this.state.renderPostsId.indexOf(this.state.modalPostId);
     const target = e.key || e.target;
 
     if (modalIndex >= this.state.renderPostsId.length - 3 && this.state.paginationId !== -1) {
-      this.setState({ isLoadingNewPosts: true });
+      await this.setState({ isLoadingNewPosts: true });
 
-      setTimeout(() => {
-        this.updateFeed();
-      }, 200);
+      this.updateFeed();
     }
 
     if (target === 'ArrowRight' || target.className === 'next-button') {
@@ -140,7 +134,7 @@ class ExplorePage extends React.Component {
     this.setState({ suggested: suggested });
   }
 
-  handleScroll() {
+  async handleScroll() {
     if (!this.state.isLoaded) return;
 
     const pageHeight = document.documentElement.scrollTop;
@@ -152,11 +146,9 @@ class ExplorePage extends React.Component {
       !this.state.isLoadingNewPosts &&
       scrollOffset > 0.8
     ) {
-      this.setState({ isLoadingNewPosts: true });
+      await this.setState({ isLoadingNewPosts: true });
 
-      setTimeout(() => {
-        this.updateFeed();
-      }, 200);
+      this.updateFeed();
     }
   }
 
