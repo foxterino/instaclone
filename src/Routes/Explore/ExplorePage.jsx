@@ -32,6 +32,8 @@ class ExplorePage extends React.Component {
   }
 
   async componentDidMount() {
+    window.scrollTo(0, 0);
+
     const username = await database.ref(`users/${this.props.userId}`).once('value').then(data => data.val());
     const currentSuggestUser = await database.ref(`usernames/${this.state.activeUser || username.username}`).once('value').then(data => data.val());
     const posts = await database.ref('posts').once('value').then(data => data.val());

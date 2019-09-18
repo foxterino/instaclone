@@ -1,6 +1,6 @@
 .comments input {
   height: 55px;
-  width: 531px;
+  width: 100%;
   box-sizing: border-box;
   border: none;
   word-wrap: break-word;
@@ -10,11 +10,12 @@
 .comments .form-wrapper {
   border-top: 1px solid #efefef;
   background-color: #fff;
-  display: flex;
 }
 
 .comments form {
   padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .comments input:focus {
@@ -22,7 +23,6 @@
 }
 
 .comments input[type='submit'] {
-  width: 15%;
   background-color: #fff;
   color: rgb(56, 151, 240);
   padding: 0;
