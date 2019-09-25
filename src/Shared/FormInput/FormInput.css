@@ -23,7 +23,7 @@
   font-size: 16px;
   color: #fff;
   pointer-events: none;
-  transition: 0.5s;
+  transition: 0.25s;
 }
 
 .input-box input:focus ~ label,
