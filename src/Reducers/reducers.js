@@ -1,11 +1,6 @@
 import { LOGIN, LOGOUT } from '../Action-types/action-types'
 
-const initialState = {
-  userId: localStorage.getItem('userId'),
-  isAuthenticated: localStorage.getItem('isLoggined') || false
-}
-
-function userInfo(state = initialState, action) {
+function userInfo(state, action) {
   switch (action.type) {
     case LOGIN:
       return {

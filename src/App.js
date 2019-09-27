@@ -26,6 +26,11 @@ const mapStateToProps = state => {
   }
 }
 
-export const store = createStore(userInfo);
+const initialState = {
+  userId: localStorage.getItem('userId'),
+  isAuthenticated: localStorage.getItem('isLoggined') || false
+}
+
+export const store = createStore(userInfo, initialState);
 
 export default connect(mapStateToProps)(App);
