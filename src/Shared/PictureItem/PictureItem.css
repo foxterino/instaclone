@@ -1,14 +1,14 @@
-.profile-picture {
+.picture-item {
   padding: 10px;
 }
 
-.profile-picture img {
+.picture-item img {
   width: 300px;
   height: 300px;
   object-fit: cover;
 }
 
-.profile-picture img:before {
+.picture-item img:before {
   content: 'That is a broken one';
   display: flex;
   justify-content: center;
@@ -18,7 +18,7 @@
   background-color: rgb(230, 230, 230);
 }
 
-.profile-picture .picture-stats {
+.picture-item .picture-stats {
   position: absolute;
   width: 300px;
   height: 300px;
@@ -33,11 +33,11 @@
   cursor: pointer;
 }
 
-.profile-picture .picture-stats span {
+.picture-item .picture-stats span {
   padding: 0 10px;
 }
 
-.picture-stats:hover {
+.picture-item .picture-stats:hover {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.486);
 }

@@ -29,7 +29,7 @@ class PictureItem extends React.Component {
 
   render() {
     return (
-      <div className='profile-picture'>
+      <div className='picture-item'>
         <div className='picture-stats' onClick={() => this.props.handleModalOpen()}>
           <span>
             {'❤ ' + this.state.likeCount}

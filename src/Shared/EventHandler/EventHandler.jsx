@@ -5,7 +5,7 @@ const EventHandler = ({ eventName, callback, children }) => {
     window.addEventListener(eventName, callback);
 
     return () => window.removeEventListener(eventName, callback);
-  }, [callback, eventName]);
+  }, [eventName, callback]);
 
   return (
     <>

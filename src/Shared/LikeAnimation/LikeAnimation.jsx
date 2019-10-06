@@ -1,9 +1,9 @@
 import React from 'react'
 import './LikeAnimation.css'
 
-function LikeAnimation(props) {
+const LikeAnimation = ({ isLikeAnim }) => {
   return (
-    <div className={props.isLikeAnim ? 'like like-active' : 'like'}>
+    <div className={isLikeAnim ? 'like like-active' : 'like'}>
       You have liked this post
     </div>
   );
